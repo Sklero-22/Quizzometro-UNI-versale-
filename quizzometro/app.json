@@ -1,0 +1,63 @@
+{
+  "expo": {
+    "name": "Quizzometro UNI(versale)",
+    "slug": "quizzometro-universale",
+    "scheme": "quizzometro",
+    "version": "1.0.7",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#F5EFE3",
+    "platforms": [
+      "android",
+      "ios",
+      "web"
+    ],
+    "newArchEnabled": true,
+    "android": {
+      "package": "com.quizzometro.universale",
+      "versionCode": 8,
+      "backgroundColor": "#F5EFE3",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon-foreground.png",
+        "backgroundImage": "./assets/icon.png",
+        "backgroundColor": "#F5EFE3"
+      },
+      "permissions": [
+        "INTERNET",
+        "REQUEST_INSTALL_PACKAGES"
+      ],
+      "softwareKeyboardLayoutMode": "resize"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "backgroundColor": "#F6F4ED",
+          "resizeMode": "contain",
+          "imageWidth": 300
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    },
+    "ios": {
+      "bundleIdentifier": "com.quizzometro.universale",
+      "supportsTablet": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/icon.png",
+      "name": "Quizzometro UNI(versale)",
+      "shortName": "Quizzometro",
+      "themeColor": "#F5EFE3",
+      "backgroundColor": "#F5EFE3",
+      "lang": "it"
+    }
+  }
+}

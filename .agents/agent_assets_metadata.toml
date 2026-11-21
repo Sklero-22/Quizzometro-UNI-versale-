@@ -1,0 +1,86 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "IEeklmfbYU_Ut4iyL9muC"
+uri = "file://Quizzometro-UNI-versale-v1.0.2-vc3.apk"
+type = "unspecified"
+title = "Scarica l’APK Quizzometro 1.0.2"
+description = "APK Android firmato, versione 1.0.2 (versionCode 3)."
+logical_id = "031c0f7f-33ab-4e53-9933-a83fd05c6f36"
+content_hash = "sha256:9e380da821e300d3bff7950fb4d74bd5d6a71b73439b0bc2de6774f75d3f62a1"
+size = 40221457
+mtime_ms = 1794937375050
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:d9177113-ee47-4de9-87be-38a8f01ba188/031c0f7f-33ab-4e53-9933-a83fd05c6f36/1437db7f-8e0a-4711-93e9-52e9fc264a94"
+storage_version_token = "1794937387714684"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "24ASlwswrWKGlqt4o8t-b"
+uri = "file://generated-artifacts/Quizzometro-UNI-versale-v1.0.3-vc4.apk"
+type = "unspecified"
+title = "Quizzometro UNI(versale) v1.0.3 per Android"
+description = "APK Android firmato, versione 1.0.3 (versionCode 4), verificato con il certificato di firma esistente."
+logical_id = "664efdf0-f83f-4d65-8b6d-6ce07c0b52c0"
+content_hash = "sha256:c8501307b495d58ea1aac74a15065ad33d360dd9d92bf79891cb02e723827073"
+size = 41155337
+mtime_ms = 1794940734886
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:d9177113-ee47-4de9-87be-38a8f01ba188/664efdf0-f83f-4d65-8b6d-6ce07c0b52c0/493ae26a-513f-4fb4-a7c0-d4f5bdc8fa04"
+storage_version_token = "1794940808783806"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "ff_3NyhX16Lni2Eh9VD6-"
+uri = "file://generated-artifacts/Quizzometro-UNI-versale-v1.0.4-vc5.apk"
+type = "unspecified"
+title = "Quizzometro UNI(versale) v1.0.4 per Android"
+description = "APK Android firmato con backup locale, cartella persistente e tre modalità di ripristino."
+logical_id = "ab6c768c-8039-4a85-a551-0d70be806e7c"
+content_hash = "sha256:25df0b415977173132a000c93610f8e0c6742dc94e789c2ba1787a5d98b80709"
+size = 41169629
+mtime_ms = 1794942598770
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:d9177113-ee47-4de9-87be-38a8f01ba188/ab6c768c-8039-4a85-a551-0d70be806e7c/85f5f82e-7707-4668-ae59-d9d567642176"
+storage_version_token = "1794942612896565"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "CTSEHhuPNrhfHfFjGMTzc"
+uri = "file://generated-artifacts/Quizzometro-UNI-versale-v1.0.5-vc6.apk"
+type = "unspecified"
+title = "Quizzometro UNI(versale) v1.0.5 per Android"
+description = "APK firmato con Guida, changelog consultabile e Nota mostrata una volta per versione."
+logical_id = "bc732f80-ae1a-40f3-8917-1a35b59f638b"
+content_hash = "sha256:f9c73e613008414d1dfff5f50d837141e51ea8fb082280ade241cd95c31348fd"
+size = 41177569
+mtime_ms = 1794944587889
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:d9177113-ee47-4de9-87be-38a8f01ba188/bc732f80-ae1a-40f3-8917-1a35b59f638b/d527587e-690c-452a-8e83-244df964c751"
+storage_version_token = "1794944611696288"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "ATUJ3KpM3VIHfD7LbPvYM"
+uri = "file://generated-artifacts/Quizzometro-UNI-versale-v1.0.6-vc7.apk"
+type = "unspecified"
+title = "Quizzometro UNI(versale) 1.0.6 — APK firmato"
+description = "APK Android firmato, versione 1.0.6 (versionCode 7), verificato con la stessa firma della 1.0.5. Include l’icona corretta e parte con Arti Visuali come materia preimpostata. Non caricato su GitHub."
+logical_id = "781755b6-a6d7-4826-b6dd-31048c9019cc"
+content_hash = "sha256:b727bd3744e34f04c4f9f88627664cad0a61fb6f66cf754fc5d233912b721c9a"
+size = 41687218
+mtime_ms = 1795162162844
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:d9177113-ee47-4de9-87be-38a8f01ba188/781755b6-a6d7-4826-b6dd-31048c9019cc/7bc5b89b-44d4-4eb4-ab4c-233c4f80aa61"
+storage_version_token = "1795162192462699"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "5JGTSeNt3ghNT6Gt9_fS_"
+uri = "file://generated-artifacts/Quizzometro-UNI-versale-v1.0.7-vc8.apk"
+type = "unspecified"
+title = "Quizzometro UNI(versale) 1.0.7 — APK firmato"
+description = "APK Android 1.0.7, codice 8. Include la schermata d’ingresso con angoli arrotondati e la Home divisa in Oggi, Quiz, Progressi e Altro. Firma verificata uguale alla v1.0.6; non caricato su GitHub."
+logical_id = "b311c508-ccd4-48eb-b4bd-b16ec7d394ce"
+content_hash = "sha256:42cbb046cd044e64285a724545b7cef6324f270e46151dc1da94a76815500239"
+size = 41690602
+mtime_ms = 1795166128254
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:d9177113-ee47-4de9-87be-38a8f01ba188/b311c508-ccd4-48eb-b4bd-b16ec7d394ce/cacbb287-e989-4d01-8ed0-1fa342b5efed"
+storage_version_token = "1795166156820775"
+content_type = "application/octet-stream"

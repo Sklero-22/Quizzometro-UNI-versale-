@@ -1,0 +1,87 @@
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# compiled output
+dist
+tmp
+out-tsc
+*.tsbuildinfo
+.expo
+.expo-shared
+.next
+.turbo
+.svelte-kit
+.nuxt
+.output
+.vercel
+
+# dependencies
+node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
+
+# Replit
+.cache/
+.local/
+
+/android-sdk/
+/gradle-home/
+/keystore-backup/
+/chiavi-firma-quizzometro/
+/generated-artifacts/
+/*.apk
+
+# --- Chiavi di firma e file da non pubblicare mai ---
+keystore-backup/
+chiavi-firma-quizzometro/
+*.p12
+*.enc
+*.keystore
+*.jks
+.env*
+# --- File pesanti o rigenerabili ---
+*.apk
+*.aab
+*.log
+android-sdk/
+gradle-home/
+tmpbuild/
+generated-artifacts/
+.npm-cache/
+quizzometro/ios/
+quizzometro/dist/
+
+# Domande dei quiz: non pubblicare
+attached_assets/
+quizzometro/src/data/seed.json
+*.zip
