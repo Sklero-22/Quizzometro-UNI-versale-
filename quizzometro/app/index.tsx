@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Pressable, Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { BrandMark, Btn, Card, Empty, P, Screen } from '../src/components/ui';
+import { WELCOME_HIDE_KEY, WelcomeModal } from '../src/components/WelcomeModal';
 import { useLayout } from '../src/components/layout';
 import { hasNewerRelease, useStore } from '../src/data/store';
 import {
@@ -15,7 +16,7 @@ import { useInstall } from '../src/data/useInstall';
 import { UPDATE_ACTION_LABEL } from '../src/data/releases';
 import { QuickLinks, RecentReview, ResumeBanner, SubjectPanel, UpdateBanner } from '../src/features/home/blocks';
 import { QuizSetup } from '../src/features/quiz/QuizSetup';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { colors, fonts, radius } from '../src/theme';
 
 let popupShownForTag: string | null = null;
@@ -36,60 +37,79 @@ export default function Home() {
   const { install } = useInstall();
   const [section, setSection] = useState<HomeSection>('today');
   const [releaseNoteStatus, setReleaseNoteStatus] = useState<'checking' | 'shown' | 'done'>('checking');
+  const [welcomeStatus, setWelcomeStatus] = useState<'checking' | 'visible' | 'done'>('checking');
   const release = data.settings.latestRelease;
   const newer = hasNewerRelease(data) && release && data.settings.dismissedTag !== release.tag ? release : null;
 
   useEffect(() => {
     let active = true;
-
-    const showReleaseNote = async () => {
-      const note = getReleaseNote(INSTALLED_VERSION);
-      if (!note) {
-        setReleaseNoteStatus('done');
-        return;
-      }
-
-      let seenVersion: string | null = null;
-      try {
-        seenVersion = await AsyncStorage.getItem(RELEASE_NOTE_SEEN_KEY);
-      } catch (error) {
-        console.warn('Non è stato possibile leggere le note già mostrate.', error);
-      }
-      if (!active) return;
-
-      if (!shouldShowReleaseNote(INSTALLED_VERSION, seenVersion)) {
-        setReleaseNoteStatus('done');
-        return;
-      }
-
-      try {
-        await AsyncStorage.setItem(RELEASE_NOTE_SEEN_KEY, INSTALLED_VERSION);
-      } catch (error) {
-        console.warn('Non è stato possibile salvare la versione della Nota.', error);
-      }
-      if (!active) return;
-
-      setReleaseNoteStatus('shown');
-      Alert.alert(
-        'Nota',
-        `${note.title}\n\n${note.summary}`,
-        [
-          { text: 'Apri la Guida', onPress: () => router.push('/guide') },
-          { text: 'Chiudi', style: 'cancel' },
-        ],
-        { cancelable: false },
-      );
-    };
-
-    void showReleaseNote().catch((error) => {
-      console.warn('Non è stato possibile mostrare le note della versione.', error);
-      if (active) setReleaseNoteStatus('done');
-    });
-
+    void AsyncStorage.getItem(WELCOME_HIDE_KEY)
+      .then((hidden) => {
+        if (active) setWelcomeStatus(hidden === 'true' ? 'done' : 'visible');
+      })
+      .catch((error) => {
+        console.warn('Non è stato possibile leggere la scelta del messaggio di benvenuto.', error);
+        if (active) setWelcomeStatus('visible');
+      });
     return () => {
       active = false;
     };
-  }, [router]);
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (welcomeStatus !== 'done') return;
+      let active = true;
+
+      const showReleaseNote = async () => {
+        const note = getReleaseNote(INSTALLED_VERSION);
+        if (!note) {
+          setReleaseNoteStatus('done');
+          return;
+        }
+
+        let seenVersion: string | null = null;
+        try {
+          seenVersion = await AsyncStorage.getItem(RELEASE_NOTE_SEEN_KEY);
+        } catch (error) {
+          console.warn('Non è stato possibile leggere le note già mostrate.', error);
+        }
+        if (!active) return;
+
+        if (!shouldShowReleaseNote(INSTALLED_VERSION, seenVersion)) {
+          setReleaseNoteStatus('done');
+          return;
+        }
+
+        try {
+          await AsyncStorage.setItem(RELEASE_NOTE_SEEN_KEY, INSTALLED_VERSION);
+        } catch (error) {
+          console.warn('Non è stato possibile salvare la versione della Nota.', error);
+        }
+        if (!active) return;
+
+        setReleaseNoteStatus('shown');
+        Alert.alert(
+          'Nota',
+          `${note.title}\n\n${note.summary}`,
+          [
+            { text: 'Apri la Guida', onPress: () => router.push('/guide') },
+            { text: 'Chiudi', style: 'cancel' },
+          ],
+          { cancelable: false },
+        );
+      };
+
+      void showReleaseNote().catch((error) => {
+        console.warn('Non è stato possibile mostrare le note della versione.', error);
+        if (active) setReleaseNoteStatus('done');
+      });
+
+      return () => {
+        active = false;
+      };
+    }, [router, welcomeStatus]),
+  );
 
   useEffect(() => {
     if (releaseNoteStatus !== 'done' || !newer || popupShownForTag === newer.tag) return;
@@ -237,12 +257,22 @@ export default function Home() {
   }
 
   return (
-    <Screen key={section} maxWidth={isWide ? 900 : isTablet ? 720 : 620} footer={navigation}>
-      {header}
-      {content}
-      <P color={colors.mutedForeground} style={{ fontSize: 12, textAlign: 'center', paddingBottom: 6 }}>
-        Funziona senza account e senza connessione.
-      </P>
-    </Screen>
+    <>
+      <Screen key={section} maxWidth={isWide ? 900 : isTablet ? 720 : 620} footer={navigation}>
+        {header}
+        {content}
+        <P color={colors.mutedForeground} style={{ fontSize: 12, textAlign: 'center', paddingBottom: 6 }}>
+          Funziona senza account e senza connessione.
+        </P>
+      </Screen>
+      <WelcomeModal
+        visible={welcomeStatus === 'visible'}
+        onClose={() => setWelcomeStatus('done')}
+        onOpenGuide={() => {
+          setWelcomeStatus('done');
+          router.push('/guide');
+        }}
+      />
+    </>
   );
 }

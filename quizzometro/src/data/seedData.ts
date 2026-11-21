@@ -1,4 +1,4 @@
-// Materie preinstallate nell'app Android.
-import seed from './seed.json';
+// Le nuove installazioni partono senza materie preinstallate.
+const seed: unknown[] = [];
 
-export default seed as unknown[];
+export default seed;

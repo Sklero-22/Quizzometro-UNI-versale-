@@ -6,6 +6,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Btn, Card, Chip, Empty, H2, Label, P, Screen } from '../src/components/ui';
 import { useStore } from '../src/data/store';
 import { scoreSession } from '../src/domain/quiz/engine';
+import { lessonLabel, sourceLabel } from '../src/domain/quiz/sourceLabel';
 import { colors, fonts } from '../src/theme';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
@@ -131,6 +132,11 @@ export default function Results() {
               </Pressable>
             )}
           </View>
+          {q && (sourceLabel(q) || lessonLabel(q)) ? (
+            <P color={colors.mutedForeground} style={{ fontSize: 13 }}>
+              {[sourceLabel(q), lessonLabel(q)].filter(Boolean).join(' — ')}
+            </P>
+          ) : null}
           <P style={{ fontFamily: fonts.bodyMedium }}>{q ? q.q : 'Domanda non più disponibile'}</P>
           {q && (
             <>

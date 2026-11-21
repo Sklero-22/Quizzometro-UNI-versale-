@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, BackHandler, Pressable, ScrollView, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,6 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useLayout } from '../src/components/layout';
 import { Bar, Btn, Card, H2, Label, P } from '../src/components/ui';
 import { useStore } from '../src/data/store';
+import { lessonLabel, sourceLabel } from '../src/domain/quiz/sourceLabel';
 import { colors, fonts, radius } from '../src/theme';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
@@ -36,8 +37,12 @@ export default function QuizScreen() {
   const subject = data.subjects.find((s) => s.id === session?.subjectId);
   const byId = useMemo(() => new Map((subject?.questions ?? []).map((q) => [q.id, q])), [subject]);
 
+  // Evita che, chiusa la prova, il controllo "nessuna prova attiva" riporti alla Home invece che al resoconto.
+  const ending = useRef(false);
   const end = useCallback(
     (reason: 'completed' | 'partial' | 'timeout') => {
+      if (ending.current) return;
+      ending.current = true;
       const id = finish(reason);
       if (id) router.replace({ pathname: '/results', params: { id } });
       else router.replace('/');
@@ -46,7 +51,7 @@ export default function QuizScreen() {
   );
 
   useEffect(() => {
-    if (!session) router.replace('/');
+    if (!session && !ending.current) router.replace('/');
   }, [session, router]);
 
   useEffect(() => {
@@ -190,10 +195,26 @@ export default function QuizScreen() {
           </Pressable>
         );
       })}
-      {done && q.exp ? (
+      {done ? (
         <Card tone="accent">
-          <Label color={colors.accentForeground}>Spiegazione</Label>
-          <P style={{ fontSize: 15 }}>{q.exp}</P>
+          {sourceLabel(q) || lessonLabel(q) ? (
+            <View style={{ gap: 2 }}>
+              {sourceLabel(q) ? (
+                <Label color={colors.accentForeground}>Fonte: {sourceLabel(q)}</Label>
+              ) : null}
+              {lessonLabel(q) ? (
+                <P style={{ fontSize: 13.5, fontFamily: fonts.bodySemi }} color={colors.mutedForeground}>
+                  {lessonLabel(q)}
+                </P>
+              ) : null}
+            </View>
+          ) : null}
+          {q.exp ? (
+            <>
+              <Label color={colors.accentForeground}>Spiegazione</Label>
+              <P style={{ fontSize: 15 }}>{q.exp}</P>
+            </>
+          ) : null}
         </Card>
       ) : null}
     </View>

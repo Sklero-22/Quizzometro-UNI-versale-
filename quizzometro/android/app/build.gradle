@@ -19,6 +19,7 @@ react {
     // works correctly with Expo projects.
     cliFile = new File(["node", "--print", "require.resolve('@expo/cli', { paths: [require.resolve('expo/package.json')] })"].execute(null, rootDir).text.trim())
     bundleCommand = "export:embed"
+    extraPackagerArgs = ["--max-workers", "2"]
 
     /* Folders */
      //   The root of your project, i.e. where "package.json" lives. Default is '../..'
@@ -92,8 +93,8 @@ android {
         applicationId 'com.quizzometro.universale'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "1.0.7"
+        versionCode 10
+        versionName "1.0.9"
 
         buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
     }

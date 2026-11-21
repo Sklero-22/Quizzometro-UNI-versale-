@@ -84,3 +84,31 @@ mtime_ms = 1795166128254
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:d9177113-ee47-4de9-87be-38a8f01ba188/b311c508-ccd4-48eb-b4bd-b16ec7d394ce/cacbb287-e989-4d01-8ed0-1fa342b5efed"
 storage_version_token = "1795166156820775"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "vwfcl0Wfk9HZSAqadLWrd"
+uri = "file://generated-artifacts/Quizzometro-UNI-versale-v1.0.8-vc9.apk"
+type = "unspecified"
+title = "Quizzometro UNI(versale) 1.0.8 — APK firmato"
+description = "APK Android versione 1.0.8, codice 9. Nuove installazioni partono senza materie preinstallate. Firma verificata con la stessa chiave della release precedente. Non caricato su GitHub."
+logical_id = "11c27b88-963a-481e-8c1e-86179644d82b"
+content_hash = "sha256:443a02bcda64ecf9a2fa06191fb3ba2db274c04208b26df39d221220e29a41f5"
+size = 40742070
+mtime_ms = 1795274927741
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:d9177113-ee47-4de9-87be-38a8f01ba188/11c27b88-963a-481e-8c1e-86179644d82b/347b5d72-9f14-4c48-b302-2ddb3c433c3c"
+storage_version_token = "1795275036656278"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "25vbIY0H_neUwztDQtURP"
+uri = "file://generated-artifacts/Quizzometro-UNI-versale-v1.0.9-vc10.apk"
+type = "unspecified"
+title = "Quizzometro UNI(versale) 1.0.9 — APK firmato"
+description = "APK Android 1.0.9, codice 10, firmato con la stessa chiave della versione 1.0.8. Include le modifiche manuali al quiz e ai risultati. Non caricato su GitHub."
+logical_id = "019a02dd-1d36-4180-a3e4-9ca1f0318786"
+content_hash = "sha256:e7f6ea51d9e8f624f073697336d3e994e04925ac2c16f430aa9b4ff0c6acadd1"
+size = 40743258
+mtime_ms = 1795275886164
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:d9177113-ee47-4de9-87be-38a8f01ba188/019a02dd-1d36-4180-a3e4-9ca1f0318786/d0e374e2-989e-46fb-aeea-d2978a11558e"
+storage_version_token = "1795275910144976"
+content_type = "application/octet-stream"

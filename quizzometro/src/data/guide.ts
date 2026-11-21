@@ -9,6 +9,8 @@ export type ReleaseNote = {
   summary: string;
 };
 
+export const GUIDE_PDF_URL = 'https://sklero-22.github.io/Quizzometro-UNI-versale-/Guida-Quizzometro.pdf';
+
 export const RELEASE_NOTE_SEEN_KEY = 'quizzometro:release-note:seen-version';
 
 export const GUIDE_SECTIONS: GuideSection[] = [
@@ -68,6 +70,16 @@ export const GUIDE_SECTIONS: GuideSection[] = [
 ];
 
 export const RELEASE_NOTES: ReleaseNote[] = [
+  {
+    version: '1.0.9',
+    title: 'Resoconto e riferimenti della prova',
+    summary: 'Torna il resoconto a fine prova; sotto ogni risposta compaiono fonte e lezione',
+  },
+  {
+    version: '1.0.8',
+    title: 'Guida PDF e primo avvio',
+    summary: 'Le nuove installazioni partono senza materie preinstallate. Puoi aprire la guida PDF e scegliere se rivedere il benvenuto.',
+  },
   {
     version: '1.0.7',
     title: 'Home riorganizzata e immagine d’ingresso corretta',

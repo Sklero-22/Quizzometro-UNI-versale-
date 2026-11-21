@@ -1,13 +1,28 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Card, H2, Label, P, Screen } from '../src/components/ui';
-import { GUIDE_SECTIONS, RELEASE_NOTES } from '../src/data/guide';
+import { Alert, Linking } from 'react-native';
+import { Btn, Card, H2, Label, P, Screen } from '../src/components/ui';
+import { GUIDE_PDF_URL, GUIDE_SECTIONS, RELEASE_NOTES } from '../src/data/guide';
 
 export default function Guide() {
   const router = useRouter();
+  const openGuidePdf = async () => {
+    try {
+      await Linking.openURL(GUIDE_PDF_URL);
+    } catch (error) {
+      console.warn('Non è stato possibile aprire la guida PDF.', error);
+      Alert.alert('Guida non disponibile', 'Non è stato possibile aprire il PDF. Riprova quando sei connesso a Internet.');
+    }
+  };
 
   return (
     <Screen title="Guida" onBack={() => router.back()}>
+      <Btn
+        title="Apri la guida completa (PDF)"
+        icon="file-text"
+        onPress={() => void openGuidePdf()}
+        testID="guide-open-pdf"
+      />
       <Card>
         <H2>Come usare Quizzometro</H2>
         <P>
