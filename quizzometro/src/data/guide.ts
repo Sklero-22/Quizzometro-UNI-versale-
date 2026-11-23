@@ -27,6 +27,8 @@ export const GUIDE_SECTIONS: GuideSection[] = [
     paragraphs: [
       'Apri Materie per aggiungere un corso con un file JSON o HTML dal telefono oppure con un link pubblico. Prima di salvarlo puoi controllare un’anteprima e poi confermare l’importazione.',
       'Da questa schermata puoi scegliere la materia da studiare, aggiornarla da un nuovo file o dal suo link, oppure eliminarla. I file HTML vengono letti senza eseguire il loro codice.',
+      'Con Aggiungi domande puoi incollare domande nuove usando le righe LEZIONI, FONTE, DOMANDA, CORRETTA ed ERRATA. Tocca Controlla per vedere gli errori e l’anteprima: le domande già presenti non vengono duplicate e i progressi restano invariati.',
+      'Condividi materia crea un file della materia e delle sue domande, senza statistiche o dati personali. Puoi inviarlo ai colleghi; chi lo riceve può importarlo da Aggiorna da file.',
     ],
   },
   {
@@ -71,6 +73,11 @@ export const GUIDE_SECTIONS: GuideSection[] = [
 ];
 
 export const RELEASE_NOTES: ReleaseNote[] = [
+  {
+    version: '1.0.12',
+    title: 'Aggiungi e condividi domande',
+    summary: 'Novità: aggiungi domande incollandole dal testo e condividi la materia aggiornata con i colleghi',
+  },
   {
     version: '1.0.11',
     title: 'Aggiornamenti più sicuri',

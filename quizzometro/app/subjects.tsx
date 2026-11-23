@@ -1,5 +1,5 @@
 import * as DocumentPicker from 'expo-document-picker';
-import { readPickedText } from '../src/platform/files';
+import { readPickedText, shareTextFile } from '../src/platform/files';
 import { useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Alert, Platform, Switch, Text, TextInput, View } from 'react-native';
@@ -7,6 +7,8 @@ import { Btn, Card, Chip, H2, Label, Notice, P, Screen } from '../src/components
 import { useStore } from '../src/data/store';
 import { planImport } from '../src/domain/import/merge';
 import { parseSubjectText, type DefaultOrigin, type ParsedSubject } from '../src/domain/import/parse';
+import { createSubjectShareExport } from '../src/domain/import/subjectShare';
+import type { Subject } from '../src/domain/types';
 import { colors, fonts, radius } from '../src/theme';
 
 const MAX_BYTES = 12 * 1024 * 1024;
@@ -83,6 +85,8 @@ export default function Subjects() {
   const [busy, setBusy] = useState(false);
   const [busySubjectId, setBusySubjectId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [shareError, setShareError] = useState<string | null>(null);
+  const [sharingSubjectId, setSharingSubjectId] = useState<string | null>(null);
   const [loaded, setLoaded] = useState<Loaded | null>(null);
   const [defaultOrigin, setDefaultOrigin] = useState<DefaultOrigin>('auto');
   const [target, setTarget] = useState<string>('auto');
@@ -202,6 +206,19 @@ export default function Subjects() {
     Alert.alert('Importazione completata', `"${parsed.title}" è ora la materia attiva.`);
   };
 
+  const shareSubject = async (subject: Subject) => {
+    setShareError(null);
+    setSharingSubjectId(subject.id);
+    try {
+      const exported = createSubjectShareExport(subject);
+      await shareTextFile(exported.fileName, exported.text, `Condividi ${subject.title}`);
+    } catch (e) {
+      setShareError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSharingSubjectId(null);
+    }
+  };
+
   const confirmDelete = (id: string, title: string) =>
     Alert.alert(
       'Eliminare la materia?',
@@ -220,6 +237,7 @@ export default function Subjects() {
   return (
     <Screen title="Materie" onBack={() => router.back()}>
       {data.subjects.length === 0 && <Notice>Nessuna materia presente: importane una qui sotto.</Notice>}
+      {shareError && <Notice tone="danger">{shareError}</Notice>}
       {data.subjects.map((s) => {
         const active = s.id === data.activeSubjectId;
         return (
@@ -253,6 +271,25 @@ export default function Subjects() {
                 loading={busy && busySubjectId === s.id}
                 disabled={busy}
                 onPress={() => void pickFile(s.id)}
+              />
+              <Btn
+                title="Aggiungi domande"
+                small
+                variant="ghost"
+                icon="plus-circle"
+                disabled={busy || sharingSubjectId !== null}
+                onPress={() =>
+                  router.push({ pathname: '/add-questions', params: { subjectId: s.id } })
+                }
+              />
+              <Btn
+                title="Condividi materia"
+                small
+                variant="ghost"
+                icon="share-2"
+                loading={sharingSubjectId === s.id}
+                disabled={busy || (sharingSubjectId !== null && sharingSubjectId !== s.id)}
+                onPress={() => void shareSubject(s)}
               />
               {s.sourceUrl && (
                 <Btn

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quizzometro UNI(versale) – Guida completa</title>
+<style>
+  @page { size: A4; margin: 14mm 14mm 14mm 14mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "DejaVu Sans", Arial, sans-serif; color: #1F2340; font-size: 12pt; line-height: 1.5; margin: 0 auto; max-width: 820px; padding: 0 14px 40px; background: #fff; }
+  h1 { font-size: 24pt; margin: 0 0 4px; }
+  h2 { font-size: 17pt; margin: 30px 0 10px; padding: 8px 12px; background: #1F2340; color: #fff; border-radius: 8px; }
+  h3 { font-size: 14pt; margin: 22px 0 6px; color: #C8462A; }
+  h4 { font-size: 12.5pt; margin: 14px 0 4px; }
+  h2, h3, h4, .part-title { page-break-after: avoid; break-after: avoid; }
+  p { margin: 6px 0; }
+  a { color: #3E63B5; }
+  .cover { display: flex; align-items: center; gap: 16px; border-bottom: 3px solid #C8462A; padding: 14px 0 12px; margin-bottom: 14px; }
+  .cover img { width: 76px; height: 76px; border-radius: 16px; }
+  .sub { font-size: 13pt; color: #6b6b7a; }
+  .part { page-break-before: always; }
+  .part-title { font-size: 21pt; font-weight: bold; color: #C8462A; margin: 20px 0 4px; }
+  .part-sub { color: #6b6b7a; margin: 0 0 6px; }
+  ol.steps { padding-left: 0; list-style: none; counter-reset: s; margin: 8px 0; }
+  ol.steps > li { counter-increment: s; position: relative; padding: 7px 10px 7px 44px; margin: 5px 0; background: #FBF7EE; border: 1px solid #E8DFC9; border-radius: 8px; page-break-inside: avoid; }
+  ol.steps > li::before { content: counter(s); position: absolute; left: 10px; top: 7px; width: 25px; height: 25px; border-radius: 50%; background: #C8462A; color: #fff; font-weight: bold; text-align: center; line-height: 25px; font-size: 11pt; }
+  ul { margin: 6px 0; padding-left: 22px; } li { margin: 3px 0; }
+  .btn { display: inline-block; padding: 0 7px; border-radius: 6px; background: #1F2340; color: #fff; font-weight: bold; font-size: 10.5pt; white-space: nowrap; }
+  .btn.red { background: #C8462A; }
+  .box { border-radius: 8px; padding: 9px 12px; margin: 10px 0; page-break-inside: avoid; }
+  .warn { background: #FDECE7; border-left: 6px solid #C8462A; }
+  .tip { background: #E8F3E6; border-left: 6px solid #3C8A4A; }
+  .info { background: #EAF0FB; border-left: 6px solid #3E63B5; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; page-break-inside: avoid; }
+  td, th { border: 1px solid #E0D7C3; padding: 6px 8px; vertical-align: top; text-align: left; font-size: 11pt; }
+  th { background: #F5EFE3; }
+  .link { font-family: "DejaVu Sans Mono", monospace; font-size: 10pt; word-break: break-all; background: #F5EFE3; padding: 1px 5px; border-radius: 4px; }
+  pre { background: #F5EFE3; border: 1px solid #E0D7C3; border-radius: 8px; padding: 10px 12px; font-size: 10pt; white-space: pre-wrap; page-break-inside: avoid; }
+  .qr { display: flex; gap: 22px; margin: 10px 0; }
+  .qr div { text-align: center; font-size: 10.5pt; }
+  .qr img { width: 115px; height: 115px; border: 1px solid #ddd; padding: 4px; background: #fff; }
+  .row { display: flex; gap: 16px; align-items: flex-start; margin: 8px 0; }
+  .row .txt { flex: 1; }
+  figure { margin: 0; page-break-inside: avoid; text-align: center; font-size: 9.5pt; color: #555; }
+  figure img { width: 170px; border: 1px solid #ccc; border-radius: 10px; display: block; margin: 0 auto 4px; }
+  .shots { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin: 10px 0; page-break-inside: avoid; }
+  .toc { columns: 2; font-size: 11pt; background: #FBF7EE; border: 1px solid #E8DFC9; border-radius: 8px; padding: 10px 14px 10px 30px; }
+  .toc li { break-inside: avoid; }
+  @media screen and (max-width: 640px) {
+    body { font-size: 15px; }
+    .row { flex-direction: column; } .row figure img { width: 70%; }
+    .toc { columns: 1; }
+    h2 { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <img src="icon.png" alt="">
+  <div>
+    <h1>Quizzometro UNI(versale)</h1>
+    <div class="sub">Guida completa – installazione e tutte le funzioni, passo dopo passo (versione 1.0.12)</div>
+  </div>
+</div>
+
+<p><b>Quizzometro</b> è un'app per esercitarsi con i quiz universitari. Funziona senza account, senza registrazione e senza pubblicità. Le tue materie e i tuoi risultati restano <b>solo sul tuo telefono</b>.</p>
+
+<h3>Indice</h3>
+<ol class="toc">
+  <li><b>Parte 1 – Primi passi</b>
+    <ul><li>Quale versione usare</li><li>Installare su iPhone/iPad</li><li>Installare su Android</li><li>Primo avvio</li><li>Aggiornare l'app</li></ul></li>
+  <li><b>Parte 2 – Tutte le funzioni</b>
+    <ul><li>Le quattro schede</li><li>Importare una materia</li><li>Preparare una prova</li><li>Durante la prova</li><li>Il risultato</li><li>Oggi: prove in sospeso e ripassi</li><li>Progressi e statistiche</li><li>Gestire le materie</li><li>Aggiungere domande</li><li>Condividere una materia</li><li>Domande salvate</li><li>Backup e ripristino</li><li>Aggiornamenti e Guida</li></ul></li>
+  <li><b>Parte 3 – Se qualcosa non va</b></li>
+</ol>
+
+<h3>Quale versione devo usare?</h3>
+<table>
+  <tr><th style="width:28%">Hai…</th><th>Usa…</th></tr>
+  <tr><td><b>un iPhone o un iPad</b></td><td>la <b>web app</b>: si apre da Safari e si mette sulla schermata Home come un'app normale.</td></tr>
+  <tr><td><b>un telefono Android</b></td><td>l'<b>app Android</b> (consigliata) oppure la web app.</td></tr>
+  <tr><td><b>un computer</b></td><td>la <b>web app</b>: apri il link con Chrome, Edge o Safari.</td></tr>
+</table>
+<p>Le funzioni sono le stesse. Le poche differenze sono indicate con <b>📱 iPhone/web</b> e <b>🤖 Android</b>.</p>
+
+<div class="qr">
+  <div><img src="qr_web.png" alt=""><br><b>Web app</b><br>(iPhone, iPad, computer)</div>
+  <div><img src="qr_apk.png" alt=""><br><b>App Android</b><br>(file da installare)</div>
+</div>
+<p><b>Web app:</b> <span class="link">https://sklero-22.github.io/Quizzometro-UNI-versale-/</span><br>
+<b>App Android:</b> <span class="link">https://github.com/Sklero-22/Quizzometro-UNI-versale-/releases/latest</span></p>
+<div class="box tip">💡 <b>Come si usa un codice QR:</b> apri la <b>Fotocamera</b> del telefono e inquadra il quadratino. Compare un avviso con il link: toccalo.</div>
+
+<!-- ================= PARTE 1 ================= -->
+<div class="part">
+<div class="part-title">Parte 1 – Primi passi</div>
+<p class="part-sub">Installazione, primo avvio e aggiornamenti.</p>
+
+<h2>1.1 Installare su iPhone e iPad</h2>
+<div class="box warn">⚠️ Usa <b>Safari</b> (l'icona con la bussola blu). Con Chrome o altri browser non funziona bene.</div>
+<ol class="steps">
+  <li>Apri <b>Safari</b> e vai all'indirizzo della web app, oppure inquadra il primo QR con la Fotocamera.</li>
+  <li>Aspetta che compaia l'immagine di Quizzometro.</li>
+  <li>Tocca <b>Condividi</b>: il <b>quadrato con la freccia verso l'alto</b> ⬆️. Di solito è in basso al centro. Sugli iPhone più recenti può essere dentro il pulsante <b>“•••”</b> in basso a destra.</li>
+  <li><b>Scorri verso il basso</b> l'elenco e tocca <b>“Aggiungi alla schermata Home”</b> (icona ➕ in un quadrato).</li>
+  <li>Controlla che il nome sia <b>Quizzometro</b> e tocca <b>“Aggiungi”</b>.</li>
+  <li>Sulla schermata del telefono compare l'<b>icona di Quizzometro</b>. <b>Da ora aprila sempre da lì</b>, non da Safari.</li>
+</ol>
+<div class="box info">ℹ️ <b>Perché dall'icona?</b> Aperta dall'icona l'app va a tutto schermo e iPhone conserva materie e progressi. Se la usi solo dentro Safari, dopo alcune settimane senza usarla iPhone potrebbe cancellare i dati.</div>
+<div class="box tip">💡 Non trovi “Aggiungi alla schermata Home”? In fondo all'elenco tocca <b>“Modifica azioni”</b> e aggiungila.</div>
+
+<h2>1.2 Installare su Android</h2>
+<h4>App Android (consigliata)</h4>
+<ol class="steps">
+  <li>Apri <b>Chrome</b> e vai all'indirizzo dell'app Android, oppure inquadra il secondo QR.</li>
+  <li>Si apre una pagina di GitHub: scorri fino alla scritta <b>“Assets”</b> e tocca il file che finisce con <b>.apk</b>.</li>
+  <li>Se Chrome avvisa che il file “potrebbe essere dannoso”, tocca <b>“Scarica comunque”</b>: è un avviso automatico per tutti i file di questo tipo.</li>
+  <li>A download finito tocca <b>“Apri”</b> (o la notifica del download).</li>
+  <li>La prima volta Android dice che l'installazione da questa fonte non è consentita: tocca <b>“Impostazioni”</b>, attiva <b>“Consenti da questa fonte”</b> e torna indietro con la freccia.</li>
+  <li>Tocca <b>“Installa”</b>. Se compare Play Protect con <b>“Questa app sembra sicura”</b>, tocca di nuovo <b>“Installa”</b>.</li>
+  <li>Tocca <b>“Apri”</b>. L'icona di Quizzometro è tra le tue app.</li>
+</ol>
+<h4>In alternativa: web app su Android</h4>
+<p>Apri il link della web app con <b>Chrome</b> → tocca i <b>tre puntini ⋮</b> in alto a destra → <b>“Aggiungi a schermata Home”</b> o <b>“Installa app”</b> → conferma. Apri l'app sempre dall'icona.</p>
+
+<h2>1.3 Il primo avvio</h2>
+<div class="row">
+  <div class="txt">
+    <ol class="steps">
+      <li>All'apertura compare l'immagine di Quizzometro. Dopo qualche secondo appare il pulsante <span class="btn red">Entra</span>: toccalo.</li>
+      <li>La prima volta compare <b>“Benvenuto in Quizzometro”</b>. <span class="btn red">Apri la guida</span> apre questa guida. <b>Chiudi</b> la chiude. Se metti la spunta su <b>“Non mostrare più”</b>, non comparirà più.</li>
+      <li>Dopo un aggiornamento può comparire una <b>Nota</b> con le novità: leggila e chiudila.</li>
+      <li>L'app parte <b>vuota</b> (“Nessuna materia”): devi importare una materia. Vedi la <b>Parte 2.2</b>.</li>
+    </ol>
+  </div>
+  <figure><img src="img/02_entra.jpg" alt=""><figcaption>Schermata iniziale con <b>Entra</b></figcaption></figure>
+  <figure><img src="img/03_benvenuto.jpg" alt=""><figcaption>Il benvenuto</figcaption></figure>
+</div>
+
+<h2>1.4 Aggiornare l'app</h2>
+<p><b>📱 iPhone / web app:</b> non devi scaricare niente. Quando esce una versione nuova compare l'avviso <b>“Aggiornamento disponibile”</b>: tocca <span class="btn">Aggiorna ora</span>. Materie e progressi restano.</p>
+<p><b>🤖 App Android:</b> quando compare l'avviso “Aggiornamento disponibile”:</p>
+<ol class="steps">
+  <li>Tocca <span class="btn red">Scarica aggiornamento</span>. Compare la finestra “Come aggiornare”: tocca <span class="btn red">Inizia download</span>.</li>
+  <li>Si apre il browser e il file si scarica da solo.</li>
+  <li>Tocca la notifica <b>“Download completato”</b> (scorri il dito dall'alto verso il basso per vederla). Se non la trovi: app <b>File</b> → <b>Download</b> → tocca il file che finisce con <b>.apk</b>.</li>
+  <li>La prima volta Android può chiedere il permesso per il browser: <b>Impostazioni</b> → attiva <b>“Consenti da questa fonte”</b> → torna indietro.</li>
+  <li>Tocca <b>“Aggiorna”</b> (o “Installa”). Se compare Play Protect con “Questa app sembra sicura”, tocca <b>“Installa”</b>.</li>
+</ol>
+<p>Puoi controllare a mano in <b>Altro → Aggiornamenti → Controlla ora</b>. L'app controlla anche da sola ogni volta che la apri.</p>
+</div>
+
+<!-- ================= PARTE 2 ================= -->
+<div class="part">
+<div class="part-title">Parte 2 – Tutte le funzioni</div>
+<p class="part-sub">Schermata per schermata.</p>
+
+<h2>2.1 Le quattro schede</h2>
+<p>In basso ci sono sempre quattro schede. Toccale per spostarti:</p>
+<table>
+  <tr><th style="width:22%">Scheda</th><th>Cosa contiene</th></tr>
+  <tr><td><b>☀️ Oggi</b></td><td>La materia attiva, l'eventuale prova in sospeso e i ripassi recenti (Parte 2.6).</td></tr>
+  <tr><td><b>▶️ Quiz</b></td><td>Prepara e avvia una nuova prova (Parte 2.3).</td></tr>
+  <tr><td><b>📊 Progressi</b></td><td>Riepilogo del tuo percorso e accesso alle statistiche (Parte 2.7).</td></tr>
+  <tr><td><b>▦ Altro</b></td><td>Statistiche, Materie, Domande salvate, Guida, Backup, Aggiornamenti.</td></tr>
+</table>
+<p>In tutte le altre schermate, la <b>freccia ←</b> in alto a sinistra riporta indietro.</p>
+<div class="shots">
+  <figure><img src="img/08_oggi.jpg" alt=""><figcaption>Scheda <b>Oggi</b></figcaption></figure>
+  <figure><img src="img/14_altro.jpg" alt=""><figcaption>Scheda <b>Altro</b></figcaption></figure>
+</div>
+
+<h2>2.2 Importare una materia</h2>
+<p>Le materie arrivano come <b>file</b> che finiscono con <b>.json</b> oppure <b>.html</b>, per esempio su WhatsApp o per email. Prima il file va salvato sul telefono, poi lo apri dall'app.</p>
+<h4>Passo A – Salvare il file sul telefono</h4>
+<table>
+  <tr><th style="width:50%">📱 iPhone</th><th>🤖 Android</th></tr>
+  <tr>
+    <td><b>WhatsApp:</b> tocca il file → <b>Condividi</b> ⬆️ → <b>“Salva su File”</b> → <b>“Sul mio iPhone”</b> → <b>“Salva”</b>.<br><b>Email:</b> tieni premuto sull'allegato → <b>“Salva su File”</b>.</td>
+    <td><b>WhatsApp:</b> tocca il file nella chat: si scarica da solo.<br><b>Email:</b> tocca ⬇️ <b>Scarica</b> sull'allegato: finisce in <b>Download</b>.</td>
+  </tr>
+</table>
+<h4>Passo B – Importarlo in Quizzometro</h4>
+<div class="row">
+  <div class="txt">
+    <ol class="steps">
+      <li>Scheda <b>Altro</b> → <b>Materie</b>. Se non hai ancora materie, puoi anche toccare <span class="btn red">Vai alle Materie</span> nella scheda Oggi.</li>
+      <li>Nel riquadro <b>“Importa una materia”</b> tocca <span class="btn red">Scegli file JSON o HTML</span>.</li>
+      <li>Scegli il file. <i>iPhone:</i> “Sul mio iPhone” o “Recenti”. <i>Android:</i> “Download” oppure WhatsApp → Media → Documenti.</li>
+      <li>Compare l'<b>Anteprima importazione</b>: nome della materia, numero di domande e lezioni, e quante domande sono <b>Nuove</b>, <b>Identiche</b>, <b>Modificate</b> o <b>Scartate</b>.</li>
+      <li>Tocca <span class="btn">Conferma importazione</span>. La materia diventa quella attiva.</li>
+    </ol>
+  </div>
+  <figure><img src="img/05_materie_vuota.jpg" alt=""><figcaption>Il pulsante rosso per scegliere il file</figcaption></figure>
+</div>
+<h4>Le opzioni dell'anteprima (di solito non servono)</h4>
+<ul>
+  <li><b>Provenienza se non dichiarata</b>: per i file che non indicano la fonte delle domande. Lascia <b>Rilevamento automatico</b>, oppure scegli <b>Paniere</b> o <b>Esami già svolti</b>.</li>
+  <li><b>Materia di destinazione</b>: l'app capisce da sola se il file è una materia nuova o l'aggiornamento di una che hai già. Puoi forzare <b>Crea nuova</b> o sceglierne una.</li>
+  <li><b>Domande modificate</b>: se il file contiene domande già presenti ma cambiate, restano come prima finché non attivi l'interruttore che autorizza la sostituzione.</li>
+</ul>
+<div class="box info">ℹ️ <b>Importare da un link:</b> nel campo <b>https://…</b> puoi incollare un link pubblico a un file JSON o HTML e toccare <b>Scarica da URL</b>. 🤖 Sull'app Android funzionano anche i link Claude. 📱 Nella web app molti link vengono bloccati dal browser: in quel caso scarica il file e usa il pulsante rosso.</div>
+</div>
+
+<div>
+<h2>2.3 Preparare una prova</h2>
+<div class="row">
+  <div class="txt">
+    <p>Scheda <b>Quiz</b>. Scegli le opzioni toccandole (quella scelta è evidenziata):</p>
+    <table>
+      <tr><th style="width:32%">Opzione</th><th>Cosa fa</th></tr>
+      <tr><td><b>Tipo di prova</b><br>(solo se la materia ha domande Inedite)</td><td><b>Misto</b>: soprattutto domande del paniere, con circa il 15% di Inedite.<br><b>Solo Inedite</b>: solo le domande inedite.</td></tr>
+      <tr><td><b>Quantità</b></td><td>10, 20, 30 domande, <b>Tutte</b>, oppure <b>Altro</b> per scrivere un numero.</td></tr>
+      <tr><td><b>Timer</b></td><td><b>Nessuno</b>, 10, 20, 30 minuti, oppure <b>Altro</b>. Allo scadere la prova si chiude da sola.</td></tr>
+      <tr><td><b>Stato delle domande</b></td><td><b>Tutte</b>, <b>Già viste</b>, <b>Non viste</b> (mai incontrate), <b>Sbagliate</b> (almeno una volta).</td></tr>
+      <tr><td><b>Solo domande con date</b></td><td>Interruttore: tiene solo le domande che contengono date o anni. Utile per ripassare le date.</td></tr>
+      <tr><td><b>Categorie e lezioni</b></td><td>Apre i filtri: scegli le <b>categorie</b> (Paniere, Inedite…) e le <b>lezioni</b> (L1, L2…). <b>Tutte</b> e <b>Nessuna</b> selezionano o tolgono tutto in un colpo.</td></tr>
+    </table>
+    <p>Sotto vedi <b>quante domande sono disponibili</b> con i filtri scelti. Poi tocca <span class="btn red">Avvia prova</span>.</p>
+  </div>
+  <figure><img src="img/09_quiz_setup.jpg" alt=""><figcaption>Scheda <b>Quiz</b></figcaption></figure>
+</div>
+<div class="box tip">💡 Se il pulsante è spento o dice che non ci sono domande, i filtri sono troppo stretti: scegli <b>Tutte</b> nelle categorie e nelle lezioni.</div>
+
+<h2>2.4 Durante la prova</h2>
+<div class="shots">
+  <figure><img src="img/10_domanda.jpg" alt=""><figcaption>Prima di rispondere</figcaption></figure>
+  <figure><img src="img/11_risposta.jpg" alt=""><figcaption>Dopo aver risposto</figcaption></figure>
+</div>
+<ol class="steps">
+  <li>In alto vedi il numero della domanda (es. “Domanda 1 di 20”), quante risposte hai dato e, se c'è, il tempo rimasto.</li>
+  <li>Sopra la domanda c'è la <b>lezione</b> da cui viene.</li>
+  <li><b>Tocca la risposta</b> che pensi giusta. Subito vedi la risposta giusta in <b>verde</b> ✓ e, se hai sbagliato, la tua in <b>rosso</b>.</li>
+  <li>Sotto compare un riquadro con la <b>Fonte</b> (Paniere o Inedite), la <b>lezione</b> e la <b>Spiegazione</b>.</li>
+  <li>Tocca <span class="btn red">Avanti</span> per andare alla domanda successiva. Prima di rispondere il pulsante si chiama <span class="btn">Salta</span>. Con <b>Indietro</b> torni alla precedente.</li>
+  <li>All'ultima domanda tocca <span class="btn red">Concludi</span>. Puoi anche chiudere prima con <b>Termina</b>, in alto a destra: le domande senza risposta contano come “non date”.</li>
+</ol>
+<ul>
+  <li><b>Segnalibro 🔖</b> (in alto a destra sulla domanda): salva la domanda per ripassarla dopo (Parte 2.11).</li>
+  <li><b>X</b> in alto a sinistra: esci dalla prova. La prova resta <b>in sospeso</b> e puoi riprenderla dalla scheda Oggi.</li>
+</ul>
+
+<h2>2.5 Il risultato</h2>
+<div class="row">
+  <div class="txt">
+    <p>A fine prova vedi:</p>
+    <ul>
+      <li>la <b>percentuale</b> di risposte giuste;</li>
+      <li>quante sono <b>Corrette</b>, <b>Sbagliate</b>, <b>Non date</b> e il <b>Totale</b>.</li>
+    </ul>
+    <p>I pulsanti:</p>
+    <ul>
+      <li><span class="btn red">Nuova prova</span>: torna alla Home.</li>
+      <li><span class="btn">Ripeti errori</span>: una nuova prova solo con le domande sbagliate o non date.</li>
+      <li><b>Ripeti tutto</b>: rifà la stessa prova. Ordine di domande e risposte cambia.</li>
+    </ul>
+    <p>Sotto c'è la <b>Revisione</b>: per ogni domanda trovi fonte, lezione, la tua risposta, quella giusta e la spiegazione. Con <b>Tutte / Sbagliate / Non date</b> filtri l'elenco. Anche qui c'è il segnalibro 🔖.</p>
+  </div>
+  <figure><img src="img/12_risultato.jpg" alt=""><figcaption>Il resoconto finale</figcaption></figure>
+</div>
+</div>
+
+<div>
+<h2>2.6 Oggi: prove in sospeso e ripassi</h2>
+<ul>
+  <li><b>Materia attiva</b>: la materia che stai studiando, con il numero di domande e la <b>copertura</b> (quante ne hai già incontrate). <b>Cambia materia</b> porta alle Materie.</li>
+  <li><b>Prova in sospeso</b>: compare se sei uscito da una prova. <span class="btn red">Riprendi</span> la continua. <b>Archivia</b> la chiude come “parziale” con le risposte date finora.</li>
+  <li><b>Ripassi recenti</b>: rifai al volo le domande delle prove dell'<b>ultima ora</b>, di <b>oggi</b> o degli <b>ultimi N test</b>. Il numero N si sceglie nella casella <b>“Numero di test”</b> (da 1 a 50). Se una riga è grigia con “0 domande”, non ci sono prove in quel periodo.</li>
+</ul>
+
+<h2>2.7 Progressi e statistiche</h2>
+<div class="row">
+  <div class="txt">
+    <p>Scheda <b>Progressi</b> → <span class="btn red">Apri statistiche e progressi</span>, oppure <b>Altro → Statistiche</b>. Riguardano la materia attiva:</p>
+    <ul>
+      <li><b>Risposte</b> date, <b>Accuratezza</b> (percentuale di giuste), domande <b>Incontrate</b> sul totale, numero di <b>Prove</b>.</li>
+      <li><b>Copertura per categoria</b>: quante domande del Paniere, delle Inedite ecc. hai già visto.</li>
+      <li><b>Progressi per capitolo</b>: per ogni lezione, quante domande hai affrontato e con che risultato.</li>
+      <li><b>Lezioni da rinforzare</b>: quelle dove sbagli di più (servono almeno 2 risposte per lezione).</li>
+      <li><b>Domande più difficili</b>: quelle sbagliate più spesso.</li>
+      <li><b>Ultime sessioni</b>: le prove recenti con il risultato.</li>
+    </ul>
+    <div class="box warn">⚠️ In fondo c'è <b>“Azzera i progressi di questa materia”</b>: cancella statistiche e cronologia delle prove della materia. Le domande restano, ma i progressi <b>non si possono recuperare</b>.</div>
+  </div>
+  <figure><img src="img/15_statistiche.jpg" alt=""><figcaption>Statistiche</figcaption></figure>
+</div>
+
+<h2>2.8 Gestire le materie</h2>
+<div class="row">
+  <div class="txt">
+    <p>In <b>Altro → Materie</b>, ogni materia ha i suoi pulsanti:</p>
+    <table>
+      <tr><th style="width:36%">Pulsante</th><th>Cosa fa</th></tr>
+      <tr><td><b>Seleziona</b> / Materia attiva</td><td><b>Seleziona</b> rende quella materia la materia da studiare. Quella in uso mostra “Materia attiva”.</td></tr>
+      <tr><td><b>Aggiorna da file</b></td><td>Aggiunge le domande nuove da un file più recente della stessa materia. Non crea doppioni e conserva i progressi.</td></tr>
+      <tr><td><b>Aggiungi domande</b></td><td>Aggiungi domande scritte da te o da un collega (Parte 2.9).</td></tr>
+      <tr><td><b>Condividi materia</b></td><td>Crea il file della materia da mandare ai colleghi (Parte 2.10).</td></tr>
+      <tr><td><b>Aggiorna dal link</b></td><td>Solo per le materie importate da un link: riscarica la versione più recente.</td></tr>
+      <tr><td><b>Elimina</b></td><td>Cancella la materia con i suoi progressi. Chiede conferma.</td></tr>
+    </table>
+  </div>
+  <figure><img src="img/07_materie_con_materia.jpg" alt=""><figcaption>I pulsanti di una materia</figcaption></figure>
+</div>
+</div>
+
+<div>
+<h2>2.9 Aggiungere domande</h2>
+<p>Puoi aggiungere domande nuove a una materia <b>incollando del testo</b> scritto in Word, Note, WhatsApp o dove vuoi. Lo schema usa le stesse voci dei file delle materie.</p>
+<h4>Lo schema di ogni domanda</h4>
+<pre>LEZIONI: 18
+FONTE: inedita
+DOMANDA: I decreti di attuazione degli statuti speciali riguardano
+CORRETTA: Valle d'Aosta, Trentino-Alto Adige, Friuli-Venezia Giulia, Sicilia, Sardegna
+ERRATA: Sicilia, Sardegna, Lombardia, Veneto, Campania
+ERRATA: Valle d'Aosta, Piemonte, Liguria, Lazio, Toscana
+ERRATA: Trentino-Alto Adige, Abruzzo, Molise, Calabria, Puglia
+SPIEGAZIONE: Le norme di attuazione sono adottate con decreto legislativo.</pre>
+<table>
+  <tr><th style="width:24%">Riga</th><th>Cosa scrivere</th></tr>
+  <tr><td><b>LEZIONI:</b></td><td>Il numero della lezione. Se riguarda più lezioni: <b>4, 5</b>.</td></tr>
+  <tr><td><b>FONTE:</b></td><td>Solo <b>paniere</b> oppure <b>inedita</b>.</td></tr>
+  <tr><td><b>DOMANDA:</b></td><td>Il testo della domanda. Può andare a capo.</td></tr>
+  <tr><td><b>CORRETTA:</b></td><td>La risposta giusta. <b>Una sola.</b></td></tr>
+  <tr><td><b>ERRATA:</b></td><td>Una risposta sbagliata per riga. <b>Sempre esattamente 3.</b></td></tr>
+  <tr><td><b>SPIEGAZIONE:</b></td><td>Facoltativa: puoi non metterla.</td></tr>
+</table>
+<div class="box info">ℹ️ <b>Tra una domanda e l'altra lascia una riga vuota.</b> Se più domande consecutive hanno la stessa lezione e la stessa fonte, puoi scrivere LEZIONI e FONTE solo nella prima. Maiuscole e minuscole non contano.</div>
+<h4>Come si fa</h4>
+<div class="row">
+  <div class="txt">
+    <ol class="steps">
+      <li>Scrivi le domande con lo schema e <b>copiale</b> (tieni premuto → Seleziona tutto → Copia).</li>
+      <li>In Quizzometro: <b>Altro → Materie</b> → sotto la materia tocca <b>Aggiungi domande</b>.</li>
+      <li>Tieni premuto nella casella <b>“Incolla qui le domande…”</b> e tocca <b>Incolla</b>.</li>
+      <li>Tocca <span class="btn red">Controlla</span>. Compare l'<b>Anteprima</b>: quante domande sono valide e gli <b>errori riga per riga</b> (es. “Riga 10: servono 3 righe ERRATA, ne ho trovate 1”).</li>
+      <li>Correggi il testo nella casella e tocca di nuovo Controlla. In alternativa puoi aggiungere subito solo le domande valide.</li>
+      <li>Tocca <span class="btn">Aggiungi alla materia</span>. Le domande già presenti sono segnate <b>“Già presente”</b> e non vengono duplicate.</li>
+    </ol>
+  </div>
+  <figure><img src="img/17_aggiungi_anteprima.jpg" alt=""><figcaption>Anteprima con gli errori segnalati</figcaption></figure>
+</div>
+
+<h2>2.10 Condividere una materia con i colleghi</h2>
+<ol class="steps">
+  <li>Dopo aver aggiunto le domande compare <b>“Domande aggiunte! Vuoi condividere la materia aggiornata con i colleghi?”</b>. Tocca <span class="btn red">Condividi</span>. In qualsiasi momento puoi farlo anche da <b>Materie → Condividi materia</b>.</li>
+  <li>🤖 <b>Android:</b> si apre il menu di condivisione: scegli <b>WhatsApp</b> e il gruppo. 📱 <b>iPhone/web:</b> si apre il menu Condividi (scegli WhatsApp oppure “Salva su File”); su computer il file viene scaricato.</li>
+  <li>Il file si chiama, per esempio, <b>quiz_Diritto_Pubblico_2026-11-23.json</b>. Contiene <b>solo la materia e le domande</b>: niente progressi né dati personali.</li>
+</ol>
+<h4>Chi riceve il file</h4>
+<ol class="steps">
+  <li>Salva il file sul telefono (Parte 2.2, Passo A).</li>
+  <li><b>Altro → Materie</b> → sotto la <b>stessa materia</b> tocca <b>Aggiorna da file</b> e scegli il file. Se non hai ancora quella materia, usa il pulsante rosso <b>Scegli file JSON o HTML</b>.</li>
+  <li>Controlla l'anteprima e conferma: entrano solo le domande nuove e i tuoi progressi restano.</li>
+</ol>
+</div>
+
+<div>
+<h2>2.11 Domande salvate</h2>
+<p>Durante una prova o nella revisione, tocca il <b>segnalibro 🔖</b> su una domanda. La ritrovi in <b>Altro → Domande salvate</b>, divise per materia. Da lì puoi:</p>
+<ul>
+  <li><b>Ripassa</b>: avvia una prova solo con le domande salvate;</li>
+  <li>togliere una domanda dall'elenco toccando di nuovo il segnalibro.</li>
+</ul>
+
+<h2>2.12 Backup e ripristino</h2>
+<p>Il backup è un file che contiene <b>tutto</b>: materie, domande, domande salvate, progressi, prove e impostazioni. Fallo ogni tanto e sempre prima di cambiare telefono.</p>
+<div class="row">
+  <div class="txt">
+    <h4>🤖 Android</h4>
+    <ol class="steps">
+      <li><b>Altro → Backup</b>.</li>
+      <li>La prima volta tocca <b>Scegli cartella</b> e indica dove salvare (per esempio Download o una cartella nuova “Quizzometro”), poi <b>Usa questa cartella → Consenti</b>.</li>
+      <li>Tocca <span class="btn">Crea backup locale</span>. Il file viene salvato lì; sotto compare l'elenco dei backup trovati.</li>
+      <li>In alternativa, <b>Condividi una copia JSON</b> ti permette di mandarlo su Drive, email o WhatsApp.</li>
+    </ol>
+    <h4>📱 iPhone / web</h4>
+    <ol class="steps">
+      <li><b>Altro → Backup</b> → <span class="btn">Salva una copia JSON</span>.</li>
+      <li>Scegli <b>“Salva su File”</b> → <b>iCloud Drive</b> → <b>Salva</b>.</li>
+    </ol>
+  </div>
+  <figure><img src="img/20_backup.jpg" alt=""><figcaption>Backup (web app)</figcaption></figure>
+</div>
+<h4>Ripristinare un backup</h4>
+<ol class="steps">
+  <li><b>Altro → Backup</b> → <span class="btn">Scegli un file di backup</span>. 🤖 Su Android puoi anche toccare <b>Controlla questo backup</b> nell'elenco.</li>
+  <li>L'app mostra il <b>contenuto del backup</b>: materie, domande, sessioni e date.</li>
+  <li>Scegli la <b>Modalità di ripristino</b>:
+    <ul>
+      <li><b>Sostituisci tutto</b>: i dati attuali vengono rimpiazzati dal backup. È la scelta giusta su un telefono nuovo.</li>
+      <li><b>Unisci e aggiorna corrispondenti</b>: aggiunge ciò che manca e aggiorna dal backup ciò che c'è in entrambi.</li>
+      <li><b>Aggiorna solo corrispondenti</b>: aggiorna solo ciò che esiste già nell'app, senza aggiungere altro.</li>
+    </ul></li>
+  <li>Conferma. In caso di dubbio, prima fai un backup dei dati attuali.</li>
+</ol>
+
+<h2>2.13 Aggiornamenti e Guida</h2>
+<ul>
+  <li><b>Altro → Aggiornamenti</b>: mostra la <b>versione installata</b>, l'ultimo controllo e lo stato. <span class="btn red">Controlla ora</span> verifica subito se c'è una versione nuova. Il campo “Repository delle release” non va toccato.</li>
+  <li><b>Altro → Guida</b>: <span class="btn red">Apri la guida completa (PDF)</span> apre questa guida (serve internet). Sotto trovi un riassunto che funziona anche <b>offline</b> e lo storico delle <b>novità</b> di ogni versione.</li>
+</ul>
+</div>
+
+<!-- ================= PARTE 3 ================= -->
+<div class="part">
+<div class="part-title">Parte 3 – Se qualcosa non va</div>
+<table>
+  <tr><th style="width:38%">Problema</th><th>Cosa fare</th></tr>
+  <tr><td>iPhone: non trovo “Aggiungi alla schermata Home”.</td><td>Controlla di essere in <b>Safari</b>. Scorri l'elenco di Condividi fino in fondo; se non c'è, “Modifica azioni” e aggiungila.</td></tr>
+  <tr><td>Ho aperto l'icona ma le mie materie sono sparite.</td><td>Forse prima usavi l'app dentro Safari: i dati sono separati. Importa di nuovo le materie o ripristina un backup. D'ora in poi usa solo l'icona.</td></tr>
+  <tr><td>Toccando il pulsante rosso non trovo il file.</td><td>Il file non è salvato sul telefono: rifai la Parte 2.2, Passo A.</td></tr>
+  <tr><td>“Il contenuto non è un JSON né un HTML…”</td><td>Il file non è una materia di Quizzometro o è danneggiato: fattelo rimandare.</td></tr>
+  <tr><td>Web app: “Il browser non può leggere questo link”.</td><td>Scarica il file e importalo con il pulsante rosso “Scegli file JSON o HTML”.</td></tr>
+  <tr><td>“Avvia prova” non funziona o ci sono 0 domande.</td><td>Filtri troppo stretti: metti <b>Tutte</b> in Stato, Categorie e Lezioni e spegni “Solo domande con date”.</td></tr>
+  <tr><td>Aggiungi domande: errori in rosso.</td><td>Leggi il numero di riga indicato. I casi più comuni: manca CORRETTA, le ERRATA non sono 3, la FONTE non è “paniere” o “inedita”, manca la riga vuota tra due domande.</td></tr>
+  <tr><td>Aggiungi domande: “Già presente”.</td><td>La domanda c'è già nella materia: non viene aggiunta di nuovo. Va bene così.</td></tr>
+  <tr><td>Android: installando l'APK dice “App non installata”.</td><td>Il file è incompleto: riscaricalo. Se continua, disinstalla la vecchia versione (fai prima un backup!) e reinstalla.</td></tr>
+  <tr><td>Android: avviso rosso di Play Protect.</td><td>Tocca “Altri dettagli” → “Installa comunque”. Con le versioni recenti dovrebbe comparire invece “Questa app sembra sicura”.</td></tr>
+  <tr><td>Android: non trovo il file dell'aggiornamento.</td><td>App <b>File</b> (o “I miei file”) → <b>Download</b>: tocca il file .apk più recente.</td></tr>
+  <tr><td>La web app non si aggiorna.</td><td>Chiudi l'app del tutto (scorri verso l'alto e togli la scheda) e riaprila dall'icona.</td></tr>
+  <tr><td>Schermo bianco o “Qualcosa è andato storto”.</td><td>Tocca <b>Riprova</b> o chiudi e riapri l'app. Se continua, scrivi a chi ti ha passato l'app.</td></tr>
+  <tr><td>“Archivio non leggibile”.</td><td>I dati non sono stati toccati: tocca <b>Ripristina da backup</b>. Solo se non hai backup, <b>Ricomincia da zero</b>.</td></tr>
+</table>
+
+<div class="box info" style="margin-top:16px">📌 <b>Riassunto veloce</b><br>
+1. <b>Installare:</b> iPhone → Safari → Condividi ⬆️ → “Aggiungi alla schermata Home”. Android → link dell'app → file .apk → Installa.<br>
+2. <b>Nuova materia:</b> salva il file → Altro → Materie → pulsante rosso → Conferma importazione.<br>
+3. <b>Studiare:</b> scheda Quiz → scegli le opzioni → Avvia prova.<br>
+4. <b>Aggiungere domande:</b> Materie → Aggiungi domande → incolla → Controlla → Aggiungi → Condividi.<br>
+5. <b>Non perdere i dati:</b> Altro → Backup, ogni tanto.</div>
+</div>
+
+</body>
+</html>
