@@ -1,0 +1,35 @@
+ OFAC SANCTIONED COUNTRIES
+This app may communicate with the following OFAC sanctioned list of countries.
+DOMAIN
+COUNTRY/REGION
+ DOMAIN MALWARE CHECK
+DOMAIN
+STATUS
+GEOLOCATION
+reactnative.dev
+ok
+IP: 35.157.26.135
+Country: Germany
+Region: Hessen
+City: Frankfurt am Main
+Latitude: 50.115520
+Longitude: 8.684170
+View: Google Map
+dev.to
+ok
+IP: 151.101.66.217
+Country: United States of America
+Region: California
+City: San Francisco
+Latitude: 37.775700
+Longitude: -122.395203
+View: Google Map
+sklero-22.github.io
+ok
+IP: 185.199.109.153
+Country: United States of America
+Region: Pennsylvania
+City: California
+Latitude: 40.065632
+Longitude: -79.891708
+View: Google Map

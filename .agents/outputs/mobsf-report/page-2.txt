@@ -1,0 +1,33 @@
+ FILE INFORMATION
+File Name: Quizzometro_UNI_versale_1.0.10.apk
+Size: 38.87MB
+MD5: feddaa006d1fac030d54e3583e656757
+SHA1: af8e60ea5119fd4b2bc0a3b2fde9296073fa2c67
+SHA256: 0b39ce81cdcf1ab7dc63e85c3148bc9a2a8e87ec5e04fe86c5ed46b68cb8868a
+ APP INFORMATION
+App Name: Quizzometro UNI(versale)
+Package Name: com.quizzometro.universale
+Main Activity: com.quizzometro.universale.MainActivity
+Target SDK: 36
+Min SDK: 24
+Max SDK:
+Android Version Name: 1.0.10
+Android Version Code: 11
+ APP COMPONENTS
+Activities: 1
+Services: 0
+Receivers: 1
+Providers: 3
+Exported Activities: 0
+Exported Services: 0
+Exported Receivers: 1
+Exported Providers: 0
+ CERTIFICATE INFORMATION
+Binary is signed 
+v1 signature: False 
+v2 signature: True 
+v3 signature: False 
+v4 signature: False 
+v3.1 signature: False 
+v3.2 signature: False 
+X.509 Subject: C=IT, O=Quizzometro, CN=Quizzometro UNI(versale)

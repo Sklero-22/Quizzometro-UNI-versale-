@@ -1,0 +1,45 @@
+DOMAIN
+STATUS
+GEOLOCATION
+docs.expo.dev
+ok
+IP: 104.18.4.104
+Country: United States of America
+Region: California
+City: San Francisco
+Latitude: 37.775700
+Longitude: -122.395203
+View: Google Map
+react.dev
+ok
+IP: 76.76.21.61
+Country: United States of America
+Region: California
+City: Walnut
+Latitude: 34.015400
+Longitude: -117.858223
+View: Google Map
+docs.swmansion.com
+ok
+IP: 104.26.8.117
+Country: United States of America
+Region: California
+City: San Francisco
+Latitude: 37.775700
+Longitude: -122.395203
+View: Google Map
+claude.ai
+ok
+IP: 160.79.104.10
+Country: United States of America
+Region: New Jersey
+City: Middletown
+Latitude: 40.397221
+Longitude: -74.091393
+View: Google Map
+placeholder.base
+ok
+No Geolocation information available.
+phony.example
+ok
+No Geolocation information available.

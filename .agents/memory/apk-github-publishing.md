@@ -14,3 +14,9 @@ Prima di dichiarare corretta una grafica, verificare la schermata effettivamente
 **Why:** la build 1.0.6 includeva risorse launcher aggiornate, ma la schermata iniziale continuava a mostrare gli angoli chiari; la verifica aveva controllato il pacchetto, non il risultato visivo.
 
 **How to apply:** per gli APK con correzioni visive, confrontare la schermata e gli asset realmente usati nell’app tramite anteprima o dispositivo prima di consegnare la versione.
+
+Per il file APK consegnato, usa il nome `Quizzometro-UNI-versale-v{versione}-vc{versionCode}.apk`, aggiornando entrambi i valori a quelli effettivi della build.
+
+**Why:** l’utente vuole mantenere un nome file coerente con la versione e il codice Android, ad esempio `Quizzometro-UNI-versale-v1.0.11-vc12.apk`.
+
+**How to apply:** rinomina o copia l’APK firmato dopo la compilazione e prima della consegna; non caricarlo su GitHub.

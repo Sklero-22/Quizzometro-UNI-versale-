@@ -71,6 +71,8 @@ export interface ReleaseInfo {
   version: string;
   apkUrl: string | null;
   apkName: string | null;
+  apkSha256?: string | null;
+  apkSize?: number | null;
   htmlUrl: string | null;
   publishedAt: string | null;
 }

@@ -1,0 +1,209 @@
+NO
+SHARED OBJECT
+NX
+PIE
+STACK CANARY
+RELRO
+RPATH
+RUNPATH
+FORTIFY
+SYMBOLS
+STRIPPED
+17
+arm64-v8a/libnative-ima
+getranscoder.so
+True
+info
+The binary has
+NX bit set. This
+marks a
+memory page
+non-executabl
+e making
+attacker
+injected
+shellcode
+non-executabl
+e.
+Dynamic
+Shared Object
+(DSO)
+info
+The shared
+object is build
+with -fPIC flag
+which enables
+Position
+independent
+code. This
+makes Return
+Oriented
+Programming
+(ROP) attacks
+much more
+difficult to
+execute
+reliably.
+True
+info
+This binary has
+a stack canary
+value added to
+the stack so
+that it will be
+overwritten by
+a stack buffer
+that overflows
+the return
+address. This
+allows
+detection of
+overflows by
+verifying the
+integrity of the
+canary before
+function
+return.
+Full RELRO
+info
+This shared
+object has full
+RELRO
+enabled.
+RELRO
+ensures that
+the GOT
+cannot be
+overwritten in
+vulnerable ELF
+binaries. In
+Full RELRO,
+the entire GOT
+(.got and
+.got.plt both) is
+marked as
+read-only.
+None
+info
+The binary
+does not have
+run-time
+search path or
+RPATH set.
+None
+info
+The binary
+does not have
+RUNPATH set.
+True
+info
+The binary has
+the following
+fortified
+functions:
+['__vsnprintf_c
+hk',
+'__strlen_chk',
+'__memcpy_ch
+k']
+True
+info
+Symbols are
+stripped.
+18
+arm64-v8a/libhermestoo
+ling.so
+True
+info
+The binary has
+NX bit set. This
+marks a
+memory page
+non-executabl
+e making
+attacker
+injected
+shellcode
+non-executabl
+e.
+Dynamic
+Shared Object
+(DSO)
+info
+The shared
+object is build
+with -fPIC flag
+which enables
+Position
+independent
+code. This
+makes Return
+Oriented
+Programming
+(ROP) attacks
+much more
+difficult to
+execute
+reliably.
+True
+info
+This binary has
+a stack canary
+value added to
+the stack so
+that it will be
+overwritten by
+a stack buffer
+that overflows
+the return
+address. This
+allows
+detection of
+overflows by
+verifying the
+integrity of the
+canary before
+function
+return.
+Full RELRO
+info
+This shared
+object has full
+RELRO
+enabled.
+RELRO
+ensures that
+the GOT
+cannot be
+overwritten in
+vulnerable ELF
+binaries. In
+Full RELRO,
+the entire GOT
+(.got and
+.got.plt both) is
+marked as
+read-only.
+None
+info
+The binary
+does not have
+run-time
+search path or
+RPATH set.
+None
+info
+The binary
+does not have
+RUNPATH set.
+True
+info
+The binary has
+the following
+fortified
+functions:
+['__strlen_chk']
+True
+info
+Symbols are
+stripped.

@@ -1,0 +1,66 @@
+RULE ID
+BEHAVIOUR
+LABEL
+FILES
+00036
+Get resource file from res/raw directory
+reflection
+expo/modules/adapters/react/permissions/PermissionsService.ja
+va
+expo/modules/asset/ResourceAssetKt.java
+expo/modules/filesystem/legacy/FileSystemLegacyModule.java
+expo/modules/image/records/SourceMap.java
+expo/modules/intentlauncher/IntentLauncherModule.java
+00077
+Read sensitive data(SMS, CALLLOG, etc)
+collection sms calllog calendar
+com/bumptech/glide/load/data/mediastore/ThumbFetcher.java
+00023
+Start another application from current
+application
+reflection control
+expo/modules/intentlauncher/IntentLauncherModule.java
+00051
+Implicit intent(view a web page, make a phone
+call, etc.) via setData
+control
+expo/modules/adapters/react/permissions/PermissionsService.ja
+va
+expo/modules/intentlauncher/IntentLauncherModule.java
+00009
+Put data in cursor to JSON object
+file
+com/reactnativecommunity/asyncstorage/AsyncLocalStorageUtil.
+java
+00028
+Read file from assets directory
+file
+com/caverock/androidsvg/SimpleAssetResolver.java
+00089
+Connect to a URL and receive input stream from
+the server
+command network
+com/bumptech/glide/load/data/HttpUrlFetcher.java
+00030
+Connect to the remote server through the given
+URL
+network
+com/bumptech/glide/load/data/HttpUrlFetcher.java
+00109
+Connect to a URL and get the response code
+network command
+com/bumptech/glide/load/data/HttpUrlFetcher.java
+ ABUSED PERMISSIONS
+TYPE
+MATCHES
+PERMISSIONS
+Malware Permissions
+4/25
+android.permission.INTERNET, android.permission.REQUEST_INSTALL_PACKAGES,
+android.permission.VIBRATE, android.permission.ACCESS_NETWORK_STATE
+Other Common Permissions
+0/44
+Malware Permissions:
+Top permissions that are widely abused by known malware.
+Other Common Permissions:
+Permissions that are commonly abused by known malware.

@@ -1,0 +1,143 @@
+ JAVASCRIPT / HYBRID CODE ANALYSIS
+NO
+ISSUE
+SEVERITY
+STANDARDS
+FILES
+1
+Dynamic JavaScript code execution via eval(), new
+Function(), or setTimeout/setInterval with a string
+argument was detected. Executing dynamically
+constructed strings can lead to arbitrary code
+execution inside the application context.
+warning
+CWE: CWE-95: Improper
+Neutralization of Directives in
+Dynamically Evaluated Code ('Eval
+Injection')
+OWASP MASVS: MSTG-CODE-4
+assets/index.android.bundle.dec.js
+2
+Cleartext HTTP URL detected in JavaScript code.
+Network traffic over HTTP is vulnerable to
+eavesdropping and tampering; use HTTPS instead.
+warning
+CWE: CWE-319: Cleartext
+Transmission of Sensitive
+Information
+OWASP MASVS: MSTG-NETWORK-1
+assets/index.android.bundle.dec.js
+ SHARED LIBRARY BINARY ANALYSIS
+NO
+SHARED OBJECT
+NX
+PIE
+STACK CANARY
+RELRO
+RPATH
+RUNPATH
+FORTIFY
+SYMBOLS
+STRIPPED
+1
+arm64-v8a/libhermes.so
+True
+info
+The binary has
+NX bit set. This
+marks a
+memory page
+non-executabl
+e making
+attacker
+injected
+shellcode
+non-executabl
+e.
+Dynamic
+Shared Object
+(DSO)
+info
+The shared
+object is build
+with -fPIC flag
+which enables
+Position
+independent
+code. This
+makes Return
+Oriented
+Programming
+(ROP) attacks
+much more
+difficult to
+execute
+reliably.
+True
+info
+This binary has
+a stack canary
+value added to
+the stack so
+that it will be
+overwritten by
+a stack buffer
+that overflows
+the return
+address. This
+allows
+detection of
+overflows by
+verifying the
+integrity of the
+canary before
+function
+return.
+Full RELRO
+info
+This shared
+object has full
+RELRO
+enabled.
+RELRO
+ensures that
+the GOT
+cannot be
+overwritten in
+vulnerable ELF
+binaries. In
+Full RELRO,
+the entire GOT
+(.got and
+.got.plt both) is
+marked as
+read-only.
+None
+info
+The binary
+does not have
+run-time
+search path or
+RPATH set.
+None
+info
+The binary
+does not have
+RUNPATH set.
+True
+info
+The binary has
+the following
+fortified
+functions:
+['__memcpy_ch
+k',
+'__write_chk',
+'__strlen_chk',
+'__vsnprintf_ch
+k',
+'__strchr_chk']
+True
+info
+Symbols are
+stripped.

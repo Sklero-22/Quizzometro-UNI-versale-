@@ -1,0 +1,23 @@
+ANDROID STATIC ANALYSIS REPORT
+ Quizzometro UNI(versale) (1.0.10)
+File Name:
+Quizzometro_UNI_versale_1.0.10.apk
+Package Name:
+com.quizzometro.universale
+Scan Date:
+Nov. 23, 2026, 7:56 a.m.
+App Security Score:
+60/100 (LOW RISK)
+Grade:
+A 
+ FINDINGS SEVERITY
+ HIGH
+ MEDIUM
+ INFO
+ SECURE
+ HOTSPOT
+1
+9
+1
+1
+1

@@ -6,11 +6,12 @@ import { INSTALLED_VERSION, isNewer, parseRepo, UPDATE_ACTION_LABEL, UPDATE_NOTE
 import { useStore } from '../src/data/store';
 import { useInstall } from '../src/data/useInstall';
 import { colors, fonts, radius } from '../src/theme';
+import { UpdateInstructionsModal } from '../src/components/UpdateInstructionsModal';
 
 export default function Settings() {
   const router = useRouter();
   const { data, updateSettings, checkUpdates, checkingUpdates } = useStore();
-  const { busy, progress, install } = useInstall();
+  const { busy, install, instructionsVisible, confirmDownload, cancelDownload } = useInstall();
   const s = data.settings;
   const [repo, setRepo] = useState(s.repoUrl);
   const [repoError, setRepoError] = useState<string | null>(null);
@@ -34,7 +35,8 @@ export default function Settings() {
   };
 
   return (
-    <Screen title="Aggiornamenti app" onBack={() => router.back()}>
+    <>
+      <Screen title="Aggiornamenti app" onBack={() => router.back()}>
       <Card>
         <Label>Versione installata</Label>
         <H2>{INSTALLED_VERSION}</H2>
@@ -72,22 +74,24 @@ export default function Settings() {
         {rel && newer && (
           <>
             <Notice tone="success">{`Disponibile: ${rel.name} (versione ${rel.version}).`}</Notice>
-            {rel.apkUrl ? (
-              <Btn
-                title={busy ? `Download ${Math.round(progress * 100)}%` : UPDATE_ACTION_LABEL}
-                icon="download"
-                loading={busy}
-                onPress={() => install(rel)}
-              />
-            ) : (
-              <Notice tone="danger">La release non contiene un file APK.</Notice>
-            )}
+            <Btn
+              title={UPDATE_ACTION_LABEL}
+              icon="download"
+              loading={busy}
+              onPress={() => install(rel)}
+            />
           </>
         )}
         <P color={colors.mutedForeground} style={{ fontSize: 13 }}>
           {UPDATE_NOTE}
         </P>
       </Card>
-    </Screen>
+      </Screen>
+      <UpdateInstructionsModal
+        visible={instructionsVisible}
+        onConfirm={confirmDownload}
+        onCancel={cancelDownload}
+      />
+    </>
   );
 }

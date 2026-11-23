@@ -1,0 +1,21 @@
+NO
+ISSUE
+SEVERITY
+DESCRIPTION
+3
+Broadcast Receiver
+(androidx.profileinstaller.ProfileInstallReceiver) is
+Protected by a permission, but the protection level
+of the permission should be checked. Permission:
+android.permission.DUMP [android:exported=true]
+warning
+A Broadcast Receiver is found to be shared with other apps on the device
+therefore leaving it accessible to any other application on the device. It is
+protected by a permission which is not defined in the analysed application. As a
+result, the protection level of the permission should be checked where it is
+defined. If it is set to normal or dangerous, a malicious application can request
+and obtain the permission and interact with the component. If it is set to
+signature, only applications signed with the same certificate can obtain the
+permission.
+ CODE ANALYSIS
+HIGH: 0 | WARNING: 4 | INFO: 1 | SECURE: 0 | SUPPRESSED: 0

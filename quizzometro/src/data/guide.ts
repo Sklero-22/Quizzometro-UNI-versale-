@@ -64,12 +64,23 @@ export const GUIDE_SECTIONS: GuideSection[] = [
     title: 'Aggiornamenti',
     paragraphs: [
       'L’app controlla gli aggiornamenti quando la apri e quando torni a usarla. Se resta aperta, fa anche un controllo periodico ogni 6 ore.',
-      'Quando è disponibile una versione nuova, tocca Scarica e installa e poi conferma l’installazione nella finestra di Android.',
+      'Quando è disponibile una versione nuova, tocca Scarica aggiornamento. Il browser scarica l’APK; poi apri la notifica del download o la cartella Download e tocca Aggiorna o Installa. Le materie e i progressi restano sul telefono.',
+      'Se Android chiede al browser il permesso di installare app, attiva Consenti da questa fonte e torna alla schermata di installazione.',
     ],
   },
 ];
 
 export const RELEASE_NOTES: ReleaseNote[] = [
+  {
+    version: '1.0.11',
+    title: 'Aggiornamenti più sicuri',
+    summary: 'Il nuovo APK si scarica dal browser.',
+  },
+  {
+    version: '1.0.10',
+    title: 'Aggiornamenti verificati e permessi ridotti',
+    summary: 'Rimossi tre permessi Android non necessari; prima dell’installazione l’APK viene verificato.',
+  },
   {
     version: '1.0.9',
     title: 'Resoconto e riferimenti della prova',

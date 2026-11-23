@@ -1,0 +1,81 @@
+Timestamp
+Event
+Error
+2026-11-23 07:56:19
+Analyzing lib/arm64-v8a/libworklets.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/libreact_codegen_safeareacontext.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/libavif_android.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/libreanimated.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/libjsi.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/librnscreens.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/libimagepipeline.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/libexpo-modules-core.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/libc++_shared.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/libnative-imagetranscoder.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/libhermestooling.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/libappmodules.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/libfbjni.so
+OK
+2026-11-23 07:56:20
+Analyzing lib/arm64-v8a/libgifimage.so
+OK
+2026-11-23 07:56:20
+Reading Code Signing Certificate
+OK
+2026-11-23 07:56:20
+Running APKiD 3.2.0
+OK
+2026-11-23 07:56:26
+Detecting Trackers
+OK
+2026-11-23 07:56:32
+Decompiling APK to Java with JADX
+OK
+2026-11-23 07:58:13
+Converting DEX to Smali
+OK
+2026-11-23 07:58:13
+Code Analysis Started on - java_source
+OK
+2026-11-23 07:58:21
+Android SBOM Analysis Completed
+OK
+2026-11-23 07:58:27
+Android SAST Completed
+OK
+2026-11-23 07:58:27
+Android API Analysis Started
+OK
+2026-11-23 07:58:29
+Android API Analysis Completed
+OK
+2026-11-23 07:58:29
+Android Permission Mapping Started
+OK
+2026-11-23 07:58:31
+Android Permission Mapping Completed
+OK

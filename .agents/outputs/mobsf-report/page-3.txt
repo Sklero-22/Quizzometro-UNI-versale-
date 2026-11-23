@@ -1,0 +1,59 @@
+Signature Algorithm: rsassa_pkcs1v15 
+Valid From: 2026-11-17 16:00:29+00:00 
+Valid To: 2054-04-04 16:00:29+00:00 
+Issuer: C=IT, O=Quizzometro, CN=Quizzometro UNI(versale) 
+Serial Number: 0x6e94794ac60dfcc3 
+Hash Algorithm: sha384 
+md5: 930ffd27fb3e7fd65129aa5d763763b3 
+sha1: 751147babd0db6d640719536bbd635eba4752daf 
+sha256: 4ab21c73c8d58964acbff2f3de2fa1d045062664831f17b4e4204b7c89009307 
+sha512: 5233e990d00e8feaba8e7d6a7734aa7a7010614852ac8df81b37b85a56a040c1887b37c51e0a64be49c2361278e8fe28d40faba7fbdefd5efbf690f4e38b25f8 
+PublicKey Algorithm: rsa 
+Bit Size: 4096 
+Fingerprint: 1fd2ff55d5e13768eff0db74b564f8f698323d8edc2cfcd6b4b78997392fc9c2 
+Found 1 unique certificates
+ APPLICATION PERMISSIONS
+PERMISSION
+STATUS
+INFO
+DESCRIPTION
+android.permission.INTERNET
+normal
+full Internet access
+Allows an application to create network sockets.
+android.permission.REQUEST_INSTALL_PACK
+AGES
+dangerous
+Allows an application to
+request installing packages.
+Malicious applications can use this to try and trick users into
+installing additional malicious packages.
+android.permission.VIBRATE
+normal
+control vibrator
+Allows the application to control the vibrator.
+android.permission.ACCESS_NETWORK_STAT
+E
+normal
+view network status
+Allows an application to view the status of all networks.
+com.quizzometro.universale.DYNAMIC_RECEI
+VER_NOT_EXPORTED_PERMISSION
+unknown
+Unknown permission
+Unknown permission from android reference
+ APKID ANALYSIS
+FILE
+FINDINGS
+DETAILS
+feddaa006d1fac030d54e3583e656757.apk
+Manipulator Found
+Resources Confusion
+classes.dex
+Anti-VM Code
+Build.FINGERPRINT check
+Build.MANUFACTURER check
+possible Build.SERIAL check
+classes.dex
+Compiler
+r8

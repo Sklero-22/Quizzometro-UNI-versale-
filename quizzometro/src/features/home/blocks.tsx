@@ -6,6 +6,7 @@ import { Bar, Btn, Card, H2, Label, P } from '../../components/ui';
 import { useStore } from '../../data/store';
 import { useInstall } from '../../data/useInstall';
 import { UPDATE_ACTION_LABEL } from '../../data/releases';
+import { UpdateInstructionsModal } from '../../components/UpdateInstructionsModal';
 import {
   answeredQidsSince,
   lastOriginalTests,
@@ -197,26 +198,27 @@ export function QuickLinks() {
 }
 
 export function UpdateBanner({ release }: { release: ReleaseInfo }) {
-  const { busy, progress, install } = useInstall();
+  const { busy, install, instructionsVisible, confirmDownload, cancelDownload } = useInstall();
   const { updateSettings } = useStore();
   return (
-    <Card tone="success">
-      <Label color={colors.success}>Aggiornamento disponibile</Label>
-      <H2>{release.name}</H2>
-      <P style={{ fontSize: 14 }}>È disponibile la versione {release.version}.</P>
-      {release.apkUrl ? (
+    <>
+      <Card tone="success">
+        <Label color={colors.success}>Aggiornamento disponibile</Label>
+        <H2>{release.name}</H2>
+        <P style={{ fontSize: 14 }}>È disponibile la versione {release.version}.</P>
         <Btn
-          title={busy ? `Download ${Math.round(progress * 100)}%` : UPDATE_ACTION_LABEL}
+          title={UPDATE_ACTION_LABEL}
           icon="download"
           loading={busy}
           onPress={() => install(release)}
         />
-      ) : (
-        <P color={colors.destructive} style={{ fontSize: 14 }}>
-          La release non contiene un file APK.
-        </P>
-      )}
-      <Btn title="Più tardi" variant="ghost" small onPress={() => updateSettings({ dismissedTag: release.tag })} />
-    </Card>
+        <Btn title="Più tardi" variant="ghost" small onPress={() => updateSettings({ dismissedTag: release.tag })} />
+      </Card>
+      <UpdateInstructionsModal
+        visible={instructionsVisible}
+        onConfirm={confirmDownload}
+        onCancel={cancelDownload}
+      />
+    </>
   );
 }

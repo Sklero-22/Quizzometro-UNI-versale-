@@ -1,0 +1,50 @@
+FILE
+FINDINGS
+DETAILS
+classes2.dex
+Anti-VM Code
+Build.FINGERPRINT check
+Build.MODEL check
+Build.MANUFACTURER check
+Build.PRODUCT check
+Build.HARDWARE check
+Build.BOARD check
+classes2.dex
+Compiler
+r8 without marker (suspicious)
+classes3.dex
+Compiler
+r8 without marker (suspicious)
+ BROWSABLE ACTIVITIES
+ACTIVITY
+INTENT
+com.quizzometro.universale.MainActivity
+Schemes: quizzometro://,
+ CERTIFICATE ANALYSIS
+HIGH: 0 | WARNING: 0 | INFO: 1
+TITLE
+SEVERITY
+DESCRIPTION
+Signed Application
+info
+Application is signed with a code signing certificate
+ MANIFEST ANALYSIS
+HIGH: 1 | WARNING: 2 | INFO: 0 | SUPPRESSED: 0
+NO
+ISSUE
+SEVERITY
+DESCRIPTION
+1
+App can be installed on a vulnerable unpatched
+Android version 7.0, [minSdk=24]
+high
+This application can be installed on an older version of android that has multiple
+unfixed vulnerabilities. These devices won't receive reasonable security updates
+from Google. Support an Android version => 10, API 29 to receive reasonable
+security updates.
+2
+Application Data can be Backed up
+[android:allowBackup=true]
+warning
+This flag allows anyone to backup your application data via adb. It allows users
+who have enabled USB debugging to copy application data off of the device.

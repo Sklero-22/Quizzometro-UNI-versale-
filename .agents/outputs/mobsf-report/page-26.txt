@@ -1,0 +1,61 @@
+RULE ID
+BEHAVIOUR
+LABEL
+FILES
+00013
+Read file and put it into a stream
+file
+com/bumptech/glide/disklrucache/DiskLruCache.java
+com/bumptech/glide/load/ImageHeaderParserUtils.java
+com/bumptech/glide/load/model/FileLoader.java
+com/bumptech/glide/load/resource/bitmap/ImageReader.java
+com/github/penfeizhou/animation/apng/decode/APNGParser.jav
+a
+com/github/penfeizhou/animation/avif/decode/AVIFParser.java
+com/github/penfeizhou/animation/gif/decode/GifParser.java
+com/github/penfeizhou/animation/io/FileReader.java
+com/github/penfeizhou/animation/webp/decode/WebPParser.ja
+va
+com/reactnativecommunity/asyncstorage/AsyncStorageExpoMigr
+ation.java
+expo/modules/asset/FileUtilsKt.java
+expo/modules/core/logging/PersistentFileLog.java
+expo/modules/filesystem/legacy/FileSystemLegacyModule.java
+expo/modules/filesystem/unifiedfile/JavaFile.java
+okio/Okio__JvmOkioKt.java
+00022
+Open a file from given absolute path of the file
+file
+coil3/util/FileSystems_androidKt.java
+expo/modules/filesystem/legacy/FileSystemLegacyModule.java
+expo/modules/font/FontUtilsModule.java
+expo/modules/image/ExpoImageModule.java
+00063
+Implicit intent(view a web page, make a phone
+call, etc.)
+control
+expo/modules/adapters/react/permissions/PermissionsService.ja
+va
+expo/modules/filesystem/legacy/FileSystemLegacyModule.java
+expo/modules/intentlauncher/IntentLauncherModule.java
+expo/modules/sharing/SharingModule.java
+00121
+Create a directory
+file command
+expo/modules/filesystem/legacy/FileSystemLegacyModule.java
+00024
+Write file after Base64 decoding
+reflection file
+expo/modules/filesystem/legacy/FileSystemLegacyModule.java
+00012
+Read data and put it into a buffer stream
+file
+expo/modules/filesystem/legacy/FileSystemLegacyModule.java
+00125
+Check if the given file path exist
+file
+expo/modules/filesystem/legacy/FileSystemLegacyModule.java
+00104
+Check if the given path is directory
+file
+expo/modules/filesystem/legacy/FileSystemLegacyModule.java

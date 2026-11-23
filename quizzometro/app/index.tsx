@@ -15,6 +15,7 @@ import { INSTALLED_VERSION } from '../src/data/releases';
 import { useInstall } from '../src/data/useInstall';
 import { UPDATE_ACTION_LABEL } from '../src/data/releases';
 import { QuickLinks, RecentReview, ResumeBanner, SubjectPanel, UpdateBanner } from '../src/features/home/blocks';
+import { UpdateInstructionsModal } from '../src/components/UpdateInstructionsModal';
 import { QuizSetup } from '../src/features/quiz/QuizSetup';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { colors, fonts, radius } from '../src/theme';
@@ -34,7 +35,7 @@ export default function Home() {
   const { isWide, isTablet } = useLayout();
   const router = useRouter();
   const { data, activeSubject, activeSession, updateSettings } = useStore();
-  const { install } = useInstall();
+  const { install, instructionsVisible, confirmDownload, cancelDownload } = useInstall();
   const [section, setSection] = useState<HomeSection>('today');
   const [releaseNoteStatus, setReleaseNoteStatus] = useState<'checking' | 'shown' | 'done'>('checking');
   const [welcomeStatus, setWelcomeStatus] = useState<'checking' | 'visible' | 'done'>('checking');
@@ -116,10 +117,10 @@ export default function Home() {
     popupShownForTag = newer.tag;
     Alert.alert(
       'Aggiornamento disponibile',
-      `${newer.name} (versione ${newer.version}) è pronta da installare.`,
+      `${newer.name} (versione ${newer.version}) è disponibile. Il download partirà nel browser.`,
       [
         { text: 'Più tardi', style: 'cancel', onPress: () => updateSettings({ dismissedTag: newer.tag }) },
-        ...(newer.apkUrl ? [{ text: UPDATE_ACTION_LABEL, onPress: () => void install(newer) }] : []),
+        { text: UPDATE_ACTION_LABEL, onPress: () => install(newer) },
       ],
     );
   }, [newer, install, updateSettings, releaseNoteStatus]);
@@ -272,6 +273,11 @@ export default function Home() {
           setWelcomeStatus('done');
           router.push('/guide');
         }}
+      />
+      <UpdateInstructionsModal
+        visible={instructionsVisible}
+        onConfirm={confirmDownload}
+        onCancel={cancelDownload}
       />
     </>
   );

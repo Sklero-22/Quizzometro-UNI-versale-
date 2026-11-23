@@ -1,0 +1,77 @@
+NO
+ISSUE
+SEVERITY
+STANDARDS
+FILES
+2
+MD5 is a weak hash known to have hash collisions.
+warning
+CWE: CWE-327: Use of a Broken or
+Risky Cryptographic Algorithm
+OWASP Top 10: M5: Insufficient
+Cryptography
+OWASP MASVS: MSTG-CRYPTO-4
+expo/modules/asset/AssetModule.java
+expo/modules/asset/FileUtilsKt.java
+expo/modules/filesystem/FileSystemFile.java
+expo/modules/filesystem/legacy/FileSystemLega
+cyModule.java
+3
+Files may contain hardcoded sensitive information
+like usernames, passwords, keys etc.
+warning
+CWE: CWE-312: Cleartext Storage
+of Sensitive Information
+OWASP Top 10: M9: Reverse
+Engineering
+OWASP MASVS:
+MSTG-STORAGE-14
+coil3/intercept/EngineInterceptor.java
+coil3/memory/MemoryCache.java
+coil3/memory/MemoryCacheService.java
+coil3/request/ImageRequest.java
+coil3/request/Options.java
+coil3/request/SuccessResult.java
+coil3/transform/Transformation.java
+com/bumptech/glide/load/Option.java
+com/bumptech/glide/load/engine/DataCacheKe
+y.java
+com/bumptech/glide/load/engine/EngineResour
+ce.java
+com/bumptech/glide/load/engine/ResourceCach
+eKey.java
+com/swmansion/rnscreens/gamma/tabs/TabsH
+ost.java
+com/swmansion/rnscreens/gamma/tabs/event/
+TabsHostNativeFocusChangeEvent.java
+expo/modules/adapters/react/NativeModulesPr
+oxy.java
+expo/modules/image/records/SourceMap.java
+expo/modules/interfaces/permissions/Permissi
+onsResponse.java
+4
+App uses SQLite Database and execute raw SQL
+query. Untrusted user input in raw SQL queries can
+cause SQL Injection. Also sensitive information
+should be encrypted and written to the database.
+warning
+CWE: CWE-89: Improper
+Neutralization of Special Elements
+used in an SQL Command ('SQL
+Injection')
+OWASP Top 10: M7: Client Code
+Quality
+com/reactnativecommunity/asyncstorage/Async
+LocalStorageUtil.java
+com/reactnativecommunity/asyncstorage/React
+DatabaseSupplier.java
+5
+App creates temp file. Sensitive information should
+never be written into a temp file.
+warning
+CWE: CWE-276: Incorrect Default
+Permissions
+OWASP Top 10: M2: Insecure Data
+Storage
+OWASP MASVS: MSTG-STORAGE-2
+coil3/decode/SourceImageSource.java

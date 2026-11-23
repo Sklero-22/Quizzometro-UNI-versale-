@@ -1,0 +1,70 @@
+POSSIBLE SECRETS
+ZZNK8facebook5react9UIManager30findShadowNodeByTag
+ZZZNK8facebook5react9UIManager11updateStateERKNS0
+ SCAN LOGS
+Timestamp
+Event
+Error
+2026-11-23 07:56:12
+Generating Hashes
+OK
+2026-11-23 07:56:12
+Extracting APK
+OK
+2026-11-23 07:56:12
+Unzipping
+OK
+2026-11-23 07:56:13
+Parsing APK with androguard
+OK
+2026-11-23 07:56:13
+Extracting APK features using aapt/aapt2
+OK
+2026-11-23 07:56:14
+Getting Hardcoded Certificates/Keystores
+OK
+2026-11-23 07:56:19
+Parsing AndroidManifest.xml
+OK
+2026-11-23 07:56:19
+Extracting Manifest Data
+OK
+2026-11-23 07:56:19
+Manifest Analysis Started
+OK
+2026-11-23 07:56:19
+Performing Static Analysis on: Quizzometro UNI(versale) (com.quizzometro.universale)
+OK
+2026-11-23 07:56:19
+Fetching Details from Play Store: com.quizzometro.universale
+OK
+2026-11-23 07:56:19
+Checking for Malware Permissions
+OK
+2026-11-23 07:56:19
+Fetching icon path
+OK
+2026-11-23 07:56:19
+Library Binary Analysis Started
+OK
+2026-11-23 07:56:19
+Analyzing lib/arm64-v8a/libhermes.so
+OK
+2026-11-23 07:56:19
+Analyzing lib/arm64-v8a/libstatic-webp.so
+OK
+2026-11-23 07:56:19
+Analyzing lib/arm64-v8a/libreact_codegen_rnscreens.so
+OK
+2026-11-23 07:56:19
+Analyzing lib/arm64-v8a/libanimation-decoder-gif.so
+OK
+2026-11-23 07:56:19
+Analyzing lib/arm64-v8a/libnative-filters.so
+OK
+2026-11-23 07:56:19
+Analyzing lib/arm64-v8a/libreactnative.so
+OK
+2026-11-23 07:56:19
+Analyzing lib/arm64-v8a/libgesturehandler.so
+OK

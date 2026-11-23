@@ -3,7 +3,7 @@
     "name": "Quizzometro UNI(versale)",
     "slug": "quizzometro-universale",
     "scheme": "quizzometro",
-    "version": "1.0.9",
+    "version": "1.0.11",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,7 +16,8 @@
     "newArchEnabled": true,
     "android": {
       "package": "com.quizzometro.universale",
-      "versionCode": 10,
+      "versionCode": 12,
+      "allowBackup": false,
       "backgroundColor": "#F5EFE3",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon-foreground.png",
@@ -24,8 +25,13 @@
         "backgroundColor": "#F5EFE3"
       },
       "permissions": [
-        "INTERNET",
-        "REQUEST_INSTALL_PACKAGES"
+        "INTERNET"
+      ],
+      "blockedPermissions": [
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.REQUEST_INSTALL_PACKAGES"
       ],
       "softwareKeyboardLayoutMode": "resize"
     },

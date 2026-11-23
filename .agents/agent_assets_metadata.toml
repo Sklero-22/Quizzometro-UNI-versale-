@@ -112,3 +112,31 @@ mtime_ms = 1795275886164
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:d9177113-ee47-4de9-87be-38a8f01ba188/019a02dd-1d36-4180-a3e4-9ca1f0318786/d0e374e2-989e-46fb-aeea-d2978a11558e"
 storage_version_token = "1795275910144976"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "T5Gt2onVKCIZi1iGl6Sqs"
+uri = "file://quizzometro/android/app/build/outputs/apk/release/app-release.apk"
+type = "unspecified"
+title = "Quizzometro 1.0.11 APK"
+description = "APK Android firmato con la chiave di release abituale. Non è stato caricato su GitHub."
+logical_id = "8f79e0ff-381a-4a0f-948a-e0e470e1086a"
+content_hash = "sha256:32eb9e7e6fe3f55836442a33f307c3977820226ab7c8b81d6e81d535ea600d26"
+size = 40733686
+mtime_ms = 1795428306712
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:d9177113-ee47-4de9-87be-38a8f01ba188/8f79e0ff-381a-4a0f-948a-e0e470e1086a/98b0da37-cf97-4786-9fad-f36aa144bea9"
+storage_version_token = "1795428466176103"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "yAq_FnMfoDihQLVeDUANE"
+uri = "file://quizzometro/android/app/build/outputs/apk/release/Quizzometro-UNI-versale-v1.0.11-vc12.apk"
+type = "unspecified"
+title = "Quizzometro-UNI-versale-v1.0.11-vc12.apk"
+description = "Copia con il nome versione/codice richiesto; identica all’APK firmato verificato. Non caricata su GitHub."
+logical_id = "1d64bd8b-d0e5-4109-b98c-650b91fc674b"
+content_hash = "sha256:32eb9e7e6fe3f55836442a33f307c3977820226ab7c8b81d6e81d535ea600d26"
+size = 40733686
+mtime_ms = 1795428759654
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:d9177113-ee47-4de9-87be-38a8f01ba188/1d64bd8b-d0e5-4109-b98c-650b91fc674b/5b39ee18-85b0-46d0-b514-9df3516df8c8"
+storage_version_token = "1795428769379618"
+content_type = "application/octet-stream"
