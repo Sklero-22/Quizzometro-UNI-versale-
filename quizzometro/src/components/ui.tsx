@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import {
   ActivityIndicator,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -22,7 +23,7 @@ export function Screen({
   onBack,
   children,
   scroll = true,
-  maxWidth = 760,
+  maxWidth,
   right,
   footer,
 }: {
@@ -34,10 +35,12 @@ export function Screen({
   right?: React.ReactNode;
   footer?: React.ReactNode;
 }) {
-  const { pad, compactLandscape } = useLayout();
-  const inner: ViewStyle = { width: '100%', maxWidth, alignSelf: 'center', paddingHorizontal: pad };
+  const { pad, compactLandscape, maxContentWidth } = useLayout();
+  const inner: ViewStyle = { width: '100%', maxWidth: maxWidth ?? maxContentWidth, alignSelf: 'center', paddingHorizontal: pad };
+  const webTopInset = Platform.OS === 'web' ? 67 : 0;
+  const webBottomInset = Platform.OS === 'web' ? 34 : 0;
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background, paddingTop: webTopInset }}>
       <StatusBar style="dark" backgroundColor={colors.background} />
       {title !== undefined && (
         <View style={[inner, styles.header, compactLandscape && { paddingVertical: 4 }]}>
@@ -59,7 +62,7 @@ export function Screen({
       )}
       {scroll ? (
         <ScrollView
-          contentContainerStyle={[inner, { paddingBottom: 32, paddingTop: 6, gap: 14 }]}
+          contentContainerStyle={[inner, { paddingBottom: Math.max(32, webBottomInset), paddingTop: 6, gap: 14 }]}
           keyboardShouldPersistTaps="handled"
         >
           {children}

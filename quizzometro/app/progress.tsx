@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { Alert, Pressable, Text, View } from 'react-native';
 import { ActivityCalendar, LessonMasteryRow, LegendChips, MasteryBar, MasteryRing, RecoveryGauge, TrendChart } from '../src/components/charts';
 import { Bar, Btn, Card, Chip, Empty, H2, Label, P, Screen } from '../src/components/ui';
+import { useLayout } from '../src/components/layout';
 import { useStore } from '../src/data/store';
 import { lessonProgress, questionCategories, questionLessons, scoreSession, subjectSummary } from '../src/domain/quiz/engine';
 import {
@@ -49,6 +50,7 @@ function SectionHeading({ title, help }: { title: string; help: string }) {
 
 export default function Progress() {
   const router = useRouter();
+  const { isWide } = useLayout();
   const { data, activeSubject, setActiveSubject, subjectStats, resetProgress, startFromQids } = useStore();
   const subject = activeSubject;
   const stats = subject ? subjectStats(subject.id) : {};
@@ -150,6 +152,24 @@ export default function Progress() {
       ],
     );
 
+  const categoryCoverage = (
+    <Card>
+      <SectionHeading
+        title="Copertura per categoria"
+        help="Mostra quante domande di ogni categoria hai incontrato almeno una volta, rispetto al totale."
+      />
+      {[...report.categories.entries()].map(([category, value]) => (
+        <View key={category} style={{ gap: 4 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <P style={{ fontFamily: fonts.bodySemi, fontSize: 14 }}>{category}</P>
+            <P color={colors.mutedForeground} style={{ fontSize: 13 }}>{value.seen}/{value.total}</P>
+          </View>
+          <Bar value={value.total ? value.seen / value.total : 0} color={colors.success} />
+        </View>
+      ))}
+    </Card>
+  );
+
   return (
     <Screen title="Andamento" onBack={() => router.back()}>
       {data.subjects.length > 1 && (
@@ -191,6 +211,8 @@ export default function Progress() {
         </Card>
       ) : (
         <>
+          <View style={{ flexDirection: isWide ? 'row' : 'column', gap: 14 }}>
+            <View style={isWide ? { flex: 1, minWidth: 0 } : { width: '100%' }}>
           <Card>
             <SectionHeading
               title="Il tuo livello"
@@ -215,6 +237,8 @@ export default function Progress() {
             </View>
           </Card>
 
+            </View>
+            <View style={isWide ? { flex: 1, minWidth: 0 } : { width: '100%' }}>
           <Card>
             <SectionHeading
               title="Recupero errori"
@@ -234,7 +258,11 @@ export default function Progress() {
               testID="progress-train-recover"
             />
           </Card>
+            </View>
+          </View>
 
+          <View style={{ flexDirection: isWide ? 'row' : 'column', gap: 14 }}>
+            <View style={isWide ? { flex: 1, minWidth: 0 } : { width: '100%' }}>
           <Card>
             <SectionHeading
               title="Andamento"
@@ -247,6 +275,8 @@ export default function Progress() {
             <TrendChart points={report.periodSummary.daily} />
           </Card>
 
+            </View>
+            <View style={isWide ? { flex: 1, minWidth: 0 } : { width: '100%' }}>
           <Card>
             <SectionHeading
               title="Costanza"
@@ -254,6 +284,8 @@ export default function Progress() {
             />
             <ActivityCalendar points={report.periodSummary.daily} />
           </Card>
+            </View>
+          </View>
 
           <Card>
             <SectionHeading
@@ -297,65 +329,59 @@ export default function Progress() {
             ))}
           </Card>
 
-          <Card>
-            <SectionHeading
-              title="Lezioni da rinforzare"
-              help="Queste lezioni hanno almeno due risposte registrate e l’accuratezza più bassa. La percentuale si basa su tutte le risposte date."
-            />
-            {report.weakLessons.length === 0 ? (
-              <P color={colors.mutedForeground}>Servono almeno 2 risposte per lezione.</P>
-            ) : (
-              report.weakLessons.map((lesson) => (
-                <View key={lesson.number} style={{ gap: 4 }}>
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 8 }}>
-                    <P style={{ flex: 1, fontFamily: fonts.bodySemi, fontSize: 14 }} numberOfLines={2}>
-                      <Text style={{ fontFamily: fonts.bodyBold }}>L{lesson.number}</Text>
-                      {lesson.title ? ` · ${lesson.title}` : ''}
-                    </P>
-                    <P color={colors.destructive} style={{ fontFamily: fonts.bodyBold }}>{percent(Math.round((lesson.accuracyPct ?? 0) * 10) / 10)}</P>
-                  </View>
-                  <Bar value={(lesson.accuracyPct ?? 0) / 100} color={colors.destructive} height={6} />
-                </View>
-              ))
-            )}
-          </Card>
+          {isWide && categoryCoverage}
 
-          <Card>
-            <SectionHeading
-              title="Copertura per categoria"
-              help="Mostra quante domande di ogni categoria hai incontrato almeno una volta, rispetto al totale."
-            />
-            {[...report.categories.entries()].map(([category, value]) => (
-              <View key={category} style={{ gap: 4 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <P style={{ fontFamily: fonts.bodySemi, fontSize: 14 }}>{category}</P>
-                  <P color={colors.mutedForeground} style={{ fontSize: 13 }}>{value.seen}/{value.total}</P>
-                </View>
-                <Bar value={value.total ? value.seen / value.total : 0} color={colors.success} />
-              </View>
-            ))}
-          </Card>
-
-          <Card>
-            <SectionHeading
-              title="Domande più difficili"
-              help="Sono le domande con più risposte sbagliate registrate. Un errore non impedisce di recuperarle con l’esercizio."
-            />
-            {report.hard.length === 0 ? (
-              <P color={colors.mutedForeground}>Nessun errore registrato finora.</P>
-            ) : (
-              report.hard.map((question) => (
-                <View key={question.id} style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
-                  <View style={{ backgroundColor: colors.dangerSoft, borderRadius: 999, paddingHorizontal: 9, paddingVertical: 3 }}>
-                    <Text style={{ fontFamily: fonts.bodyBold, fontSize: 13, color: colors.destructive }}>
-                      {stats[question.id].wrong}×
-                    </Text>
-                  </View>
-                  <P style={{ flex: 1, fontSize: 14.5 }} numberOfLines={3}>{question.q}</P>
-                </View>
-              ))
-            )}
-          </Card>
+          <View style={{ flexDirection: isWide ? 'row' : 'column', gap: 14 }}>
+            <View style={isWide ? { flex: 1, minWidth: 0 } : { width: '100%' }}>
+              <Card>
+                <SectionHeading
+                  title="Lezioni da rinforzare"
+                  help="Queste lezioni hanno almeno due risposte registrate e l’accuratezza più bassa. La percentuale si basa su tutte le risposte date."
+                />
+                {report.weakLessons.length === 0 ? (
+                  <P color={colors.mutedForeground}>Servono almeno 2 risposte per lezione.</P>
+                ) : (
+                  report.weakLessons.map((lesson) => (
+                    <View key={lesson.number} style={{ gap: 4 }}>
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 8 }}>
+                        <P style={{ flex: 1, fontFamily: fonts.bodySemi, fontSize: 14 }} numberOfLines={2}>
+                          <Text style={{ fontFamily: fonts.bodyBold }}>L{lesson.number}</Text>
+                          {lesson.title ? ` · ${lesson.title}` : ''}
+                        </P>
+                        <P color={colors.destructive} style={{ fontFamily: fonts.bodyBold }}>
+                          {percent(Math.round((lesson.accuracyPct ?? 0) * 10) / 10)}
+                        </P>
+                      </View>
+                      <Bar value={(lesson.accuracyPct ?? 0) / 100} color={colors.destructive} height={6} />
+                    </View>
+                  ))
+                )}
+              </Card>
+            </View>
+            {!isWide && categoryCoverage}
+            <View style={isWide ? { flex: 1, minWidth: 0 } : { width: '100%' }}>
+              <Card>
+                <SectionHeading
+                  title="Domande più difficili"
+                  help="Sono le domande con più risposte sbagliate registrate. Un errore non impedisce di recuperarle con l’esercizio."
+                />
+                {report.hard.length === 0 ? (
+                  <P color={colors.mutedForeground}>Nessun errore registrato finora.</P>
+                ) : (
+                  report.hard.map((question) => (
+                    <View key={question.id} style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
+                      <View style={{ backgroundColor: colors.dangerSoft, borderRadius: 999, paddingHorizontal: 9, paddingVertical: 3 }}>
+                        <Text style={{ fontFamily: fonts.bodyBold, fontSize: 13, color: colors.destructive }}>
+                          {stats[question.id].wrong}×
+                        </Text>
+                      </View>
+                      <P style={{ flex: 1, fontSize: 14.5 }} numberOfLines={3}>{question.q}</P>
+                    </View>
+                  ))
+                )}
+              </Card>
+            </View>
+          </View>
 
           <Card>
             <SectionHeading

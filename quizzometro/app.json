@@ -3,7 +3,7 @@
     "name": "Quizzometro UNI(versale)",
     "slug": "quizzometro-universale",
     "scheme": "quizzometro",
-    "version": "1.0.15",
+    "version": "1.0.16",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,7 +16,7 @@
     "newArchEnabled": true,
     "android": {
       "package": "com.quizzometro.universale",
-      "versionCode": 16,
+      "versionCode": 17,
       "allowBackup": false,
       "backgroundColor": "#F5EFE3",
       "adaptiveIcon": {

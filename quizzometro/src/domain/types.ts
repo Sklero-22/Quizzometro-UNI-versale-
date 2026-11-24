@@ -84,6 +84,26 @@ export interface ReleaseInfo {
   publishedAt: string | null;
 }
 
+export type QuizCountSelection = 10 | 20 | 30 | 'all' | 'custom';
+export type QuizTimerSelection = 10 | 20 | 30 | 'off' | 'custom';
+export type QuizPreferenceStatus = 'all' | 'seen' | 'unseen' | 'wrong' | 'recover' | 'review';
+
+export interface QuizPreferences {
+  mode: 'mixed' | 'inedite';
+  countSel: QuizCountSelection;
+  customCount: string;
+  timerSel: QuizTimerSelection;
+  customTimer: string;
+  status: QuizPreferenceStatus;
+  onlyDates: boolean;
+  categories: 'all' | string[];
+  lessons: 'all' | number[];
+  lessonQuickN: number;
+  showFilters: boolean;
+  intervalFrom: string;
+  intervalTo: string;
+}
+
 export interface Settings {
   repoUrl: string;
   lastN: number;
@@ -91,6 +111,8 @@ export interface Settings {
   latestRelease: ReleaseInfo | null;
   updateError: string | null;
   dismissedTag: string | null;
+  quizPrefs: Record<string, QuizPreferences>;
+  lastQuizSubjectId: string | null;
 }
 
 export interface AppData {
@@ -113,4 +135,6 @@ export const defaultSettings = (): Settings => ({
   latestRelease: null,
   updateError: null,
   dismissedTag: null,
+  quizPrefs: {},
+  lastQuizSubjectId: null,
 });

@@ -12,10 +12,12 @@ import { Image } from 'expo-image';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Alert, Platform, Text, View, useWindowDimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Btn, Card, ErrorBoundary, H2, P, Screen } from '../src/components/ui';
+import { useLayout } from '../src/components/layout';
 import { validateBackup } from '../src/data/backup';
 import { INSTALLED_VERSION } from '../src/data/releases';
 import { StoreProvider, useStore } from '../src/data/store';
@@ -64,6 +66,9 @@ function LoadError() {
 
 function Gate() {
   const { status } = useStore();
+  const { width, height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+  const { pad, compactLandscape } = useLayout();
   const [fontsLoaded, fontError] = useFonts({
     BricolageGrotesque_600SemiBold,
     BricolageGrotesque_700Bold,
@@ -89,50 +94,72 @@ function Gate() {
   if (!ready) return null;
   if (status === 'error') return <LoadError />;
   if (!entered) {
+    const webTopInset = Platform.OS === 'web' ? 67 : 0;
+    const webBottomInset = Platform.OS === 'web' ? 34 : 0;
+    const frameWidth = Math.min(width - insets.left - insets.right, 760);
+    const availableWidth = Math.max(0, frameWidth - pad * 2);
+    const availableHeight = Math.max(
+      0,
+      height - insets.top - insets.bottom - webTopInset - webBottomInset - (compactLandscape ? 78 : 108),
+    );
+    const imageSide = Math.max(
+      160,
+      Math.min(availableWidth, availableHeight, Math.min(width, height) * 0.7, 640),
+    );
+    const imageRadius = imageSide * 0.2;
+    const image = (
+      <View
+        style={{
+          width: imageSide,
+          height: imageSide,
+          borderRadius: imageRadius,
+          overflow: 'hidden',
+          backgroundColor: colors.background,
+        }}
+      >
+        <Image
+          source={require('../assets/splash.png')}
+          contentFit="contain"
+          accessibilityLabel="Illustrazione iniziale Quizzometro"
+          style={{ width: '100%', height: '100%', borderRadius: imageRadius }}
+        />
+      </View>
+    );
+    const enterButton = introElapsed ? (
+      <Btn
+        title="Entra"
+        icon="arrow-right"
+        onPress={() => setEntered(true)}
+        testID="intro-enter"
+        style={{ width: 220 }}
+      />
+    ) : null;
+    const version = (
+      <Text
+        style={{ color: colors.mutedForeground, fontFamily: fonts.bodyMedium, fontSize: 12 }}
+        testID="intro-version"
+      >
+        v{INSTALLED_VERSION}
+      </Text>
+    );
     return (
-      <Screen scroll={false} maxWidth={560}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', position: 'relative', paddingBottom: 34 }}>
-          <View
-            style={{
-              width: '100%',
-              maxWidth: 360,
-              aspectRatio: 1,
-              borderRadius: 32,
-              overflow: 'hidden',
-              backgroundColor: colors.background,
-            }}
-          >
-            <Image
-              source={require('../assets/splash.png')}
-              contentFit="cover"
-              accessibilityLabel="Illustrazione iniziale Quizzometro"
-              style={{ width: '100%', height: '100%', borderRadius: 32 }}
-            />
-          </View>
-          <View style={{ height: 54, justifyContent: 'center', width: '100%', alignItems: 'center' }}>
-            {introElapsed ? (
-              <Btn
-                title="Entra"
-                icon="arrow-right"
-                onPress={() => setEntered(true)}
-                testID="intro-enter"
-                style={{ width: 220 }}
-              />
-            ) : null}
-          </View>
-          <Text
-            style={{
-              position: 'absolute',
-              right: 0,
-              bottom: 4,
-              color: colors.mutedForeground,
-              fontFamily: fonts.bodyMedium,
-              fontSize: 12,
-            }}
-            testID="intro-version"
-          >
-            v{INSTALLED_VERSION}
-          </Text>
+      <Screen scroll={false} maxWidth={760}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          {compactLandscape ? (
+            <View style={{ flex: 1, width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+              {image}
+              <View style={{ minWidth: 220, alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+                <View style={{ height: 54, justifyContent: 'center' }}>{enterButton}</View>
+                {version}
+              </View>
+            </View>
+          ) : (
+            <>
+              {image}
+              <View style={{ height: 62, justifyContent: 'center', alignItems: 'center' }}>{enterButton}</View>
+              <View style={{ position: 'absolute', right: 0, bottom: 4 }}>{version}</View>
+            </>
+          )}
         </View>
       </Screen>
     );

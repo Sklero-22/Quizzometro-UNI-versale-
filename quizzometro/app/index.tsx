@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, Pressable, Text, View } from 'react-native';
+import { Alert, Platform, Pressable, Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { BrandMark, Btn, Card, Empty, P, Screen } from '../src/components/ui';
 import { WELCOME_HIDE_KEY, WelcomeModal } from '../src/components/WelcomeModal';
@@ -32,7 +32,7 @@ const HOME_SECTIONS: { id: HomeSection; label: string; icon: React.ComponentProp
 ];
 
 export default function Home() {
-  const { isWide, isTablet } = useLayout();
+  const { isWide, isTablet, maxContentWidth } = useLayout();
   const router = useRouter();
   const params = useLocalSearchParams<{ section?: HomeSection }>();
   const { data, activeSubject, activeSession, updateSettings } = useStore();
@@ -147,14 +147,15 @@ export default function Home() {
       accessibilityRole="tablist"
       style={{
         width: '100%',
-        maxWidth: isWide ? 900 : isTablet ? 720 : 620,
+        maxWidth: maxContentWidth,
         alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'space-around',
         gap: 8,
         paddingHorizontal: 8,
         paddingTop: 7,
-        paddingBottom: 5,
+        paddingBottom: Platform.OS === 'web' ? 25 : 5,
+        height: Platform.OS === 'web' ? 84 : undefined,
         borderTopWidth: 1,
         borderTopColor: colors.border,
         backgroundColor: colors.card,
@@ -203,11 +204,23 @@ export default function Home() {
   let content: React.ReactNode;
   if (section === 'today') {
     content = activeSubject ? (
-      <>
-        <SubjectPanel subject={activeSubject} />
-        {activeSession ? <ResumeBanner session={activeSession} /> : null}
-        <RecentReview subject={activeSubject} />
-      </>
+      isWide ? (
+        <View style={{ flexDirection: 'row', gap: 20, alignItems: 'flex-start' }}>
+          <View style={{ flex: 1, minWidth: 0 }}>
+            <SubjectPanel subject={activeSubject} />
+          </View>
+          <View style={{ flex: 1, minWidth: 0, gap: 14 }}>
+            {activeSession ? <ResumeBanner session={activeSession} /> : null}
+            <RecentReview subject={activeSubject} />
+          </View>
+        </View>
+      ) : (
+        <>
+          <SubjectPanel subject={activeSubject} />
+          {activeSession ? <ResumeBanner session={activeSession} /> : null}
+          <RecentReview subject={activeSubject} />
+        </>
+      )
     ) : (
       <Card>
         <Empty title="Nessuna materia" text="Importa un file JSON o HTML dalla schermata Materie per iniziare." />
@@ -264,7 +277,7 @@ export default function Home() {
 
   return (
     <>
-      <Screen key={section} maxWidth={isWide ? 900 : isTablet ? 720 : 620} footer={navigation}>
+      <Screen key={section} maxWidth={maxContentWidth} footer={navigation}>
         {header}
         {content}
         <P color={colors.mutedForeground} style={{ fontSize: 12, textAlign: 'center', paddingBottom: 6 }}>

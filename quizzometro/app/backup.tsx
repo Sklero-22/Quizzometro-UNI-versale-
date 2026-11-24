@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Alert, Platform, View } from 'react-native';
 import { Btn, Card, H2, Label, Notice, P, Screen } from '../src/components/ui';
+import { useLayout } from '../src/components/layout';
 import { backupFileName, serializeBackup, validateBackup, type BackupSummary } from '../src/data/backup';
 import {
   backupDirectoryLabel,
@@ -23,6 +24,7 @@ const fmtDate = (t: number | null) =>
 
 export default function Backup() {
   const router = useRouter();
+  const { isWide } = useLayout();
   const { data, restoreBackup } = useStore();
   const [busy, setBusy] = useState<'export' | 'local' | 'folder' | 'import' | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -181,6 +183,8 @@ export default function Backup() {
 
   return (
     <Screen title="Backup" onBack={() => router.back()}>
+      <View style={{ flexDirection: isWide ? 'row' : 'column', gap: 14, alignItems: 'flex-start' }}>
+        <View style={isWide ? { flex: 1, minWidth: 0 } : { width: '100%' }}>
       <Card>
         <H2>Backup nella cartella scelta</H2>
         <P color={colors.mutedForeground} style={{ fontSize: 14 }}>
@@ -268,6 +272,8 @@ export default function Backup() {
         {error && <Notice tone="danger">{error}</Notice>}
       </Card>
 
+        </View>
+        <View style={isWide ? { flex: 1, minWidth: 0 } : { width: '100%' }}>
       <Card>
         <H2>Ripristina</H2>
         <P color={colors.mutedForeground} style={{ fontSize: 14 }}>
@@ -358,6 +364,8 @@ export default function Backup() {
           </View>
         )}
       </Card>
+        </View>
+      </View>
     </Screen>
   );
 }

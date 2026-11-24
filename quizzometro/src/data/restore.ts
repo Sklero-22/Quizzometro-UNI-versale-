@@ -1,5 +1,6 @@
 import type { AppData, Lesson, Question, Subject } from '../domain/types';
 import { DEFAULT_REPO_URL, defaultSettings } from '../domain/types';
+import { normalizeQuizSettings } from '../domain/quiz/preferences';
 import seed from './seedData';
 
 export type RestoreMode = 'replace_all' | 'merge_overwrite' | 'overwrite_common_only';
@@ -55,15 +56,50 @@ export function isPristineInstall(data: AppData): boolean {
     data.sessions.length === 0 &&
     Object.keys(data.stats).length === 0 &&
     Object.values(data.savedQuestionIds ?? {}).every((questionIds) => questionIds.length === 0) &&
+    Object.keys(data.settings.quizPrefs ?? {}).length === 0 &&
+    data.settings.lastQuizSubjectId === null &&
     data.settings.repoUrl === DEFAULT_REPO_URL &&
     data.settings.lastN === defaults.lastN &&
     data.settings.dismissedTag === null
   );
 }
 
+function normalizeSettingsForSubjects(
+  settings: AppData['settings'],
+  subjects: Subject[],
+  subjectIds?: Map<string, string>,
+): AppData['settings'] {
+  const quizPrefs: AppData['settings']['quizPrefs'] = {};
+  Object.entries(settings.quizPrefs ?? {}).forEach(([sourceId, preferences]) => {
+    const targetId = subjectIds ? subjectIds.get(sourceId) : sourceId;
+    if (targetId) quizPrefs[targetId] = preferences;
+  });
+  const sourceLastId = settings.lastQuizSubjectId;
+  const lastQuizSubjectId = sourceLastId
+    ? subjectIds
+      ? subjectIds.get(sourceLastId) ?? null
+      : sourceLastId
+    : null;
+  return normalizeQuizSettings(
+    {
+      ...defaultSettings(),
+      ...settings,
+      quizPrefs,
+      lastQuizSubjectId,
+    },
+    subjects,
+  );
+}
+
 /** Restores an archive in full or merges only the records allowed by the selected mode. */
 export function restoreAppData(current: AppData, backup: AppData, mode: RestoreMode): AppData {
-  if (mode === 'replace_all') return { ...backup, savedQuestionIds: backup.savedQuestionIds ?? {} };
+  if (mode === 'replace_all') {
+    const restored = { ...backup, savedQuestionIds: backup.savedQuestionIds ?? {} };
+    return {
+      ...restored,
+      settings: normalizeSettingsForSubjects(restored.settings, restored.subjects),
+    };
+  }
 
   const subjects = current.subjects.map((subject) => ({
     ...subject,
@@ -246,6 +282,6 @@ export function restoreAppData(current: AppData, backup: AppData, mode: RestoreM
     sessions,
     activeSubjectId,
     activeSessionId,
-    settings: backup.settings,
+    settings: normalizeSettingsForSubjects(backup.settings, subjects, subjectIds),
   };
 }

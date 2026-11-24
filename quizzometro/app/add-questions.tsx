@@ -2,6 +2,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Modal, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Btn, Card, H2, Label, Notice, P, Screen } from '../src/components/ui';
+import { useLayout } from '../src/components/layout';
 import { useStore } from '../src/data/store';
 import { createPasteImportPreview } from '../src/domain/import/pasteImport';
 import { parsePastedQuestions, type PasteParseResult } from '../src/domain/import/pasteParser';
@@ -11,6 +12,7 @@ import { colors, fonts, radius } from '../src/theme';
 
 export default function AddQuestions() {
   const router = useRouter();
+  const { isWide } = useLayout();
   const params = useLocalSearchParams<{ subjectId?: string | string[] }>();
   const subjectId = Array.isArray(params.subjectId) ? params.subjectId[0] : params.subjectId;
   const { data, applyImportPlan } = useStore();
@@ -98,6 +100,8 @@ export default function AddQuestions() {
         </P>
       </Card>
 
+      <View style={{ flexDirection: isWide && checked ? 'row' : 'column', gap: 14, alignItems: 'flex-start' }}>
+        <View style={isWide && checked ? { flex: 1, minWidth: 0, gap: 14 } : { width: '100%', gap: 14 }}>
       <Card>
         <H2>Formato da incollare</H2>
         <P color={colors.mutedForeground} style={styles.example}>
@@ -126,9 +130,10 @@ export default function AddQuestions() {
       </Card>
 
       {message && <Notice tone="accent">{message}</Notice>}
+        </View>
 
       {checked && (
-        <>
+        <View style={isWide ? { flex: 1, minWidth: 0, gap: 14 } : { width: '100%', gap: 14 }}>
           <Card>
             <H2>Anteprima</H2>
             <P color={colors.mutedForeground}>
@@ -200,8 +205,9 @@ export default function AddQuestions() {
             disabled={!preview || preview.plan.added.length === 0}
             testID="add-pasted-questions"
           />
-        </>
+        </View>
       )}
+      </View>
 
       <Modal
         animationType="fade"

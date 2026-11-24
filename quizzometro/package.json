@@ -1,6 +1,6 @@
 {
   "name": "quizzometro-universale",
-  "version": "1.0.9",
+  "version": "1.0.16",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
@@ -8,6 +8,7 @@
     "seed": "tsx scripts/build-seed.ts",
     "test:inedite": "tsx scripts/test-inedite.ts",
     "test:mastery": "tsx scripts/test-mastery.ts",
+    "test:quiz-preferences": "tsx scripts/test-quiz-preferences.ts",
     "test:shuffle": "tsx scripts/test-shuffle.ts",
     "test:release-security": "tsx scripts/test-release-security.ts",
     "typecheck": "tsc --noEmit",

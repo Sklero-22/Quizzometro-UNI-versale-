@@ -61,6 +61,22 @@ const release = z.object({
   publishedAt: z.string().nullable(),
 });
 
+const quizPreference = z.object({
+  mode: z.enum(['mixed', 'inedite']),
+  countSel: z.union([z.literal(10), z.literal(20), z.literal(30), z.enum(['all', 'custom'])]),
+  customCount: z.string(),
+  timerSel: z.union([z.literal(10), z.literal(20), z.literal(30), z.enum(['off', 'custom'])]),
+  customTimer: z.string(),
+  status: z.enum(['all', 'seen', 'unseen', 'wrong', 'recover', 'review']),
+  onlyDates: z.boolean(),
+  categories: z.union([z.literal('all'), z.array(z.string())]),
+  lessons: z.union([z.literal('all'), z.array(z.number().int())]),
+  lessonQuickN: z.number().int().nonnegative(),
+  showFilters: z.boolean(),
+  intervalFrom: z.string(),
+  intervalTo: z.string(),
+});
+
 const appData = z.object({
   schema: z.literal(1),
   subjects: z.array(subject),
@@ -76,6 +92,8 @@ const appData = z.object({
     latestRelease: release.nullable(),
     updateError: z.string().nullable(),
     dismissedTag: z.string().nullable(),
+    quizPrefs: z.record(z.string(), quizPreference).default({}),
+    lastQuizSubjectId: z.string().nullable().default(null),
   }),
 });
 

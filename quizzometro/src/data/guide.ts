@@ -35,6 +35,7 @@ export const GUIDE_SECTIONS: GuideSection[] = [
     title: 'Preparare una prova',
     paragraphs: [
       'Scegli quante domande vuoi fare, se usare il timer e quali domande includere. Puoi restringere la prova a determinate categorie o lezioni usando i relativi filtri.',
+      'Le impostazioni del Quiz vengono ricordate separatamente per ogni materia. Puoi selezionare rapidamente le prime o le ultime N lezioni, oppure un intervallo; le selezioni si aggiornano quando aggiungi o rimuovi lezioni.',
       'Se la materia contiene domande Inedite, puoi scegliere un quiz misto (con circa il 15% di Inedite) oppure una prova dedicata. Le Inedite senza capitolo restano disponibili anche quando scegli le lezioni.',
       'Quando le scelte sono pronte, tocca Avvia prova. Se non ci sono domande adatte alle selezioni, allarga i filtri o scegli Tutte.',
     ],
@@ -73,6 +74,12 @@ export const GUIDE_SECTIONS: GuideSection[] = [
 ];
 
 export const RELEASE_NOTES: ReleaseNote[] = [
+  {
+    version: '1.0.16',
+    title: 'Quiz personalizzato e layout adattivo',
+    summary:
+      'Il Quiz ricorda le tue impostazioni per ogni materia, nuovi pulsanti Primi N, Ultimi N e Intervallo per le lezioni, schermata iniziale e layout ottimizzati per tablet e computer',
+  },
   {
     version: '1.0.15',
     title: 'Grafica più chiara in Andamento',

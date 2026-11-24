@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Alert, Platform, Switch, Text, TextInput, View } from 'react-native';
 import { Btn, Card, Chip, H2, Label, Notice, P, Screen } from '../src/components/ui';
+import { useLayout } from '../src/components/layout';
 import { useStore } from '../src/data/store';
 import { planImport } from '../src/domain/import/merge';
 import { parseSubjectText, type DefaultOrigin, type ParsedSubject } from '../src/domain/import/parse';
@@ -80,6 +81,7 @@ async function fetchClaudeArtifactHtml(artifactUrl: string): Promise<string> {
 
 export default function Subjects() {
   const router = useRouter();
+  const { isWide } = useLayout();
   const { data, setActiveSubject, deleteSubject, applyImportPlan } = useStore();
   const [url, setUrl] = useState('');
   const [busy, setBusy] = useState(false);
@@ -236,6 +238,8 @@ export default function Subjects() {
 
   return (
     <Screen title="Materie" onBack={() => router.back()}>
+      <View style={{ flexDirection: isWide ? 'row' : 'column', gap: 14, alignItems: 'flex-start' }}>
+        <View style={isWide ? { flex: 1, minWidth: 0, gap: 14 } : { width: '100%', gap: 14 }}>
       {data.subjects.length === 0 && <Notice>Nessuna materia presente: importane una qui sotto.</Notice>}
       {shareError && <Notice tone="danger">{shareError}</Notice>}
       {data.subjects.map((s) => {
@@ -315,6 +319,8 @@ export default function Subjects() {
         );
       })}
 
+        </View>
+        <View style={isWide ? { flex: 1, minWidth: 0, gap: 14 } : { width: '100%', gap: 14 }}>
       <Card>
         <H2>Importa una materia</H2>
         <P color={colors.mutedForeground} style={{ fontSize: 14 }}>
@@ -448,6 +454,8 @@ export default function Subjects() {
           <Btn title="Annulla" variant="ghost" small onPress={() => setLoaded(null)} />
         </Card>
       )}
+        </View>
+      </View>
     </Screen>
   );
 }

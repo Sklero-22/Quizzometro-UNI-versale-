@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Alert, Pressable, Text, TextInput, View } from 'react-native';
 import { Bar, Btn, Card, H2, Label, P } from '../../components/ui';
+import { useLayout } from '../../components/layout';
 import { LegendChips, MasteryRing } from '../../components/charts';
 import { useStore } from '../../data/store';
 import { useInstall } from '../../data/useInstall';
@@ -190,6 +191,8 @@ export function RecentReview({ subject }: { subject: Subject }) {
 
 export function QuickLinks() {
   const router = useRouter();
+  const { isMedium, isWide } = useLayout();
+  const columns = isMedium || isWide ? 3 : 2;
   const items: { label: string; icon: React.ComponentProps<typeof Feather>['name']; path: string }[] = [
     { label: 'Statistiche', icon: 'bar-chart-2', path: '/progress' },
     { label: 'Materie', icon: 'book-open', path: '/subjects' },
@@ -209,7 +212,7 @@ export function QuickLinks() {
           accessibilityLabel={it.label}
           style={({ pressed }) => ({
             flexGrow: 1,
-            flexBasis: '45%',
+            flexBasis: columns === 3 ? '30%' : '45%',
             backgroundColor: colors.card,
             borderRadius: radius.card,
             borderWidth: 1,

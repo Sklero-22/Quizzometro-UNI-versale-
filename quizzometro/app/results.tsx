@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Btn, Card, Chip, Empty, H2, Label, P, Screen } from '../src/components/ui';
+import { useLayout } from '../src/components/layout';
 import { useStore } from '../src/data/store';
 import { scoreSession } from '../src/domain/quiz/engine';
 import { lessonLabel, sourceLabel } from '../src/domain/quiz/sourceLabel';
@@ -14,6 +15,7 @@ const KIND: Record<string, string> = { original: 'Prova', review: 'Ripasso', rep
 
 export default function Results() {
   const router = useRouter();
+  const { isWide } = useLayout();
   const { id } = useLocalSearchParams<{ id?: string }>();
   const { data, startFromQids, toggleSavedQuestion } = useStore();
   const [filter, setFilter] = useState<'all' | 'wrong' | 'blank'>('all');
@@ -60,6 +62,8 @@ export default function Results() {
 
   return (
     <Screen title="Risultato" onBack={() => router.replace('/')}>
+      <View style={{ flexDirection: isWide ? 'row' : 'column', gap: 18, alignItems: 'flex-start' }}>
+        <View style={isWide ? { flex: 0.8, minWidth: 0, gap: 14 } : { width: '100%', gap: 14 }}>
       <Animated.View entering={FadeInDown.duration(260)}>
         <Card tone={tone}>
           <Label>
@@ -97,6 +101,8 @@ export default function Results() {
         />
       </View>
 
+        </View>
+        <View style={isWide ? { flex: 1.2, minWidth: 0, gap: 14 } : { width: '100%', gap: 14 }}>
       <H2>Revisione</H2>
       <View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>
         <Chip label={`Tutte (${rows.length})`} selected={filter === 'all'} onPress={() => setFilter('all')} />
@@ -153,6 +159,8 @@ export default function Results() {
           )}
         </Card>
       ))}
+        </View>
+      </View>
     </Screen>
   );
 }

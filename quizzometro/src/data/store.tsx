@@ -10,6 +10,7 @@ import {
   type SessionKind,
   type Settings,
   type Subject,
+  type QuizPreferences,
 } from '../domain/types';
 import {
   allCategories,
@@ -21,6 +22,7 @@ import {
   type QuizConfig,
 } from '../domain/quiz/engine';
 import { MASTERY_LOG_LIMIT, rebuildMissingAnswerLogs } from '../domain/quiz/mastery';
+import { normalizeQuizSettings, saveQuizPreferenceForSubject } from '../domain/quiz/preferences';
 import { applyImport, type ImportPlan } from '../domain/import/merge';
 import type { ParsedSubject } from '../domain/import/parse';
 import { fetchLatestRelease, isNewer } from './releases';
@@ -61,7 +63,16 @@ function initialData(): AppData {
 function migrate(meta: Meta): Meta {
   // Schema 1 è l'unico esistente: le migrazioni future vanno aggiunte qui, mai perdendo campi.
   if (meta.schema !== 1) throw new Error(`Versione dello schema non supportata: ${String(meta.schema)}`);
-  return { ...meta, savedQuestionIds: meta.savedQuestionIds ?? {}, settings: { ...defaultSettings(), ...meta.settings } };
+  const settings = { ...defaultSettings(), ...(meta.settings ?? {}) };
+  return {
+    ...meta,
+    savedQuestionIds: meta.savedQuestionIds ?? {},
+    settings: {
+      ...settings,
+      quizPrefs: settings.quizPrefs ?? {},
+      lastQuizSubjectId: settings.lastQuizSubjectId ?? null,
+    },
+  };
 }
 
 async function loadAll(): Promise<AppData> {
@@ -88,6 +99,7 @@ async function loadAll(): Promise<AppData> {
       sessions,
     );
   });
+  const settings = normalizeQuizSettings(meta.settings, subjects);
   return {
     schema: 1,
     subjects,
@@ -96,7 +108,7 @@ async function loadAll(): Promise<AppData> {
     activeSessionId: meta.activeSessionId,
     stats,
     savedQuestionIds: meta.savedQuestionIds,
-    settings: meta.settings,
+    settings,
   };
 }
 
@@ -141,6 +153,7 @@ interface Store {
   restoreBackup: (data: AppData, mode?: RestoreMode) => void;
   resetEverything: () => void;
   updateSettings: (patch: Partial<Settings>) => void;
+  saveQuizPreferences: (subjectId: string, preferences: QuizPreferences) => void;
   checkUpdates: (manual: boolean) => Promise<void>;
   checkingUpdates: boolean;
 }
@@ -542,7 +555,20 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         const sessions = d.sessions.filter((s) => s.subjectId !== id);
         const activeSessionId = sessions.some((s) => s.id === d.activeSessionId) ? d.activeSessionId : null;
         const activeSubjectId = d.activeSubjectId === id ? subjects[0]?.id ?? null : d.activeSubjectId;
-        return { ...d, subjects, stats, savedQuestionIds, sessions, activeSessionId, activeSubjectId };
+        const quizPrefs = { ...d.settings.quizPrefs };
+        delete quizPrefs[id];
+        const lastQuizSubjectId =
+          d.settings.lastQuizSubjectId === id ? Object.keys(quizPrefs).at(-1) ?? null : d.settings.lastQuizSubjectId;
+        return {
+          ...d,
+          subjects,
+          stats,
+          savedQuestionIds,
+          sessions,
+          activeSessionId,
+          activeSubjectId,
+          settings: { ...d.settings, quizPrefs, lastQuizSubjectId },
+        };
       });
     },
     [update],
@@ -601,6 +627,20 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [update],
   );
 
+  const saveQuizPreferences = useCallback(
+    (subjectId: string, preferences: QuizPreferences) => {
+      update((d) => {
+        const subject = d.subjects.find((item) => item.id === subjectId);
+        if (!subject) return d;
+        return {
+          ...d,
+          settings: saveQuizPreferenceForSubject(d.settings, subject, preferences),
+        };
+      });
+    },
+    [update],
+  );
+
   const subjectStats = useCallback((id: string) => data.stats[id] ?? {}, [data.stats]);
 
   const activeSubject = useMemo(
@@ -633,6 +673,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     restoreBackup,
     resetEverything,
     updateSettings,
+    saveQuizPreferences,
     checkUpdates,
     checkingUpdates,
   };

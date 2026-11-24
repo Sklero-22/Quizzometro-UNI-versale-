@@ -30,7 +30,7 @@ const safeHaptic = (fn: () => Promise<void>) => {
 
 export default function QuizScreen() {
   const router = useRouter();
-  const { isWide, width, height, pad, compactLandscape } = useLayout();
+  const { isWide, width, height, pad, compactLandscape, maxContentWidth } = useLayout();
   const { activeSession: session, data, answer, goTo, finish, toggleSavedQuestion } = useStore();
   const [now, setNow] = useState(Date.now());
 
@@ -226,7 +226,7 @@ export default function QuizScreen() {
       <View
         style={{
           width: '100%',
-          maxWidth: sideBySide ? 1180 : 760,
+          maxWidth: sideBySide ? 1240 : maxContentWidth,
           alignSelf: 'center',
           paddingHorizontal: pad,
           paddingTop: compactLandscape ? 4 : 10,
@@ -276,7 +276,7 @@ export default function QuizScreen() {
       <ScrollView
         contentContainerStyle={{
           width: '100%',
-          maxWidth: sideBySide ? 1180 : 760,
+          maxWidth: sideBySide ? 1240 : maxContentWidth,
           alignSelf: 'center',
           padding: pad,
           paddingBottom: 24,
@@ -300,7 +300,7 @@ export default function QuizScreen() {
       <View
         style={{
           width: '100%',
-          maxWidth: sideBySide ? 1180 : 760,
+          maxWidth: sideBySide ? 1240 : maxContentWidth,
           alignSelf: 'center',
           flexDirection: 'row',
           gap: 10,
