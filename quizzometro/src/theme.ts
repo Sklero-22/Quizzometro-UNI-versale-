@@ -18,6 +18,16 @@ export const colors = {
   accentSoft: '#F7E6BE',
   inkSoft: '#DCDDEB',
   splash: '#F6F4ED',
+  masteryNew: '#B8B2A7',
+  masteryRecover: '#D9534F',
+  masteryConsolidating: '#E8A33D',
+  masteryLearned: '#3C8A4A',
+  masteryReview: '#9CCB9F',
+  activity0: '#EBE2D0',
+  activity1: '#C6E4CA',
+  activity2: '#8FC697',
+  activity3: '#3C8A4A',
+  activity4: '#21632D',
 };
 
 export const radius = { base: 14, card: 18 };

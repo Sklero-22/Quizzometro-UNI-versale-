@@ -1,3 +1,3 @@
 - [Pubblicazione APK](apk-github-publishing.md) — Per Quizzometro, consegna l’APK firmato; la pubblicazione su GitHub la gestisce l’utente.
 - [Ordine delle ripetizioni](quiz-ripetizioni.md) — Le ripetizioni dai risultati devono rimescolare sia le domande sia le risposte, mantenendo fissa solo una prova già avviata.
-- [Build Android con memoria limitata](android-build-memory.md) — Limita i worker Metro per evitare che la compilazione firmata venga terminata per memoria.
+- [Build Android con memoria limitata](android-build-memory.md) — Per gli APK firmati, limita Metro a un worker e Gradle a 1 GB per evitare terminazioni per memoria.

@@ -1,8 +1,23 @@
 import type { QStat, Question, Session, SessionItem, SessionKind, Subject } from '../types';
+import { masteryStateForQuestion } from './mastery';
 
-export type StatusFilter = 'all' | 'seen' | 'unseen' | 'wrong';
+export type StatusFilter = 'all' | 'seen' | 'unseen' | 'wrong' | 'recover' | 'review';
 export type QuizMode = 'mixed' | 'inedite';
 export const INEDITE_QUIZ_PERCENT = 15;
+
+export const QUESTION_SELECTION_WEIGHTS = {
+  neverSeen: 3,
+  wrongRateBase: 1,
+  wrongRateMultiplier: 2,
+  lastCompletedQuiz: 0.3,
+  seenWithin24Hours: 0.6,
+  ageStepDays: 7,
+  maxAgeMultiplier: 2,
+  recoverStateMultiplier: 2,
+  reviewStateMultiplier: 1.5,
+} as const;
+
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 export interface QuizConfig {
   /** null = tutte */
@@ -18,6 +33,32 @@ export interface QuizConfig {
 }
 
 export type SubjectStats = Record<string, QStat>;
+
+export interface QuizProgressSummary {
+  totalQuestions: number;
+  seenQuestions: number;
+  unseenQuestions: number;
+  wrongQuestions: number;
+  seenPercent: number;
+}
+
+export function quizProgressSummary(pool: Question[], stats: SubjectStats): QuizProgressSummary {
+  let seenQuestions = 0;
+  let wrongQuestions = 0;
+  pool.forEach((question) => {
+    const stat = stats[question.id];
+    if (stat?.seen) seenQuestions++;
+    if (stat?.wrong) wrongQuestions++;
+  });
+  const totalQuestions = pool.length;
+  return {
+    totalQuestions,
+    seenQuestions,
+    unseenQuestions: totalQuestions - seenQuestions,
+    wrongQuestions,
+    seenPercent: totalQuestions ? Math.round((seenQuestions / totalQuestions) * 100) : 0,
+  };
+}
 
 const MONTHS =
   'gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre';
@@ -116,6 +157,7 @@ export function filterQuestions(
 ): Question[] {
   const cats = new Set(cfg.categories);
   const lessons = new Set(cfg.lessons);
+  const now = Date.now();
   return subject.questions.filter((q) => {
     if (cfg.mode === 'inedite') {
       if (!isInediteQuestion(q)) return false;
@@ -130,6 +172,8 @@ export function filterQuestions(
     if (cfg.status === 'seen' && !(st && st.seen > 0)) return false;
     if (cfg.status === 'unseen' && st && st.seen > 0) return false;
     if (cfg.status === 'wrong' && !(st && st.wrong > 0)) return false;
+    if (cfg.status === 'recover' && masteryStateForQuestion(st?.log, (st?.seen ?? 0) > 0, now) !== 'recover') return false;
+    if (cfg.status === 'review' && masteryStateForQuestion(st?.log, (st?.seen ?? 0) > 0, now) !== 'review') return false;
     if (cfg.onlyDates && !hasDate(q)) return false;
     return true;
   });
@@ -147,14 +191,46 @@ function shuffle<T>(a: T[]): T[] {
   return a;
 }
 
+function interleaveByLesson(qs: Question[], lessonById?: Map<string, string>): Question[] {
+  if (!lessonById || qs.length < 2) return shuffle(qs.slice());
+
+  const buckets = new Map<string, Question[]>();
+  qs.forEach((question) => {
+    const key = lessonById.get(question.id) ?? `lesson:${question.lz || 0}`;
+    const bucket = buckets.get(key) ?? [];
+    bucket.push(question);
+    buckets.set(key, bucket);
+  });
+  buckets.forEach((bucket, key) => buckets.set(key, shuffle(bucket)));
+
+  const remaining = new Map([...buckets].map(([key, bucket]) => [key, bucket.slice()]));
+  const result: Question[] = [];
+  let previous: string | null = null;
+  while (result.length < qs.length) {
+    let eligible = [...remaining.entries()].filter(([key, bucket]) => bucket.length && key !== previous);
+    if (!eligible.length) eligible = [...remaining.entries()].filter(([, bucket]) => bucket.length);
+    const largest = Math.max(...eligible.map(([, bucket]) => bucket.length));
+    const candidates = eligible.filter(([, bucket]) => bucket.length === largest);
+    const [key, bucket] = candidates[rnd(candidates.length)];
+    result.push(bucket.pop()!);
+    previous = key;
+  }
+  return result;
+}
+
 /**
  * Ordine delle domande: tra molti mescolamenti casuali sceglie quello che si
  * allontana di più da come le domande sono già state viste (stessa posizione,
  * coppie consecutive, stesso test d'origine o stessa lezione in fila).
  */
-export function mixQuestions(qs: Question[], history: string[][], lastIds: string[]): Question[] {
+export function mixQuestions(
+  qs: Question[],
+  history: string[][],
+  lastIds: string[],
+  lessonById?: Map<string, string>,
+): Question[] {
   const n = qs.length;
-  if (n < 3) return shuffle(qs.slice());
+  if (n < 3) return interleaveByLesson(qs, lessonById);
   const src: Record<string, number> = {};
   const pos: Record<string, number> = {};
   const pairs = new Set<string>();
@@ -192,7 +268,9 @@ export function mixQuestions(qs: Question[], history: string[][], lastIds: strin
         const p = o[i - 1];
         if (pairs.has(p.id + '|' + id)) c += 5;
         if (src[p.id] !== undefined && src[p.id] === src[id]) c += 1.5;
-        if (p.lz === q.lz) c += 1;
+        const previousLesson = lessonById?.get(p.id) ?? `lesson:${p.lz || 0}`;
+        const currentLesson = lessonById?.get(id) ?? `lesson:${q.lz || 0}`;
+        if (previousLesson === currentLesson) c += 12;
       }
       if (i < head && src[id] !== undefined) headCount[src[id]] = (headCount[src[id]] ?? 0) + 1;
     }
@@ -206,7 +284,7 @@ export function mixQuestions(qs: Question[], history: string[][], lastIds: strin
   let best: Question[] = qs;
   let bestC = Infinity;
   for (let t = 0; t < tries; t++) {
-    const o = shuffle(qs.slice());
+    const o = interleaveByLesson(shuffle(qs.slice()), lessonById);
     const c = cost(o);
     if (c < bestC) {
       bestC = c;
@@ -222,14 +300,51 @@ export function mixQuestions(qs: Question[], history: string[][], lastIds: strin
  * posizione (A/B/C/D) dell'ultima volta in cui la domanda è stata vista.
  * Restituisce order[posizioneMostrata] = indice originale.
  */
-export function mixOptions(q: Question, lastPos: number | undefined): number[] {
+export function mixOptions(
+  q: Question,
+  lastPos: number | undefined,
+  desiredCorrectPosition?: number,
+  previousOrder?: number[],
+): number[] {
   const order = shuffle(q.opts.map((_, i) => i));
-  if (lastPos !== undefined && order.length > 1) {
-    const at = order.indexOf(q.ci);
-    if (at === lastPos) {
-      let j = rnd(order.length - 1);
-      if (j >= at) j++;
-      [order[at], order[j]] = [order[j], order[at]];
+  const placeCorrectAt = (position: number) => {
+    const target = Math.max(0, Math.min(order.length - 1, position));
+    const current = order.indexOf(q.ci);
+    if (current !== target) [order[current], order[target]] = [order[target], order[current]];
+  };
+
+  if (desiredCorrectPosition !== undefined && order.length > 1) {
+    let target = Math.max(0, Math.min(order.length - 1, desiredCorrectPosition));
+    if (lastPos !== undefined && target === lastPos) {
+      const alternatives = order.map((_, i) => i).filter((i) => i !== lastPos);
+      target = alternatives[rnd(alternatives.length)];
+    }
+    placeCorrectAt(target);
+  } else if (lastPos !== undefined && order.length > 1 && order.indexOf(q.ci) === lastPos) {
+    let j = rnd(order.length - 1);
+    if (j >= lastPos) j++;
+    placeCorrectAt(j);
+  }
+
+  const samePrevious =
+    previousOrder?.length === order.length && previousOrder.every((option, i) => option === order[i]);
+  if (samePrevious && order.length > 1) {
+    const correctAt = order.indexOf(q.ci);
+    const wrongPositions = order.map((_, i) => i).filter((i) => i !== correctAt);
+    if (wrongPositions.length > 1) {
+      const first = rnd(wrongPositions.length);
+      let second = rnd(wrongPositions.length - 1);
+      if (second >= first) second++;
+      [order[wrongPositions[first]], order[wrongPositions[second]]] = [
+        order[wrongPositions[second]],
+        order[wrongPositions[first]],
+      ];
+    } else {
+      const alternatives = order.map((_, i) => i).filter((i) => i !== correctAt && i !== lastPos);
+      const target = alternatives.length
+        ? alternatives[rnd(alternatives.length)]
+        : order.map((_, i) => i).find((i) => i !== correctAt)!;
+      placeCorrectAt(target);
     }
   }
   return order;
@@ -244,10 +359,288 @@ export function historyIds(sessions: Session[], subjectId: string, max = 30): st
     .map((s) => s.items.filter((_, i) => s.answers[i] !== null).map((it) => it.qid));
 }
 
-function lastOriginal(sessions: Session[], subjectId: string): Session | undefined {
+function lastCompletedQuiz(sessions: Session[], subjectId: string): Session | undefined {
   return sessions
-    .filter((s) => s.subjectId === subjectId && s.kind === 'original' && s.finishedAt !== null)
-    .sort((a, b) => (b.finishedAt ?? 0) - (a.finishedAt ?? 0))[0];
+    .filter((s) => s.subjectId === subjectId && s.finishedAt !== null)
+    .sort((a, b) => (b.finishedAt ?? 0) - (a.finishedAt ?? 0) || b.startedAt - a.startedAt)[0];
+}
+
+interface LessonQuestionGroup {
+  key: string;
+  number: number | null;
+  questions: Question[];
+}
+
+function assignQuestionsToLessons(pool: Question[], selectedLessons?: number[]) {
+  const selected = new Set(selectedLessons ?? []);
+  const entries = shuffle(
+    pool.map((question) => ({
+      question,
+      lessons: [...new Set(questionLessons(question))].filter(
+        (lesson) => selectedLessons === undefined || selected.has(lesson),
+      ),
+    })),
+  ).sort((a, b) => a.lessons.length - b.lessons.length);
+  const groups = new Map<string, LessonQuestionGroup>();
+  const lessonById = new Map<string, string>();
+
+  entries.forEach(({ question, lessons }) => {
+    let number: number | null = null;
+    if (lessons.length) {
+      const minimum = Math.min(...lessons.map((lesson) => groups.get(`lesson:${lesson}`)?.questions.length ?? 0));
+      const leastLoaded = lessons.filter(
+        (lesson) => (groups.get(`lesson:${lesson}`)?.questions.length ?? 0) === minimum,
+      );
+      number = leastLoaded[rnd(leastLoaded.length)];
+    }
+    const key = number === null ? 'lesson:unassigned' : `lesson:${number}`;
+    const group = groups.get(key) ?? { key, number, questions: [] };
+    group.questions.push(question);
+    groups.set(key, group);
+    lessonById.set(question.id, key);
+  });
+
+  return { groups: [...groups.values()], lessonById };
+}
+
+function lessonPracticeWeight(group: LessonQuestionGroup, stats: SubjectStats, now: number): number {
+  const latestPractice = group.questions.reduce((latest, question) => Math.max(latest, stats[question.id]?.lastSeen ?? 0), 0);
+  if (!latestPractice) return QUESTION_SELECTION_WEIGHTS.maxAgeMultiplier;
+  const daysSincePractice = Math.max(0, (now - latestPractice) / DAY_MS);
+  return Math.min(
+    QUESTION_SELECTION_WEIGHTS.maxAgeMultiplier,
+    1 + daysSincePractice / QUESTION_SELECTION_WEIGHTS.ageStepDays,
+  );
+}
+
+function chooseWeighted<T>(items: T[], weight: (item: T) => number): T {
+  const weights = items.map((item) => Math.max(Number.EPSILON, weight(item)));
+  const total = weights.reduce((sum, current) => sum + current, 0);
+  let target = Math.random() * total;
+  for (let i = 0; i < items.length; i++) {
+    target -= weights[i];
+    if (target < 0) return items[i];
+  }
+  return items[items.length - 1];
+}
+
+function questionPracticeWeight(
+  question: Question,
+  stats: SubjectStats,
+  lastCompletedIds: Set<string>,
+  now: number,
+): number {
+  const stat = stats[question.id];
+  let weight = 1;
+  if (!stat || stat.seen <= 0) {
+    weight *= QUESTION_SELECTION_WEIGHTS.neverSeen;
+  } else {
+    const errorRate = Math.max(0, Math.min(1, stat.wrong / stat.seen));
+    weight *= QUESTION_SELECTION_WEIGHTS.wrongRateBase + QUESTION_SELECTION_WEIGHTS.wrongRateMultiplier * errorRate;
+    const daysSinceSeen = stat.lastSeen > 0 ? Math.max(0, (now - stat.lastSeen) / DAY_MS) : 0;
+    weight *= Math.min(
+      QUESTION_SELECTION_WEIGHTS.maxAgeMultiplier,
+      1 + daysSinceSeen / QUESTION_SELECTION_WEIGHTS.ageStepDays,
+    );
+    if (stat.lastSeen > 0 && now >= stat.lastSeen && now - stat.lastSeen <= DAY_MS) {
+      weight *= QUESTION_SELECTION_WEIGHTS.seenWithin24Hours;
+    }
+  }
+  const mastery = masteryStateForQuestion(stat?.log, (stat?.seen ?? 0) > 0, now);
+  if (mastery === 'recover') weight *= QUESTION_SELECTION_WEIGHTS.recoverStateMultiplier;
+  if (mastery === 'review') weight *= QUESTION_SELECTION_WEIGHTS.reviewStateMultiplier;
+  if (lastCompletedIds.has(question.id)) weight *= QUESTION_SELECTION_WEIGHTS.lastCompletedQuiz;
+  return Math.max(Number.EPSILON, weight);
+}
+
+function weightedQuestionOrder(
+  questions: Question[],
+  stats: SubjectStats,
+  lastCompletedIds: Set<string>,
+  now: number,
+): Question[] {
+  return questions
+    .map((question) => {
+      const weight = questionPracticeWeight(question, stats, lastCompletedIds, now);
+      const random = Math.max(Number.EPSILON, Math.random());
+      return { question, key: random ** (1 / weight) };
+    })
+    .sort((a, b) => b.key - a.key)
+    .map(({ question }) => question);
+}
+
+type QuestionBucket = 'all' | 'inedite' | 'other';
+
+function matchesBucket(question: Question, bucket: QuestionBucket): boolean {
+  return bucket === 'all' || (bucket === 'inedite' ? isInediteQuestion(question) : !isInediteQuestion(question));
+}
+
+function selectBalancedByLesson(
+  groups: LessonQuestionGroup[],
+  count: number,
+  bucket: QuestionBucket,
+  stats: SubjectStats,
+  lastCompletedIds: Set<string>,
+  now: number,
+  selectedCounts: Map<string, number>,
+): Question[] {
+  const queues = new Map(
+    groups.map((group) => [
+      group.key,
+      weightedQuestionOrder(group.questions.filter((question) => matchesBucket(question, bucket)), stats, lastCompletedIds, now),
+    ]),
+  );
+  const selected: Question[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const eligible = groups.filter((group) => (queues.get(group.key)?.length ?? 0) > 0);
+    if (!eligible.length) break;
+    const minimum = Math.min(...eligible.map((group) => selectedCounts.get(group.key) ?? 0));
+    const leastSelected = eligible.filter((group) => (selectedCounts.get(group.key) ?? 0) === minimum);
+    const group = chooseWeighted(leastSelected, (candidate) => lessonPracticeWeight(candidate, stats, now));
+    const question = queues.get(group.key)!.shift()!;
+    selected.push(question);
+    selectedCounts.set(group.key, (selectedCounts.get(group.key) ?? 0) + 1);
+  }
+  return selected;
+}
+
+function sameQuestionSet(left: Question[], rightIds: string[]): boolean {
+  if (left.length !== rightIds.length) return false;
+  const right = new Set(rightIds);
+  return right.size === rightIds.length && left.every((question) => right.has(question.id));
+}
+
+function enforceDifferentSelection(
+  selected: Question[],
+  groups: LessonQuestionGroup[],
+  lessonById: Map<string, string>,
+  previousIds: string[],
+  keepInediteQuota: boolean,
+  stats: SubjectStats,
+  lastCompletedIds: Set<string>,
+  now: number,
+): Question[] {
+  if (!selected.length || !sameQuestionSet(selected, previousIds)) return selected;
+  const selectedIds = new Set(selected.map((question) => question.id));
+  const counts = new Map<string, number>();
+  selected.forEach((question) => {
+    const key = lessonById.get(question.id) ?? 'lesson:unassigned';
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  });
+
+  for (const question of selected) {
+    const sourceKey = lessonById.get(question.id) ?? 'lesson:unassigned';
+    const category: QuestionBucket = keepInediteQuota ? (isInediteQuestion(question) ? 'inedite' : 'other') : 'all';
+    const alternatives = groups.flatMap((group) =>
+      group.questions
+        .filter((candidate) => !selectedIds.has(candidate.id) && matchesBucket(candidate, category))
+        .map((candidate) => ({ candidate, group })),
+    );
+    if (!alternatives.length) continue;
+    const sameLesson = alternatives.filter(({ group }) => group.key === sourceKey);
+    const lessLoaded = alternatives.filter(({ group }) => (counts.get(group.key) ?? 0) < (counts.get(sourceKey) ?? 0));
+    const options = sameLesson.length ? sameLesson : lessLoaded.length ? lessLoaded : alternatives;
+    const replacement = weightedQuestionOrder(
+      options.map(({ candidate }) => candidate),
+      stats,
+      lastCompletedIds,
+      now,
+    )[0];
+    return selected.map((candidate) => (candidate.id === question.id ? replacement : candidate));
+  }
+  return selected;
+}
+
+function lastOptionOrders(sessions: Session[], subjectId: string): Map<string, number[]> {
+  const orders = new Map<string, number[]>();
+  sessions
+    .filter((session) => session.subjectId === subjectId)
+    .slice()
+    .sort((a, b) => a.startedAt - b.startedAt)
+    .forEach((session) => session.items.forEach((item) => orders.set(item.qid, item.order)));
+  return orders;
+}
+
+function correctPositionTargets(
+  questions: Question[],
+  stats: SubjectStats,
+  previousOrders: Map<string, number[]>,
+): number[] {
+  const targets = new Array<number>(questions.length);
+  const positionCounts = new Map<number, number>();
+  const indices = shuffle(questions.map((_, index) => index)).sort(
+    (a, b) => questions[a].opts.length - questions[b].opts.length,
+  );
+  const balanceRequired = questions.length >= 10;
+
+  indices.forEach((index) => {
+    const question = questions[index];
+    const optionCount = Math.max(1, question.opts.length);
+    const previousOrder = previousOrders.get(question.id);
+    const previousPosition =
+      previousOrder?.length === question.opts.length
+        ? previousOrder.indexOf(question.ci)
+        : stats[question.id]?.lp;
+    let candidates = Array.from({ length: optionCount }, (_, position) => position);
+    if (previousPosition !== undefined && previousPosition >= 0 && optionCount > 1) {
+      candidates = candidates.filter((position) => position !== previousPosition);
+    }
+    if (!candidates.length) candidates = Array.from({ length: optionCount }, (_, position) => position);
+
+    if (balanceRequired) {
+      const cap = Math.max(Math.floor(questions.length * 0.4), Math.ceil(questions.length / optionCount));
+      const underCap = candidates.filter((position) => (positionCounts.get(position) ?? 0) < cap);
+      if (underCap.length) candidates = underCap;
+    }
+    const minimum = Math.min(...candidates.map((position) => positionCounts.get(position) ?? 0));
+    const leastUsed = candidates.filter((position) => (positionCounts.get(position) ?? 0) === minimum);
+    const target = leastUsed[rnd(leastUsed.length)];
+    targets[index] = target;
+    positionCounts.set(target, (positionCounts.get(target) ?? 0) + 1);
+  });
+
+  return targets;
+}
+
+function sameOrder(left: string[], right: string[]): boolean {
+  return left.length === right.length && left.every((id, index) => id === right[index]);
+}
+
+function sameLessonAdjacencies(questions: Question[], lessonById: Map<string, string>): number {
+  let count = 0;
+  for (let i = 1; i < questions.length; i++) {
+    if (lessonById.get(questions[i - 1].id) === lessonById.get(questions[i].id)) count++;
+  }
+  return count;
+}
+
+function ensureDifferentOrder(
+  questions: Question[],
+  previousIds: string[],
+  lessonById: Map<string, string>,
+): Question[] {
+  if (questions.length < 2 || !sameOrder(questions.map((question) => question.id), previousIds)) return questions;
+  const baselineAdjacencies = sameLessonAdjacencies(questions, lessonById);
+
+  const safeSwaps: Question[][] = [];
+  for (let first = 0; first < questions.length; first++) {
+    for (let second = first + 1; second < questions.length; second++) {
+      if (lessonById.get(questions[first].id) !== lessonById.get(questions[second].id)) continue;
+      const swapped = questions.slice();
+      [swapped[first], swapped[second]] = [swapped[second], swapped[first]];
+      if (sameLessonAdjacencies(swapped, lessonById) <= baselineAdjacencies) safeSwaps.push(swapped);
+    }
+  }
+  if (safeSwaps.length) return safeSwaps[rnd(safeSwaps.length)];
+
+  for (let shift = 1; shift < questions.length; shift++) {
+    const rotated = [...questions.slice(shift), ...questions.slice(0, shift)];
+    if (sameLessonAdjacencies(rotated, lessonById) <= baselineAdjacencies) return rotated;
+  }
+  const swapped = questions.slice();
+  [swapped[0], swapped[1]] = [swapped[1], swapped[0]];
+  return swapped;
 }
 
 export function buildItems(
@@ -256,49 +649,81 @@ export function buildItems(
   stats: SubjectStats,
   sessions: Session[],
   subjectId: string,
-  exact: boolean,
+  _exact: boolean,
   includeInediteQuota = false,
+  selectedLessons?: number[],
 ): SessionItem[] {
-  const last = lastOriginal(sessions, subjectId);
-  const lastSet = new Set(last?.items.map((i) => i.qid) ?? []);
-  let picked: Question[];
+  if (!pool.length) return [];
+  const last = lastCompletedQuiz(sessions, subjectId);
+  const previousIds = last?.items.map((item) => item.qid) ?? [];
+  const lastSet = new Set(previousIds);
   const wanted = count === null ? pool.length : Math.max(0, Math.min(Math.trunc(count), pool.length));
-  const rankByPracticeNeed = (questions: Question[]) =>
-    questions
-      .map((q) => ({
-        q,
-        s: stats[q.id]?.seen ?? 0,
-        inLast: lastSet.has(q.id) ? 1 : 0,
-        r: Math.random(),
-      }))
-      .sort((a, b) => a.s - b.s || a.inLast - b.inLast || a.r - b.r)
-      .map((x) => x.q);
+  const now = Date.now();
+  const { groups, lessonById } = assignQuestionsToLessons(pool, selectedLessons);
+  const picked: Question[] = [];
+  const selectedCounts = new Map<string, number>();
 
-  if (exact || count === null || wanted >= pool.length) {
-    picked = pool;
-  } else if (includeInediteQuota) {
+  if (count === null || wanted >= pool.length) {
+    picked.push(...pool);
+  } else if (includeInediteQuota && pool.some(isInediteQuestion) && pool.some((question) => !isInediteQuestion(question))) {
     const inedite = pool.filter(isInediteQuestion);
-    const other = pool.filter((q) => !isInediteQuestion(q));
-    if (!inedite.length || !other.length) {
-      picked = rankByPracticeNeed(pool).slice(0, wanted);
-    } else {
-      const inediteTarget = Math.min(Math.round((wanted * INEDITE_QUIZ_PERCENT) / 100), inedite.length);
-      const otherTarget = Math.min(wanted - inediteTarget, other.length);
-      // Se non ci sono abbastanza domande normali, completa con Inedite rimaste,
-      // senza duplicare domande né superare il totale richiesto.
-      const inediteCount = Math.min(inedite.length, wanted - otherTarget);
-      picked = [
-        ...rankByPracticeNeed(inedite).slice(0, inediteCount),
-        ...rankByPracticeNeed(other).slice(0, otherTarget),
-      ];
-    }
+    const regular = pool.filter((question) => !isInediteQuestion(question));
+    const inediteTarget = Math.min(Math.round((wanted * INEDITE_QUIZ_PERCENT) / 100), inedite.length);
+    const regularTarget = Math.min(wanted - inediteTarget, regular.length);
+    const inediteCount = Math.min(inedite.length, wanted - regularTarget);
+    picked.push(
+      ...selectBalancedByLesson(groups, inediteCount, 'inedite', stats, lastSet, now, selectedCounts),
+      ...selectBalancedByLesson(groups, regularTarget, 'other', stats, lastSet, now, selectedCounts),
+    );
+    picked.splice(
+      0,
+      picked.length,
+      ...enforceDifferentSelection(
+        picked,
+        groups,
+        lessonById,
+        previousIds,
+        true,
+        stats,
+        lastSet,
+        now,
+      ),
+    );
   } else {
-    picked = rankByPracticeNeed(pool).slice(0, wanted);
+    picked.push(...selectBalancedByLesson(groups, wanted, 'all', stats, lastSet, now, selectedCounts));
+    picked.splice(
+      0,
+      picked.length,
+      ...enforceDifferentSelection(
+        picked,
+        groups,
+        lessonById,
+        previousIds,
+        false,
+        stats,
+        lastSet,
+        now,
+      ),
+    );
   }
-  const mixed = exact
-    ? picked.slice()
-    : mixQuestions(picked, historyIds(sessions, subjectId), last?.items.map((i) => i.qid) ?? []);
-  return mixed.map((q) => ({ qid: q.id, order: mixOptions(q, stats[q.id]?.lp) }));
+
+  const interleaved = interleaveByLesson(picked, lessonById);
+  const mixed = mixQuestions(interleaved, historyIds(sessions, subjectId), previousIds, lessonById);
+  const ordered = ensureDifferentOrder(mixed, previousIds, lessonById);
+  const previousOrders = lastOptionOrders(sessions, subjectId);
+  const correctTargets = correctPositionTargets(ordered, stats, previousOrders);
+
+  return ordered.map((question, index) => {
+    const previousOrder = previousOrders.get(question.id);
+    const previousPosition =
+      previousOrder?.length === question.opts.length
+        ? previousOrder.indexOf(question.ci)
+        : stats[question.id]?.lp;
+    return {
+      qid: question.id,
+      order: mixOptions(question, previousPosition, correctTargets[index], previousOrder),
+    };
+  });
 }
 
 export function newId(): string {

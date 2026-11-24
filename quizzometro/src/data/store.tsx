@@ -20,6 +20,7 @@ import {
   newId,
   type QuizConfig,
 } from '../domain/quiz/engine';
+import { MASTERY_LOG_LIMIT, rebuildMissingAnswerLogs } from '../domain/quiz/mastery';
 import { applyImport, type ImportPlan } from '../domain/import/merge';
 import type { ParsedSubject } from '../domain/import/parse';
 import { fetchLatestRelease, isNewer } from './releases';
@@ -78,13 +79,22 @@ async function loadAll(): Promise<AppData> {
     if (!v) throw new Error(`Dati mancanti per una sessione (${k}).`);
     return JSON.parse(v) as Session;
   });
+  const stats = { ...(meta.stats ?? {}) };
+  subjects.forEach((subject) => {
+    stats[subject.id] = rebuildMissingAnswerLogs(
+      subject.questions,
+      subject.id,
+      stats[subject.id] ?? {},
+      sessions,
+    );
+  });
   return {
     schema: 1,
     subjects,
     sessions,
     activeSubjectId: meta.activeSubjectId,
     activeSessionId: meta.activeSessionId,
-    stats: meta.stats ?? {},
+    stats,
     savedQuestionIds: meta.savedQuestionIds,
     settings: meta.settings,
   };
@@ -381,7 +391,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         allLessons(subject).length,
       );
       if (!pool.length) return null;
-      const items = buildItems(pool, cfg.count, stats, d.sessions, subjectId, false, cfg.mode !== 'inedite');
+      const items = buildItems(
+        pool,
+        cfg.count,
+        stats,
+        d.sessions,
+        subjectId,
+        false,
+        cfg.mode !== 'inedite',
+        cfg.lessons,
+      );
       const session = createSession({
         subjectId,
         kind: 'original',
@@ -443,6 +462,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           wrong: prev.wrong + (ok ? 0 : 1),
           lastSeen: now,
           lp: item.order.indexOf(q.ci),
+          log: [...(prev.log ?? []), { t: now, ok }].slice(-MASTERY_LOG_LIMIT),
         };
         return {
           ...d,
@@ -544,7 +564,17 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const restoreBackup = useCallback(
     (backup: AppData, mode: RestoreMode = 'replace_all') => {
       const run = () => {
-        const next = restoreAppData(dataRef.current, backup, mode);
+        const restored = restoreAppData(dataRef.current, backup, mode);
+        const stats = { ...restored.stats };
+        restored.subjects.forEach((subject) => {
+          stats[subject.id] = rebuildMissingAnswerLogs(
+            subject.questions,
+            subject.id,
+            stats[subject.id] ?? {},
+            restored.sessions,
+          );
+        });
+        const next = { ...restored, stats };
         // sostituzione integrale: forza la riscrittura di tutte le chiavi
         persisted.current = {
           metaSig: null,

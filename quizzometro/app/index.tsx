@@ -17,7 +17,7 @@ import { UPDATE_ACTION_LABEL } from '../src/data/releases';
 import { QuickLinks, RecentReview, ResumeBanner, SubjectPanel, UpdateBanner } from '../src/features/home/blocks';
 import { UpdateInstructionsModal } from '../src/components/UpdateInstructionsModal';
 import { QuizSetup } from '../src/features/quiz/QuizSetup';
-import { useFocusEffect, useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { colors, fonts, radius } from '../src/theme';
 
 let popupShownForTag: string | null = null;
@@ -34,13 +34,18 @@ const HOME_SECTIONS: { id: HomeSection; label: string; icon: React.ComponentProp
 export default function Home() {
   const { isWide, isTablet } = useLayout();
   const router = useRouter();
+  const params = useLocalSearchParams<{ section?: HomeSection }>();
   const { data, activeSubject, activeSession, updateSettings } = useStore();
   const { install, instructionsVisible, confirmDownload, cancelDownload } = useInstall();
-  const [section, setSection] = useState<HomeSection>('today');
+  const [section, setSection] = useState<HomeSection>(() => (params.section === 'quiz' ? 'quiz' : 'today'));
   const [releaseNoteStatus, setReleaseNoteStatus] = useState<'checking' | 'shown' | 'done'>('checking');
   const [welcomeStatus, setWelcomeStatus] = useState<'checking' | 'visible' | 'done'>('checking');
   const release = data.settings.latestRelease;
   const newer = hasNewerRelease(data) && release && data.settings.dismissedTag !== release.tag ? release : null;
+
+  useEffect(() => {
+    if (params.section === 'quiz') setSection('quiz');
+  }, [params.section]);
 
   useEffect(() => {
     let active = true;
@@ -231,7 +236,7 @@ export default function Home() {
           <Text style={{ fontFamily: fonts.body, fontSize: 14, lineHeight: 20, color: colors.inkSoft }}>
             Rivedi risultati, accuratezza e copertura delle domande incontrate.
           </Text>
-          <Btn title="Apri statistiche e progressi" icon="bar-chart-2" onPress={() => router.push('/stats')} testID="home-open-stats" />
+          <Btn title="Apri statistiche e progressi" icon="bar-chart-2" onPress={() => router.push('/progress')} testID="home-open-stats" />
         </Card>
         {activeSubject ? (
           <SubjectPanel subject={activeSubject} />

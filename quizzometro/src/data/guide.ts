@@ -74,6 +74,22 @@ export const GUIDE_SECTIONS: GuideSection[] = [
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: '1.0.15',
+    title: 'Grafica più chiara in Andamento',
+    summary: "Correzioni grafiche nella pagina Andamento: pulsanti del periodo leggibili, tachimetro del recupero e grafico dell'andamento più chiari",
+  },
+  {
+    version: '1.0.14',
+    title: 'Stati di apprendimento e Andamento',
+    summary: 'Nuova pagina Andamento: scopri quante domande hai davvero imparato, quante hai recuperato e come procede il tuo studio',
+  },
+  {
+    version: '1.0.13',
+    title: 'Prove più varie e bilanciate',
+    summary:
+      'Prove più varie: domande distribuite tra tutte le lezioni scelte, mescolamento sempre nuovo e contatore di avanzamento sulle lezioni selezionate',
+  },
+  {
     version: '1.0.12',
     title: 'Aggiungi e condividi domande',
     summary: 'Novità: aggiungi domande incollandole dal testo e condividi la materia aggiornata con i colleghi',

@@ -32,6 +32,7 @@ const qstat = z.object({
   wrong: z.number(),
   lastSeen: z.number(),
   lp: z.number().optional(),
+  log: z.array(z.object({ t: z.number(), ok: z.boolean() })).max(40).optional(),
 });
 
 const session = z.object({

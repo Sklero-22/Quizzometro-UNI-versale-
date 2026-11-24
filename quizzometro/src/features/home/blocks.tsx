@@ -3,10 +3,12 @@ import { useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Alert, Pressable, Text, TextInput, View } from 'react-native';
 import { Bar, Btn, Card, H2, Label, P } from '../../components/ui';
+import { LegendChips, MasteryRing } from '../../components/charts';
 import { useStore } from '../../data/store';
 import { useInstall } from '../../data/useInstall';
 import { UPDATE_ACTION_LABEL } from '../../data/releases';
 import { UpdateInstructionsModal } from '../../components/UpdateInstructionsModal';
+import { MASTERY_LABELS, summarizeMastery, type MasteryState } from '../../domain/quiz/mastery';
 import {
   answeredQidsSince,
   lastOriginalTests,
@@ -19,27 +21,57 @@ import { colors, fonts, radius } from '../../theme';
 
 export function SubjectPanel({ subject }: { subject: Subject }) {
   const router = useRouter();
-  const { subjectStats, data } = useStore();
-  const sum = subjectSummary(subject, subjectStats(subject.id));
+  const { subjectStats, data, startFromQids } = useStore();
+  const stats = subjectStats(subject.id);
+  const sum = subjectSummary(subject, stats);
+  const mastery = useMemo(() => summarizeMastery(subject.questions, stats), [subject.questions, stats]);
   return (
     <Card tone="ink">
-      <Label color={colors.accent}>Materia attiva</Label>
-      <Text style={{ fontFamily: fonts.displayHeavy, fontSize: 24, lineHeight: 29, color: colors.secondaryForeground }}>
-        {subject.title}
-      </Text>
-      <Text style={{ fontFamily: fonts.body, fontSize: 14, color: colors.inkSoft }}>
-        {sum.total} domande · {(subject.lessons ?? []).length} lezioni
-        {sum.accuracy !== null ? ` · accuratezza ${String(sum.accuracy).replace('.', ',')}%` : ''}
-      </Text>
-      <View style={{ gap: 6 }}>
-        <Bar value={sum.total ? sum.met / sum.total : 0} color={colors.accent} />
-        <Text style={{ fontFamily: fonts.bodyMedium, fontSize: 13, color: colors.inkSoft }}>
-          Copertura: {sum.met} su {sum.total} incontrate
+      <Pressable
+        onPress={() => router.push('/progress')}
+        accessibilityRole="button"
+        accessibilityLabel={`Andamento di ${subject.title}. ${mastery.learnedPercent}% imparate, ${mastery.counts.recover} da recuperare`}
+        testID="home-subject-mastery"
+        style={({ pressed }) => ({ gap: 8, opacity: pressed ? 0.78 : 1 })}
+      >
+        <Label color={colors.accent}>Materia attiva</Label>
+        <Text style={{ fontFamily: fonts.displayHeavy, fontSize: 24, lineHeight: 29, color: colors.secondaryForeground }}>
+          {subject.title}
         </Text>
-      </View>
+        <Text style={{ fontFamily: fonts.body, fontSize: 14, color: colors.inkSoft }}>
+          {sum.total} domande · {(subject.lessons ?? []).length} lezioni
+          {sum.accuracy !== null ? ` · accuratezza ${String(sum.accuracy).replace('.', ',')}%` : ''}
+        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
+          <MasteryRing distribution={mastery} size={64} dark />
+          <View style={{ gap: 4, flex: 1 }}>
+            <Text style={{ color: colors.secondaryForeground, fontFamily: fonts.bodyBold, fontSize: 15 }}>
+              {mastery.learnedPercent}% imparate
+            </Text>
+            <Text style={{ color: colors.inkSoft, fontFamily: fonts.bodyMedium, fontSize: 14 }}>
+              {mastery.counts.recover} da recuperare
+            </Text>
+          </View>
+        </View>
+      </Pressable>
       {data.subjects.length > 1 && (
         <Btn title="Cambia materia" small variant="soft" icon="repeat" onPress={() => router.push('/subjects')} />
       )}
+      <LegendChips
+        compact
+        questions={subject.questions}
+        distribution={mastery}
+        onTrain={(ids, state: MasteryState) => {
+          const sessionId = startFromQids({
+            subjectId: subject.id,
+            qids: ids,
+            kind: 'review',
+            label: `Allenamento · ${MASTERY_LABELS[state].toLowerCase()}`,
+            keepOrder: false,
+          });
+          if (sessionId) router.push('/quiz');
+        }}
+      />
     </Card>
   );
 }
@@ -159,7 +191,7 @@ export function RecentReview({ subject }: { subject: Subject }) {
 export function QuickLinks() {
   const router = useRouter();
   const items: { label: string; icon: React.ComponentProps<typeof Feather>['name']; path: string }[] = [
-    { label: 'Statistiche', icon: 'bar-chart-2', path: '/stats' },
+    { label: 'Statistiche', icon: 'bar-chart-2', path: '/progress' },
     { label: 'Materie', icon: 'book-open', path: '/subjects' },
     { label: 'Domande salvate', icon: 'bookmark', path: '/bookmarks' },
     { label: 'Guida', icon: 'help-circle', path: '/guide' },

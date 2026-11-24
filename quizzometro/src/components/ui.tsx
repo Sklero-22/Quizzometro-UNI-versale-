@@ -247,8 +247,9 @@ export function Chip({
           paddingHorizontal: 13,
           borderRadius: 999,
           borderWidth: 1.5,
-          borderColor: selected ? colors.text : colors.input,
-          backgroundColor: selected ? (tone === 'ink' ? colors.text : colors.accentSoft) : 'transparent',
+          borderColor:
+            tone === 'ink' ? (selected ? colors.accent : 'rgba(245,239,227,0.45)') : selected ? colors.text : colors.input,
+          backgroundColor: selected ? (tone === 'ink' ? colors.accent : colors.accentSoft) : 'transparent',
           opacity: pressed ? 0.7 : 1,
         },
       ]}
@@ -257,7 +258,8 @@ export function Chip({
         style={{
           fontFamily: fonts.bodySemi,
           fontSize: 13.5,
-          color: selected && tone === 'ink' ? colors.secondaryForeground : colors.text,
+          // su sfondo scuro: testo chiaro se non selezionata, scuro sulla pillola gialla selezionata
+          color: tone === 'ink' ? (selected ? colors.text : colors.secondaryForeground) : colors.text,
         }}
       >
         {label}

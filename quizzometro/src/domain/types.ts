@@ -38,6 +38,13 @@ export interface QStat {
   lastSeen: number;
   /** posizione (0-based) in cui la risposta corretta era mostrata l'ultima volta */
   lp?: number;
+  /** Ultime risposte registrate; può mancare nei dati precedenti alla 1.0.14. */
+  log?: AnswerLogEntry[];
+}
+
+export interface AnswerLogEntry {
+  t: number;
+  ok: boolean;
 }
 
 export type SessionKind = 'original' | 'review' | 'repeat';

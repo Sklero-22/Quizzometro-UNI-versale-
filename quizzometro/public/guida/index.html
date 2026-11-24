@@ -60,7 +60,7 @@
   <img src="icon.png" alt="">
   <div>
     <h1>Quizzometro UNI(versale)</h1>
-    <div class="sub">Guida completa – installazione e tutte le funzioni, passo dopo passo (versione 1.0.12)</div>
+    <div class="sub">Guida completa – installazione e tutte le funzioni, passo dopo passo (versione 1.0.14)</div>
   </div>
 </div>
 
@@ -71,7 +71,7 @@
   <li><b>Parte 1 – Primi passi</b>
     <ul><li>Quale versione usare</li><li>Installare su iPhone/iPad</li><li>Installare su Android</li><li>Primo avvio</li><li>Aggiornare l'app</li></ul></li>
   <li><b>Parte 2 – Tutte le funzioni</b>
-    <ul><li>Le quattro schede</li><li>Importare una materia</li><li>Preparare una prova</li><li>Durante la prova</li><li>Il risultato</li><li>Oggi: prove in sospeso e ripassi</li><li>Progressi e statistiche</li><li>Gestire le materie</li><li>Aggiungere domande</li><li>Condividere una materia</li><li>Domande salvate</li><li>Backup e ripristino</li><li>Aggiornamenti e Guida</li></ul></li>
+    <ul><li>Le quattro schede</li><li>Importare una materia</li><li>Preparare una prova</li><li>Durante la prova</li><li>Il risultato</li><li>Oggi: prove in sospeso e ripassi</li><li>Andamento e statistiche</li><li><b>Come leggere i grafici</b></li><li>Gestire le materie</li><li>Aggiungere domande</li><li>Condividere una materia</li><li>Domande salvate</li><li>Backup e ripristino</li><li>Aggiornamenti e Guida</li></ul></li>
   <li><b>Parte 3 – Se qualcosa non va</b></li>
 </ol>
 
@@ -162,12 +162,12 @@
   <tr><th style="width:22%">Scheda</th><th>Cosa contiene</th></tr>
   <tr><td><b>☀️ Oggi</b></td><td>La materia attiva, l'eventuale prova in sospeso e i ripassi recenti (Parte 2.6).</td></tr>
   <tr><td><b>▶️ Quiz</b></td><td>Prepara e avvia una nuova prova (Parte 2.3).</td></tr>
-  <tr><td><b>📊 Progressi</b></td><td>Riepilogo del tuo percorso e accesso alle statistiche (Parte 2.7).</td></tr>
+  <tr><td><b>📊 Progressi</b></td><td>Il tuo percorso e il pulsante per la pagina <b>Andamento</b> (Parte 2.7).</td></tr>
   <tr><td><b>▦ Altro</b></td><td>Statistiche, Materie, Domande salvate, Guida, Backup, Aggiornamenti.</td></tr>
 </table>
 <p>In tutte le altre schermate, la <b>freccia ←</b> in alto a sinistra riporta indietro.</p>
 <div class="shots">
-  <figure><img src="img/08_oggi.jpg" alt=""><figcaption>Scheda <b>Oggi</b></figcaption></figure>
+  <figure><img src="img/30_oggi.jpg" alt=""><figcaption>Scheda <b>Oggi</b></figcaption></figure>
   <figure><img src="img/14_altro.jpg" alt=""><figcaption>Scheda <b>Altro</b></figcaption></figure>
 </div>
 
@@ -213,15 +213,21 @@
       <tr><td><b>Tipo di prova</b><br>(solo se la materia ha domande Inedite)</td><td><b>Misto</b>: soprattutto domande del paniere, con circa il 15% di Inedite.<br><b>Solo Inedite</b>: solo le domande inedite.</td></tr>
       <tr><td><b>Quantità</b></td><td>10, 20, 30 domande, <b>Tutte</b>, oppure <b>Altro</b> per scrivere un numero.</td></tr>
       <tr><td><b>Timer</b></td><td><b>Nessuno</b>, 10, 20, 30 minuti, oppure <b>Altro</b>. Allo scadere la prova si chiude da sola.</td></tr>
-      <tr><td><b>Stato delle domande</b></td><td><b>Tutte</b>, <b>Già viste</b>, <b>Non viste</b> (mai incontrate), <b>Sbagliate</b> (almeno una volta).</td></tr>
+      <tr><td><b>Stato delle domande</b></td><td><b>Tutte</b>, <b>Già viste</b>, <b>Non viste</b> (mai incontrate), <b>Sbagliate</b> (almeno una volta), <b>Da recuperare</b> (l'ultima volta le hai sbagliate), <b>Da ripassare</b> (le sapevi, ma non le rivedi da più di 30 giorni). Vedi la Parte 2.8.</td></tr>
       <tr><td><b>Solo domande con date</b></td><td>Interruttore: tiene solo le domande che contengono date o anni. Utile per ripassare le date.</td></tr>
       <tr><td><b>Categorie e lezioni</b></td><td>Apre i filtri: scegli le <b>categorie</b> (Paniere, Inedite…) e le <b>lezioni</b> (L1, L2…). <b>Tutte</b> e <b>Nessuna</b> selezionano o tolgono tutto in un colpo.</td></tr>
     </table>
-    <p>Sotto vedi <b>quante domande sono disponibili</b> con i filtri scelti. Poi tocca <span class="btn red">Avvia prova</span>.</p>
+    <p>Sotto vedi <b>quante domande sono disponibili</b> con i filtri scelti e un riquadro con <b>il tuo livello sulle sole lezioni selezionate</b>: “Lezioni selezionate: 10 · 100 domande”, una <b>barra a colori</b> e le <b>pillole</b> con i numeri (Parte 2.8). Se selezioni solo le lezioni dell'esame, vedi quanto ti manca proprio su quelle. Poi tocca <span class="btn red">Avvia prova</span>.</p>
   </div>
-  <figure><img src="img/09_quiz_setup.jpg" alt=""><figcaption>Scheda <b>Quiz</b></figcaption></figure>
+  <figure><img src="img/31_quiz_setup.jpg" alt=""><figcaption>Il riquadro sulle lezioni selezionate</figcaption></figure>
 </div>
 <div class="box tip">💡 Se il pulsante è spento o dice che non ci sono domande, i filtri sono troppo stretti: scegli <b>Tutte</b> nelle categorie e nelle lezioni.</div>
+<h4>Come vengono scelte le domande</h4>
+<ul>
+  <li><b>Distribuite tra le lezioni:</b> con 20 domande su 10 lezioni escono circa 2 domande per lezione; se le domande sono meno delle lezioni, escono tutte lezioni diverse.</li>
+  <li><b>Mai uguali:</b> ogni prova pesca a caso, ma dà <b>più probabilità</b> alle domande mai viste, a quelle sbagliate spesso, a quelle da recuperare e a quelle che non vedi da tempo; meno a quelle della prova appena fatta.</li>
+  <li><b>Ordine sempre nuovo:</b> domande e risposte si rimescolano a ogni prova e a ogni ripetizione; la risposta giusta non resta nella stessa posizione della volta prima.</li>
+</ul>
 
 <h2>2.4 Durante la prova</h2>
 <div class="shots">
@@ -237,7 +243,7 @@
   <li>All'ultima domanda tocca <span class="btn red">Concludi</span>. Puoi anche chiudere prima con <b>Termina</b>, in alto a destra: le domande senza risposta contano come “non date”.</li>
 </ol>
 <ul>
-  <li><b>Segnalibro 🔖</b> (in alto a destra sulla domanda): salva la domanda per ripassarla dopo (Parte 2.11).</li>
+  <li><b>Segnalibro 🔖</b> (in alto a destra sulla domanda): salva la domanda per ripassarla dopo (Parte 2.12).</li>
   <li><b>X</b> in alto a sinistra: esci dalla prova. La prova resta <b>in sospeso</b> e puoi riprenderla dalla scheda Oggi.</li>
 </ul>
 
@@ -264,29 +270,110 @@
 <div>
 <h2>2.6 Oggi: prove in sospeso e ripassi</h2>
 <ul>
-  <li><b>Materia attiva</b>: la materia che stai studiando, con il numero di domande e la <b>copertura</b> (quante ne hai già incontrate). <b>Cambia materia</b> porta alle Materie.</li>
+  <li><b>Materia attiva</b>: la materia che stai studiando, con un piccolo <b>anello colorato</b>, la percentuale di domande <b>imparate</b>, quante sono <b>da recuperare</b> e le pillole con tutti i numeri (Parte 2.8). <b>Tocca il riquadro</b> per aprire la pagina <b>Andamento</b>. <b>Cambia materia</b> porta alle Materie.</li>
   <li><b>Prova in sospeso</b>: compare se sei uscito da una prova. <span class="btn red">Riprendi</span> la continua. <b>Archivia</b> la chiude come “parziale” con le risposte date finora.</li>
   <li><b>Ripassi recenti</b>: rifai al volo le domande delle prove dell'<b>ultima ora</b>, di <b>oggi</b> o degli <b>ultimi N test</b>. Il numero N si sceglie nella casella <b>“Numero di test”</b> (da 1 a 50). Se una riga è grigia con “0 domande”, non ci sono prove in quel periodo.</li>
 </ul>
 
-<h2>2.7 Progressi e statistiche</h2>
+<h2>2.7 Andamento e statistiche</h2>
 <div class="row">
   <div class="txt">
-    <p>Scheda <b>Progressi</b> → <span class="btn red">Apri statistiche e progressi</span>, oppure <b>Altro → Statistiche</b>. Riguardano la materia attiva:</p>
-    <ul>
-      <li><b>Risposte</b> date, <b>Accuratezza</b> (percentuale di giuste), domande <b>Incontrate</b> sul totale, numero di <b>Prove</b>.</li>
-      <li><b>Copertura per categoria</b>: quante domande del Paniere, delle Inedite ecc. hai già visto.</li>
-      <li><b>Progressi per capitolo</b>: per ogni lezione, quante domande hai affrontato e con che risultato.</li>
-      <li><b>Lezioni da rinforzare</b>: quelle dove sbagli di più (servono almeno 2 risposte per lezione).</li>
-      <li><b>Domande più difficili</b>: quelle sbagliate più spesso.</li>
-      <li><b>Ultime sessioni</b>: le prove recenti con il risultato.</li>
-    </ul>
-    <div class="box warn">⚠️ In fondo c'è <b>“Azzera i progressi di questa materia”</b>: cancella statistiche e cronologia delle prove della materia. Le domande restano, ma i progressi <b>non si possono recuperare</b>.</div>
+    <p>Apri la pagina <b>Andamento</b> in uno di questi modi: tocca il riquadro della materia nella scheda <b>Oggi</b>, oppure scheda <b>Progressi</b> → <span class="btn red">Apri statistiche e progressi</span>, oppure <b>Altro → Statistiche</b>.</p>
+    <p>In alto, nel riquadro scuro, scegli il <b>periodo</b>: <b>Oggi</b>, <b>7 giorni</b>, <b>30 giorni</b> o <b>Tutto</b>. Il periodo cambia i grafici di attività, andamento e recupero. Il tuo <b>livello</b> mostra sempre la situazione di oggi.</p>
+    <p>La pagina è divisa in schede, dall'alto in basso:</p>
+    <ol class="steps">
+      <li><b>Il tuo livello</b>: l'anello con la percentuale di domande imparate, una frase di sintesi, le pillole degli stati e i totali (risposte, accuratezza, domande incontrate, prove).</li>
+      <li><b>Recupero errori</b>: quante delle domande sbagliate hai poi imparato. Il pulsante <span class="btn">Allenati sulle domande da recuperare</span> avvia subito una prova con quelle.</li>
+      <li><b>Andamento</b>: il grafico della tua accuratezza giorno per giorno.</li>
+      <li><b>Costanza</b>: il calendario dei giorni in cui hai studiato.</li>
+      <li><b>Per lezione</b>: ogni lezione con la sua barra a colori. <b>Più deboli prima</b> mette in cima quelle dove vai peggio. Tocca una lezione per allenarti solo su quella.</li>
+      <li><b>Lezioni da rinforzare</b>, <b>Domande più difficili</b>, <b>Copertura per categoria</b> e <b>Ultime sessioni</b>.</li>
+    </ol>
+    <p>Ogni scheda ha in alto a destra un <b>?</b>: toccalo per una breve spiegazione di come leggerla.</p>
+    <div class="box warn">⚠️ In fondo c'è <b>“Azzera i progressi di questa materia”</b>: cancella statistiche, cronologia e stati di apprendimento della materia. Le domande restano, ma i progressi <b>non si possono recuperare</b>.</div>
   </div>
-  <figure><img src="img/15_statistiche.jpg" alt=""><figcaption>Statistiche</figcaption></figure>
+  <figure><img src="img/39_intestazione.jpg" alt=""><figcaption>Il selettore del periodo</figcaption></figure>
 </div>
 
-<h2>2.8 Gestire le materie</h2>
+<h2>2.8 Come leggere i grafici</h2>
+<h4>Gli stati di apprendimento</h4>
+<p>Ogni domanda ha uno <b>stato</b>, con il suo colore. L'app non si fida di una risposta giusta data una volta sola: una domanda è <b>imparata</b> solo se la indovini <b>in giorni diversi</b>.</p>
+<table>
+  <tr><th style="width:30%">Stato</th><th>Cosa significa</th></tr>
+  <tr><td>⚪ <b>Nuova</b> (grigio)</td><td>Non l'hai mai vista.</td></tr>
+  <tr><td>🔴 <b>Da recuperare</b> (rosso)</td><td>L'ultima volta l'hai sbagliata.</td></tr>
+  <tr><td>🟠 <b>In consolidamento</b> (giallo)</td><td>L'ultima volta l'hai indovinata, ma non è ancora confermata nel tempo.</td></tr>
+  <tr><td>🟢 <b>Imparata</b> (verde)</td><td>Indovinata almeno <b>2 volte di fila</b>, in giorni distanti <b>almeno 2 giorni</b>.</td></tr>
+  <tr><td>🟢 <b>Da ripassare</b> (verde chiaro)</td><td>Era imparata, ma non la rivedi da <b>più di 30 giorni</b>: ricontrollala.</td></tr>
+</table>
+<div class="box info">ℹ️ <b>Conta solo la prima risposta di ogni giorno.</b> Se rifai lo stesso test tre volte la sera, la domanda non diventa “imparata”: devi indovinarla anche in un altro giorno, a distanza di almeno 2 giorni. Se sbagli una domanda imparata, torna <b>da recuperare</b>.</div>
+
+<div class="row">
+  <div class="txt">
+    <h4>L'anello – “Il tuo livello”</h4>
+    <ul>
+      <li>Il <b>numero al centro</b> è la percentuale di domande <b>imparate</b> sul totale della materia. È il tuo voto complessivo.</li>
+      <li>Gli <b>spicchi colorati</b> mostrano quanta parte della materia è in ogni stato: più verde vedi, meglio va; più grigio, più domande non hai ancora visto; il rosso è quello che hai sbagliato.</li>
+      <li>Le <b>pillole</b> sotto danno il numero esatto per ogni stato. <b>Toccane una</b> per vedere quelle domande e allenarti proprio su di esse.</li>
+    </ul>
+    <h4>La barra a colori</h4>
+    <p>Nella scheda Quiz e nelle righe “Per lezione” c'è la stessa informazione in forma di <b>barra</b>: da sinistra grigio, rosso, giallo, verde, verde chiaro. Nella scheda Quiz la barra riguarda <b>solo le lezioni selezionate</b>.</p>
+  </div>
+  <figure><img src="img/40_livello.jpg" alt=""><figcaption>L'anello del livello</figcaption></figure>
+</div>
+
+<div class="row">
+  <div class="txt">
+    <h4>Il tachimetro – “Recupero errori”</h4>
+    <ul>
+      <li>Considera tutte le domande che hai <b>sbagliato almeno una volta</b>.</li>
+      <li>La percentuale dice quante di queste adesso sono <b>imparate</b>: “Recuperate 44 su 81” vuol dire che di 81 domande sbagliate, 44 ormai le sai.</li>
+      <li>Più l'arco verde si avvicina alla fine, più stai trasformando gli errori in risposte sicure.</li>
+    </ul>
+  </div>
+  <figure><img src="img/41_recupero.jpg" alt=""><figcaption>Recupero errori</figcaption></figure>
+</div>
+
+<div class="row">
+  <div class="txt">
+    <h4>Il grafico – “Andamento”</h4>
+    <ul>
+      <li>In alto: <b>accuratezza</b> (percentuale di risposte giuste) e numero di <b>risposte</b> nel periodo scelto.</li>
+      <li>La <b>linea verde</b> è l'accuratezza di ogni giorno in cui hai studiato (da 0 a 100). Ogni <b>pallino</b> è un giorno.</li>
+      <li>Le <b>colonnine gialle</b> in basso indicano quante risposte hai dato quel giorno.</li>
+      <li>Se la linea si interrompe, in quel tratto non hai studiato per più di 3 giorni.</li>
+      <li><b>Tocca il grafico</b> per vedere data, risposte e accuratezza di quel giorno. Con “Tutto” il grafico si può scorrere di lato.</li>
+    </ul>
+  </div>
+  <figure><img src="img/42_andamento.jpg" alt=""><figcaption>Andamento negli ultimi 30 giorni</figcaption></figure>
+</div>
+
+<div class="row">
+  <div class="txt">
+    <h4>Il calendario – “Costanza”</h4>
+    <ul>
+      <li>Ogni <b>quadratino è un giorno</b> delle ultime 12 settimane: le colonne sono le settimane, la più recente a destra.</li>
+      <li>Più il verde è <b>scuro</b>, più risposte hai dato quel giorno. Beige = giorno senza studio.</li>
+      <li>Sotto trovi i <b>giorni di studio</b>, la <b>serie attuale</b> (giorni consecutivi fino a oggi) e il tuo <b>record</b>.</li>
+    </ul>
+  </div>
+  <figure><img src="img/43_costanza.jpg" alt=""><figcaption>Il calendario della costanza</figcaption></figure>
+</div>
+
+<div class="row">
+  <div class="txt">
+    <h4>Le righe – “Per lezione”</h4>
+    <ul>
+      <li>Ogni riga è una lezione: a destra la percentuale di domande <b>imparate</b>, sotto la barra a colori dei suoi stati.</li>
+      <li>Una barra tutta grigia = lezione mai studiata; molto rosso = lezione da riprendere.</li>
+      <li>Scegli <b>Più deboli prima</b> per vedere in cima le lezioni su cui concentrarti. Tocca una lezione per <b>allenarti solo su quella</b>.</li>
+    </ul>
+    <div class="box tip">💡 <b>Per preparare un esame:</b> nella scheda Quiz seleziona solo le lezioni dell'esame e guarda la barra: il tuo obiettivo è farla diventare tutta verde. Usa lo stato <b>Da recuperare</b> per allenarti sugli errori e torna nei giorni successivi per confermare le domande gialle.</div>
+  </div>
+  <figure><img src="img/44_per_lezione.jpg" alt=""><figcaption>Le lezioni con le loro barre</figcaption></figure>
+</div>
+
+<h2>2.9 Gestire le materie</h2>
 <div class="row">
   <div class="txt">
     <p>In <b>Altro → Materie</b>, ogni materia ha i suoi pulsanti:</p>
@@ -294,8 +381,8 @@
       <tr><th style="width:36%">Pulsante</th><th>Cosa fa</th></tr>
       <tr><td><b>Seleziona</b> / Materia attiva</td><td><b>Seleziona</b> rende quella materia la materia da studiare. Quella in uso mostra “Materia attiva”.</td></tr>
       <tr><td><b>Aggiorna da file</b></td><td>Aggiunge le domande nuove da un file più recente della stessa materia. Non crea doppioni e conserva i progressi.</td></tr>
-      <tr><td><b>Aggiungi domande</b></td><td>Aggiungi domande scritte da te o da un collega (Parte 2.9).</td></tr>
-      <tr><td><b>Condividi materia</b></td><td>Crea il file della materia da mandare ai colleghi (Parte 2.10).</td></tr>
+      <tr><td><b>Aggiungi domande</b></td><td>Aggiungi domande scritte da te o da un collega (Parte 2.10).</td></tr>
+      <tr><td><b>Condividi materia</b></td><td>Crea il file della materia da mandare ai colleghi (Parte 2.11).</td></tr>
       <tr><td><b>Aggiorna dal link</b></td><td>Solo per le materie importate da un link: riscarica la versione più recente.</td></tr>
       <tr><td><b>Elimina</b></td><td>Cancella la materia con i suoi progressi. Chiede conferma.</td></tr>
     </table>
@@ -305,7 +392,7 @@
 </div>
 
 <div>
-<h2>2.9 Aggiungere domande</h2>
+<h2>2.10 Aggiungere domande</h2>
 <p>Puoi aggiungere domande nuove a una materia <b>incollando del testo</b> scritto in Word, Note, WhatsApp o dove vuoi. Lo schema usa le stesse voci dei file delle materie.</p>
 <h4>Lo schema di ogni domanda</h4>
 <pre>LEZIONI: 18
@@ -341,7 +428,7 @@ SPIEGAZIONE: Le norme di attuazione sono adottate con decreto legislativo.</pre>
   <figure><img src="img/17_aggiungi_anteprima.jpg" alt=""><figcaption>Anteprima con gli errori segnalati</figcaption></figure>
 </div>
 
-<h2>2.10 Condividere una materia con i colleghi</h2>
+<h2>2.11 Condividere una materia con i colleghi</h2>
 <ol class="steps">
   <li>Dopo aver aggiunto le domande compare <b>“Domande aggiunte! Vuoi condividere la materia aggiornata con i colleghi?”</b>. Tocca <span class="btn red">Condividi</span>. In qualsiasi momento puoi farlo anche da <b>Materie → Condividi materia</b>.</li>
   <li>🤖 <b>Android:</b> si apre il menu di condivisione: scegli <b>WhatsApp</b> e il gruppo. 📱 <b>iPhone/web:</b> si apre il menu Condividi (scegli WhatsApp oppure “Salva su File”); su computer il file viene scaricato.</li>
@@ -356,14 +443,14 @@ SPIEGAZIONE: Le norme di attuazione sono adottate con decreto legislativo.</pre>
 </div>
 
 <div>
-<h2>2.11 Domande salvate</h2>
+<h2>2.12 Domande salvate</h2>
 <p>Durante una prova o nella revisione, tocca il <b>segnalibro 🔖</b> su una domanda. La ritrovi in <b>Altro → Domande salvate</b>, divise per materia. Da lì puoi:</p>
 <ul>
   <li><b>Ripassa</b>: avvia una prova solo con le domande salvate;</li>
   <li>togliere una domanda dall'elenco toccando di nuovo il segnalibro.</li>
 </ul>
 
-<h2>2.12 Backup e ripristino</h2>
+<h2>2.13 Backup e ripristino</h2>
 <p>Il backup è un file che contiene <b>tutto</b>: materie, domande, domande salvate, progressi, prove e impostazioni. Fallo ogni tanto e sempre prima di cambiare telefono.</p>
 <div class="row">
   <div class="txt">
@@ -395,7 +482,7 @@ SPIEGAZIONE: Le norme di attuazione sono adottate con decreto legislativo.</pre>
   <li>Conferma. In caso di dubbio, prima fai un backup dei dati attuali.</li>
 </ol>
 
-<h2>2.13 Aggiornamenti e Guida</h2>
+<h2>2.14 Aggiornamenti e Guida</h2>
 <ul>
   <li><b>Altro → Aggiornamenti</b>: mostra la <b>versione installata</b>, l'ultimo controllo e lo stato. <span class="btn red">Controlla ora</span> verifica subito se c'è una versione nuova. Il campo “Repository delle release” non va toccato.</li>
   <li><b>Altro → Guida</b>: <span class="btn red">Apri la guida completa (PDF)</span> apre questa guida (serve internet). Sotto trovi un riassunto che funziona anche <b>offline</b> e lo storico delle <b>novità</b> di ogni versione.</li>

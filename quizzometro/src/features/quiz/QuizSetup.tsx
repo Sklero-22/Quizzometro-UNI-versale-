@@ -12,6 +12,8 @@ import {
   type QuizMode,
   type StatusFilter,
 } from '../../domain/quiz/engine';
+import { LegendChips, MasteryBar } from '../../components/charts';
+import { MASTERY_LABELS, summarizeMastery, type MasteryState } from '../../domain/quiz/mastery';
 import type { Subject } from '../../domain/types';
 import { colors, fonts, radius } from '../../theme';
 
@@ -22,6 +24,8 @@ const STATUSES: { v: StatusFilter; l: string }[] = [
   { v: 'seen', l: 'Già viste' },
   { v: 'unseen', l: 'Non viste' },
   { v: 'wrong', l: 'Sbagliate' },
+  { v: 'recover', l: 'Da recuperare' },
+  { v: 'review', l: 'Da ripassare' },
 ];
 
 function NumberInput({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder: string }) {
@@ -50,7 +54,7 @@ function NumberInput({ value, onChange, placeholder }: { value: string; onChange
 
 export function QuizSetup({ subject }: { subject: Subject }) {
   const router = useRouter();
-  const { startQuiz, subjectStats } = useStore();
+  const { startQuiz, startFromQids, subjectStats } = useStore();
   const stats = subjectStats(subject.id);
   const cats = useMemo(() => allCategories(subject), [subject]);
   const lessons = useMemo(() => allLessons(subject), [subject]);
@@ -88,6 +92,18 @@ export function QuizSetup({ subject }: { subject: Subject }) {
       ),
     [subject, stats, selCats, selLessons, status, onlyDates, effectiveMode, cats.length, lessons.length],
   );
+  const progressPool = useMemo(
+    () =>
+      filterQuestions(
+        subject,
+        stats,
+        { categories: selCats, lessons: selLessons, status: 'all', onlyDates, mode: effectiveMode },
+        cats.length,
+        lessons.length,
+      ),
+    [subject, stats, selCats, selLessons, onlyDates, effectiveMode, cats.length, lessons.length],
+  );
+  const mastery = useMemo(() => summarizeMastery(progressPool, stats), [progressPool, stats]);
 
   const requested: number | null =
     countSel === 'all' ? null : countSel === 'custom' ? parseInt(customCount, 10) || 0 : countSel;
@@ -118,6 +134,21 @@ export function QuizSetup({ subject }: { subject: Subject }) {
     });
     if (!id) {
       Alert.alert('Nessuna domanda', 'Con questi filtri non ci sono domande disponibili.');
+      return;
+    }
+    router.push('/quiz');
+  };
+
+  const trainOnState = (questionIds: string[], state: MasteryState) => {
+    const id = startFromQids({
+      subjectId: subject.id,
+      qids: questionIds,
+      kind: 'review',
+      label: `Allenamento · ${MASTERY_LABELS[state].toLowerCase()}`,
+      keepOrder: false,
+    });
+    if (!id) {
+      Alert.alert('Nessuna domanda', 'Non ci sono più domande disponibili in questo stato.');
       return;
     }
     router.push('/quiz');
@@ -233,6 +264,21 @@ export function QuizSetup({ subject }: { subject: Subject }) {
       <P color={colors.mutedForeground} style={{ fontSize: 14 }}>
         Disponibili con questi filtri: {pool.length}. La prova avrà {final} {final === 1 ? 'domanda' : 'domande'}.
       </P>
+      <View
+        testID="quiz-progress-summary"
+        style={{ backgroundColor: colors.muted, borderRadius: radius.base, padding: 12, gap: 5 }}
+      >
+        <P style={{ fontFamily: fonts.bodySemi, fontSize: 14.5 }}>
+          Lezioni selezionate: {selLessons.length} · {mastery.total} {mastery.total === 1 ? 'domanda' : 'domande'}
+        </P>
+        <MasteryBar counts={mastery.counts} total={mastery.total} height={8} />
+        <LegendChips
+          compact
+          questions={progressPool}
+          distribution={mastery}
+          onTrain={trainOnState}
+        />
+      </View>
       <Btn title="Avvia prova" icon="play" onPress={start} disabled={pool.length === 0} />
     </Card>
   );
